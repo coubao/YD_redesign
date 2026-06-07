@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero-onepage" id="about">
+  <div class="overlay"></div>
+  <div class="hero-content">
+    <p class="hero-kicker">Grace Li · 瀛动教育</p>
+    <h1 class="hero-title">20年申请经验</h1>
+    <p class="hero-sub">用结果说话，为中国家庭提供美本/美研/低龄留学精品规划</p>
+    <a class="book-btn" href="{{ url_for('contact_page') }}">预约30分钟咨询</a>
+  </div>
+</section>
+
+<section class="grace-profile-clean" id="services" style="display:grid;grid-template-columns:340px 1fr;gap:2.2rem;">
+  <div class="profile-photo-col">
+    <img class="profile-photo-real" src="{{ url_for('static', filename='grace-photo.jpg') }}" alt="李晓宇 Grace" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=900&q=80';">
+  </div>
+  <div class="profile-text-col">
+    <h2>主讲：李晓宇-Grace</h2>
+    <div class="profile-headline">
+      <p>美国U.S.News高级升学顾问</p>
+      <p>国际教育联盟 NAFSA会员</p>
+      <p>教育部阳光留学项目监督人（05年开始）</p>
+    </div>
+    <ul class="profile-notes">
+      <li>职业经历20年 全球中学、本、硕、博升学规划指导经验</li>
+      <li>过程性教育，主张养成式培养，导学式跟踪</li>
+    </ul>
+
+    <div class="timeline-list">
+      <div><span>2013年</span><strong>美国德州访学（04年英国牛剑访学）</strong></div>
+      <div><span>2011年</span><strong>开始践行低龄及全球教育专业化申请</strong></div>
+      <div><span>2009年</span><strong>PA英国名校申请负责人</strong></div>
+      <div><span>2005年</span><strong>英孚教育海外全球大客户项目市场负责人</strong></div>
+      <div><span>2003年</span><strong>CCTV担任英文新闻编译</strong></div>
+      <div><span>2003年</span><strong>荷兰瓦赫宁根大学研究生毕业</strong></div>
+    </div>
+
+    <p class="profile-summary">洞悉国际教育体系，擅长多维度、无国界、全球化视角帮助学生制定教育方案（不因国别限定教育路径，寻求最适合教育方案），并带领学生进入英国G5、美国藤校教育殿堂。</p>
+  </div>
+</section>
+
+<section class="panel p-4 my-4 section-spaced" id="offers-wall">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="fw-bold mb-0">Offer</h3>
+  </div>
+
+  {% if offer_slides %}
+  <div id="homeOfferCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="600000">
+    <div class="carousel-indicators">
+      {% for slide in offer_slides %}
+      <button type="button" data-bs-target="#homeOfferCarousel" data-bs-slide-to="{{ loop.index0 }}" class="{% if loop.first %}active{% endif %}" {% if loop.first %}aria-current="true"{% endif %} aria-label="Slide {{ loop.index }}"></button>
+      {% endfor %}
+    </div>
+
+    <div class="carousel-inner">
+      {% for slide in offer_slides %}
+      {% set outer_idx = loop.index0 %}
+      <div class="carousel-item {% if loop.first %}active{% endif %}">
+        <div class="offer-gallery-grid">
+          {% for image in slide %}
+          <div class="offer-image-card">
+            <img src="{{ url_for('static', filename=image) }}" alt="offer-{{ outer_idx }}-{{ loop.index0 }}" loading="lazy">
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#homeOfferCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#homeOfferCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  {% else %}
+  <div class="offer-empty">尚未检测到 offer 图片，请将图片上传到 <code>static/offers/</code> 目录。</div>
+  {% endif %}
+</section>
+
+<section class="panel p-4 mb-4 section-spaced" id="ranking">
+  <h3 class="fw-bold mb-2">排名工具入口</h3>
+  <p class="text-secondary">支持院校筛选、对比与数据检索，快速建立你的选校池。</p>
+  <a class="btn btn-primary" href="{{ url_for('index') }}">进入排行榜</a>
+</section>
+
+<section class="panel p-4 mb-4 section-spaced" id="testimonials">
+  <h3 class="fw-bold mb-3">客户评价</h3>
+  <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="testimonial-item">“Grace老师的时间线管理非常扎实，我们在申请季几乎没有踩坑。” —— 家长M（上海）</div>
+      </div>
+      <div class="carousel-item">
+        <div class="testimonial-item">“从专业定位到文书，整个过程非常有方向感。” —— 学生K（北京国际部）</div>
+      </div>
+      <div class="carousel-item">
+        <div class="testimonial-item">“老师对学校与专业匹配度把控非常细，结果超出预期。” —— 学生H（深圳）</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

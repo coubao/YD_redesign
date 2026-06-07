@@ -1,0 +1,12 @@
+<svg width="180" height="48" viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="瀛动教育logo">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="4" width="40" height="40" rx="10" fill="url(#g)"/>
+  <path d="M14 16h16v4H18v4h10v4H18v4h12v4H14z" fill="white"/>
+  <text x="52" y="31" font-family="PingFang SC, Microsoft YaHei, Arial" font-size="24" font-weight="700" fill="#0f172a">瀛动教育</text>
+</svg>
+

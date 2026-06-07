@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+{% block content %}
+{% set service_steps = [
+  {
+    'number': '1',
+    'title': '咨询阶段',
+    'dot': 'bg-[#061a3a]',
+    'items': [
+      '目的国家（美、英、加、澳、新等）教育概况不限次数咨询；',
+      '大学排名（专业排名，综合排名）学业制度，就业制度，留学生签证政策等不限次数规划类咨询；',
+      '中学学区、院校、院系和专业课程设置，导师情况，校友情况信息咨询；',
+      '专业申请方向利弊分析，院系信息数据分析、对比、评估，就业导向，移民政策等咨询；',
+      '申请作品集指导 （艺术生） 含并不局限于： 建筑设计， 产品设计， 工业设计， 平面设计， 交互设计，2D 或 3D 设计，游戏设计，室内、花园设计，艺术设计，摄影，油画等；',
+      '针对兴趣专业， Dream Major 理想专业，Dream School 理想大学，近 1 –3 年，3 –5 年，5—10 年的申请成功范例比较，咨询和了解；',
+      '提供详细的申请材料指导性说明且提供准备材料清单（如有必要） ；',
+      '专项标准化测试入门级说明， 包含并不局限于：SAT，ACT，AP，TOFEL，-level，IB，IELTS，PTE，LSAT，GMAT，GRE，SSAT 等考试指导；',
+      '升学与规划——根据申请国家、申请项目、目前最高学历、平均成绩、实习活动经历、竞争力谈个性化的申请规划；',
+      '奖学金可能性预评估，奖学金、助学金类别，申请要求和具体情况。'
+    ]
+  },
+  {
+    'number': '2',
+    'title': '签约阶段',
+    'dot': 'bg-[#0f766e]',
+    'items': [
+      '详细了解成功留学和留学成功的整体过程；为什么去留学？',
+      '详细讲解留学服务从零到完成的整体；那个国家什么学校读什么专业？',
+      '详细了解留学服务协议的签证，费用的收取，资料的准备过程；如何互相配合工作以便达到理想目标？',
+      '指导学生详细深入完成“客户素材 Data info. Detail” 、简历资料表等；准备工作第一步文件资料；',
+      '指导学生详细制定自己的留学规划时间和步骤完成表；如何自我管理？',
+      '签约人、签约工作时间、地点合理安排。'
+    ]
+  },
+  {
+    'number': '3',
+    'title': '明确目标项目、学校',
+    'dot': 'bg-[#d6a84f]',
+    'items': [
+      '指导学生详细深入了解目标学校的申请材料要求，准备注意事项；',
+      '计划专业，职业规划，教育的目标与选校的关系；',
+      '入学率，就业率等数据比对；',
+      '学选校的注意事项（硕士、博士、本科、中学选校） ；',
+      '升学选校的深入了解（地理位置、安全系数、 ） 。'
+    ]
+  },
+  {
+    'number': '4',
+    'title': '申请准备服务——基本材料、背景提升',
+    'dot': 'bg-[#061a3a]',
+    'items': [
+      '申请材料的制作、润色以及修改（RESUME，PS，Essay，RS 等） ；',
+      '不限次数文书修改（在学生提出具体的修改意见的基础上） ；',
+      '申请材料翻译服务（在读证明， 成绩单， 获证证书， 资格证书， 户口本等） ； 需要出具正式文本的材料每页 100 元；',
+      '专用邮箱的申请（双方持有账号密码） ；',
+      '申请表格填写（双方持有账号密码，有必要的情况下共同完成） ；',
+      '指导完成相关作品的制作；',
+      '翻译相关作品（限 500 字以内） ；',
+      '护照办理咨询，提供护照申请表；',
+      '推荐人的去顶过程，几名推荐人，选择顺序，专业和推荐人，案例；',
+      '实习确定，奖项，多语言或小语种，计算机语言、编程等，硬软能力；',
+      '科研、课题、论文等学术类提升注意事项；',
+      '竞赛、义工、文化交流、公益志愿等各种活动参与的注意事项。'
+    ]
+  },
+  {
+    'number': '5',
+    'title': '开始申请——进程中的各项辅助服务（提供可参考的模板）',
+    'dot': 'bg-[#0f766e]',
+    'items': [
+      '学校审理过程中，提出的任何反馈透明转达；',
+      '指导学生 CDGDC 认证、WES 认证或 ECE 认证申请过程；',
+      '指导学生资金证明：存款证明开具申请过程；',
+      '指导学生在读证明，成绩单开具申请过程；',
+      '推荐人选确定，推荐信案例确定，推荐信定稿等；',
+      '网申全透明申请服务；',
+      '申请表格填写（双方持有账号密码，有必要的情况下共同完成） ；',
+      '指导完成相关作品的制作（在线，video 或音频，图片等） ；',
+      '作品展示方式，作品上传例如 slideroom，邮寄至大学，或直接参加 audition；',
+      '翻译相关作品（限 500 字以内） ；整理作品顺序，重点，展示或写作作品的主旨，设计理念和表达思路等；',
+      '护照办理咨询，提供护照申请表；',
+      '电话面试预约确定（如有） ；',
+      '电话面试指导；',
+      '奖学金申请服务；',
+      '提醒学生需要回复学校的最后截止日期；',
+      '婉拒其他学校，保持学生良好记录。'
+    ]
+  },
+  {
+    'number': '6',
+    'title': '录取通知书',
+    'dot': 'bg-[#d6a84f]',
+    'items': [
+      '押金支付辅导或代理操作；',
+      '预留位置与 defer 延迟入学；',
+      '语言成绩未达标需要的语言 pre-sessional 课程申请；',
+      'I-20 等办理签证的资料文件办理，与大学的沟通；',
+      '资金表，存款证明开具说明，表格上传或发送大学；',
+      '专人负责督促校方尽快通知申请结果，并及时通知申请人；',
+      '协助换取无条件录取通知书；',
+      '提供学生确定最后学校建议；',
+      '确定学校后 TA、RA，Fellowship 等奖学金申请。'
+    ]
+  },
+  {
+    'number': '7',
+    'title': '签证服务',
+    'dot': 'bg-[#061a3a]',
+    'items': [
+      '申请材料翻译服务（在读证明，成绩单，获证证书，资格证书，户口本等） ；',
+      '签证申请表 DS160 等表格填写；电子签材料准备 ￿ 澳洲（公证费自付） ；',
+      '美国国土资源部收取 Sevice 费用缴费指导或代理交付；',
+      '签证费的代理交付；',
+      '预约签证服务；',
+      '指导资金准备；',
+      '签证递交指导；',
+      '面签辅导，材料清单及面签问答常见问题解答方法和培训；',
+      '关于签证的各种问题解答；',
+      '亲属或朋友签证辅导或代办（合同外的第三方费用自付） ；',
+      '签证加急；',
+      '护照代取；',
+      '探亲签证赠送，联系自己的顾问确定。'
+    ]
+  },
+  {
+    'number': '8',
+    'title': '行前服务',
+    'dot': 'bg-[#0f766e]',
+    'items': [
+      '指导缴纳学校押金；',
+      '选课、课前准备，课程中学习；',
+      '学费交付或协助网上信用卡支付；',
+      '申请语言课程；',
+      '申请学生宿舍辅导或协助申请；',
+      '机票信息提供；',
+      '接机预定服务；',
+      '指导外汇兑换，汇寄和携带；',
+      '指导档案放置；',
+      '指导出境体检；',
+      '指导行李准备；',
+      '指导出入关注意事项；',
+      '指导国外旅行生活注意事项；',
+      '指导国外院校学习方法；',
+      '指导院校注册，警察局注册，银行开户。'
+    ]
+  },
+  {
+    'number': '9',
+    'title': '海外服务——以成功留学为前提的后续服务 （实习， 就业， 移民）',
+    'dot': 'bg-[#d6a84f]',
+    'items': [
+      '同行人搜索；',
+      '校友圈；',
+      '校友联系；',
+      '续签指导；',
+      '大使馆网站注册指导；',
+      '归国留学人员证明指导；',
+      '海外旅行签证指导；',
+      '毕业生工作签证指导 HIB 抽签；',
+      '移民律师咨询；',
+      '留学生归国政策解读：落户，创业，置业，购车免税等留学生优惠。'
+    ]
+  }
+] %}
+{% set commitments = [
+  {'label': 'SERVICE 1: 承诺', 'text': '特别承诺：申请学校都不成功，退还服务费用。', 'class': 'border-[#d6a84f]/35 bg-white text-[#061a3a]', 'label_class': 'text-[#d6a84f]'},
+  {'label': 'SERVICE 2: 承诺', 'text': '特别承诺：近十年留学签证通过率为百分之百。', 'class': 'border-[#0f766e]/25 bg-white text-[#061a3a]', 'label_class': 'text-[#0f766e]'},
+  {'label': 'SERVICE 3: 承诺', 'text': '特别承诺：从成功留学跃升到留学成功。', 'class': 'border-[#061a3a]/20 bg-[#061a3a] text-white', 'label_class': 'text-[#2dd4bf]'}
+] %}
+
+<script>
+  window.tailwind = window.tailwind || {};
+  window.tailwind.config = { corePlugins: { preflight: false } };
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  .yd-services-page {
+    --yd-navy: #061a3a;
+    --yd-teal: #0f766e;
+    --yd-mint: #2dd4bf;
+    --yd-gold: #d6a84f;
+    --yd-cloud: #f7fafc;
+    background:
+      radial-gradient(circle at top left, rgba(45, 212, 191, .14), transparent 34rem),
+      radial-gradient(circle at top right, rgba(214, 168, 79, .14), transparent 30rem),
+      var(--yd-cloud);
+    color: #0f172a;
+    font-family: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+
+  .yd-services-page .yd-serif {
+    font-family: "Noto Serif SC", Georgia, "Times New Roman", serif;
+  }
+
+  .yd-services-page .yd-service-card {
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  }
+
+  .yd-services-page .yd-service-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(15, 118, 110, .32);
+    box-shadow: 0 24px 70px rgba(15, 23, 42, .12);
+  }
+
+  .yd-services-page .yd-flow-line {
+    background: linear-gradient(180deg, rgba(15,118,110,.12), rgba(214,168,79,.65), rgba(15,118,110,.12));
+  }
+
+  .yd-services-page .yd-service-list li {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+
+  .yd-services-page .yd-service-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .75rem;
+    width: .38rem;
+    height: .38rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--yd-teal), var(--yd-gold));
+    box-shadow: 0 0 0 4px rgba(15, 118, 110, .08);
+  }
+
+  .yd-services-page .floating-cta {
+    background: linear-gradient(90deg, var(--yd-navy), var(--yd-teal));
+  }
+</style>
+
+<main class="yd-services-page">
+  <section class="px-6 py-20 md:px-10 md:py-28">
+    <div class="mx-auto max-w-7xl">
+      <div class="mx-auto max-w-4xl text-center">
+        <p class="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-[#0f766e]">赢在瀛动 · 成就梦想</p>
+        <h1 class="yd-serif text-5xl font-semibold leading-tight text-[#061a3a] md:text-7xl">瀛动教育 · 申请服务全流程</h1>
+        <p class="mx-auto mt-6 max-w-2xl text-lg leading-9 text-slate-600">专业服务理念 带你重新规划留学新主张</p>
+        <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a class="inline-flex items-center justify-center rounded-full bg-[#061a3a] px-6 py-3 font-bold text-white shadow-[0_16px_44px_rgba(6,26,58,.24)] transition hover:-translate-y-0.5 hover:bg-[#0f766e]" href="#service-flow">查看9大阶段</a>
+          <a class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 font-bold text-[#061a3a] shadow-[0_14px_40px_rgba(15,23,42,.08)] transition hover:-translate-y-0.5 hover:border-[#0f766e] hover:text-[#0f766e]" href="{{ url_for('contact_page') }}">预约咨询</a>
+        </div>
+      </div>
+
+      <section class="mt-16 grid gap-8 rounded-lg border border-slate-200 bg-white/92 p-6 shadow-[0_20px_60px_rgba(15,23,42,.08)] backdrop-blur md:p-10 lg:grid-cols-[0.72fr_1.28fr]" aria-labelledby="about-yingdong">
+        <div>
+          <p class="text-sm font-bold uppercase tracking-[0.18em] text-[#d6a84f]">About Us</p>
+          <h2 id="about-yingdong" class="yd-serif mt-4 text-3xl font-semibold text-[#061a3a]">瀛动教育</h2>
+          <p class="mt-3 text-sm font-semibold text-slate-500">北京中关村远中悦莱</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold text-slate-950">关于我们</h3>
+          <p class="mt-4 text-base leading-8 text-slate-600">瀛动教育是中国教育部阳光留学项目执行方，为全国多所国际学校提供名校申请支持，致力于打造精品留学服务。自成立以来，至今已积累了十八年的专业留学服务经验，始终专注于为学生提供卓越的留学服务。自创立之初，瀛动教育打破了传统留学中介代理的服务模式，提出了留学规划这一概念，首创头脑风暴挖掘法和留学六步曲服务流程；独家整理热门专业总结表，依托丰富的咨询经验，针对申请人的个人背景和成长经历，协助申请人找出适合自己的专业，指导学生遵循兴趣决定专业，专业决定学校的留学规划原则，确保申请结果最优。尤其是我们自主研发独特的职业规划评估系统、专业的升学指导规划体系；计分点数和学生发展导向的专业学校选择体系。秉承关注就业，重视职业规划的理念，我们的留学咨询服务不同于简单的中介代理招生，而是帮助申请人从根本上提升综合背景, 全程指导, 成就梦想！</p>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="px-6 pb-20 md:px-10 md:pb-28" id="service-flow">
+    <div class="mx-auto max-w-7xl">
+      <div class="mb-12 grid gap-6 md:grid-cols-[0.8fr_1.2fr] md:items-end">
+        <div>
+          <p class="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-[#0f766e]">Service Flow</p>
+          <h2 class="yd-serif text-4xl font-semibold leading-tight text-[#061a3a] md:text-6xl">9大阶段服务流程</h2>
+        </div>
+        <p class="text-lg leading-9 text-slate-600">从咨询、签约、目标确认，到申请、签证、行前与海外后续服务，完整覆盖学生成功留学与留学成功的关键节点。</p>
+      </div>
+
+      <div class="relative">
+        <div class="yd-flow-line absolute left-5 top-0 hidden h-full w-px md:block"></div>
+
+        <div class="space-y-8">
+          {% for step in service_steps %}
+          <article class="yd-service-card relative rounded-lg border border-slate-200 bg-white/95 p-6 shadow-[0_16px_50px_rgba(15,23,42,.07)] md:ml-16 md:p-8">
+            <div class="absolute -left-[4.75rem] top-8 hidden h-10 w-10 items-center justify-center rounded-full {{ step.dot }} text-sm font-bold text-white ring-8 ring-[#f7fafc] md:flex">{{ step.number }}</div>
+            <div class="mb-5 flex items-start gap-3">
+              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full {{ step.dot }} text-sm font-bold text-white md:hidden">{{ step.number }}</span>
+              <div>
+                <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#0f766e]">Stage {{ step.number }}</p>
+                <h3 class="mt-2 text-2xl font-semibold leading-snug text-[#061a3a]">{{ step.number }} {{ step.title }}</h3>
+              </div>
+            </div>
+            <ul class="yd-service-list grid gap-3 text-base leading-8 text-slate-600 md:grid-cols-2">
+              {% for item in step['items'] %}
+              <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-slate-200 bg-white/88 px-6 py-20 md:px-10 md:py-28">
+    <div class="mx-auto max-w-7xl">
+      <div class="mb-10 text-center">
+        <p class="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-[#0f766e]">Service Commitments</p>
+        <h2 class="yd-serif text-4xl font-semibold text-[#061a3a] md:text-6xl">特别承诺</h2>
+      </div>
+
+      <div class="grid gap-5 md:grid-cols-3">
+        {% for commitment in commitments %}
+        <article class="yd-service-card rounded-lg border p-6 shadow-[0_18px_50px_rgba(15,23,42,.08)] {{ commitment.class }}">
+          <p class="text-sm font-bold uppercase tracking-[0.16em] {{ commitment.label_class }}">{{ commitment.label }}</p>
+          <p class="mt-5 text-xl font-semibold leading-9">{{ commitment.text }}</p>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="px-6 py-20 md:px-10 md:py-28">
+    <div class="mx-auto max-w-7xl rounded-lg bg-[#061a3a] p-8 text-white shadow-[0_24px_70px_rgba(6,26,58,.24)] md:p-12">
+      <div class="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+        <div>
+          <p class="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-[#2dd4bf]">Next Step</p>
+          <h2 class="yd-serif max-w-3xl text-4xl font-semibold leading-tight md:text-6xl">从完整服务流程开始，建立清晰的申请路径。</h2>
+        </div>
+        <a class="inline-flex items-center justify-center rounded-full bg-white px-7 py-3 font-bold text-[#061a3a] shadow-[0_16px_44px_rgba(45,212,191,.22)] transition hover:-translate-y-0.5 hover:bg-[#2dd4bf]" href="{{ url_for('contact_page') }}">立即咨询</a>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

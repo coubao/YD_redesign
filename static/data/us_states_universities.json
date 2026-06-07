@@ -1,0 +1,15 @@
+{
+  "states": [
+    {"state_name_cn": "加利福尼亚州", "universities": [{"name":"Stanford University","qs":6,"usnews":3},{"name":"UC Berkeley","qs":10,"usnews":15}]},
+    {"state_name_cn": "纽约州", "universities": [{"name":"Columbia University","qs":23,"usnews":12},{"name":"Cornell University","qs":16,"usnews":11}]},
+    {"state_name_cn": "马萨诸塞州", "universities": [{"name":"MIT","qs":1,"usnews":2},{"name":"Harvard University","qs":4,"usnews":3}]},
+    {"state_name_cn": "伊利诺伊州", "universities": [{"name":"UChicago","qs":21,"usnews":12},{"name":"Northwestern","qs":50,"usnews":9}]},
+    {"state_name_cn": "德克萨斯州", "universities": [{"name":"Rice University","qs":141,"usnews":17},{"name":"UT Austin","qs":68,"usnews":30}]},
+    {"state_name_cn": "华盛顿州", "universities": [{"name":"University of Washington","qs":76,"usnews":46},{"name":"Washington State University","qs":466,"usnews":178}]},
+    {"state_name_cn": "宾夕法尼亚州", "universities": [{"name":"UPenn","qs":11,"usnews":6},{"name":"Carnegie Mellon","qs":52,"usnews":24}]},
+    {"state_name_cn": "密歇根州", "universities": [{"name":"University of Michigan","qs":44,"usnews":21},{"name":"Michigan State University","qs":152,"usnews":60}]},
+    {"state_name_cn": "佛罗里达州", "universities": [{"name":"University of Florida","qs":168,"usnews":28},{"name":"University of Miami","qs":324,"usnews":67}]},
+    {"state_name_cn": "俄亥俄州", "universities": [{"name":"Ohio State University","qs":208,"usnews":43},{"name":"Case Western Reserve","qs":259,"usnews":53}]}
+  ]
+}
+

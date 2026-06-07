@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="panel p-4 p-md-5 my-4">
+  <h2 class="fw-bold mb-2">留学地图</h2>
+  <p class="text-secondary mb-0">查看英国、加拿大、爱尔兰、荷兰、香港、澳门、澳大利亚、新加坡留学地图；布局与美国地图一致，院校与排名分布在地图两侧。</p>
+</section>
+
+<section class="panel p-4 mb-4">
+  <div class="map-country-grid">
+    {% for item in maps %}
+    <a class="map-country-card" href="{{ url_for('study_map', slug=item.slug) }}">
+      <h4>{{ item.country_name_cn }}</h4>
+      <p>{{ item.universities|length }} 所推荐院校</p>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+

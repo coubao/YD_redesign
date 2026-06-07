@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="panel p-4 p-md-5 my-4">
+  <h2 class="fw-bold mb-2">{{ map_data.country_name_cn }}留学地图</h2>
+  <p class="text-secondary mb-0">按地区查看院校分布，侧栏展示大学及 QS / US News 排名。</p>
+</section>
+
+<section class="us-map-layout mb-4">
+  <aside class="us-map-side">
+    {% for school in map_data.universities[:(map_data.universities|length + 1)//2] %}
+    <div class="state-card">
+      <h5>{{ school.name }}</h5>
+      <ul>
+        <li><strong>{{ school.city }}</strong><span>QS {{ school.qs }} · US News {{ school.usnews }}</span></li>
+      </ul>
+    </div>
+    {% endfor %}
+  </aside>
+
+  <div class="us-map-center panel p-2">
+    <div id="studyMap"></div>
+  </div>
+
+  <aside class="us-map-side">
+    {% for school in map_data.universities[(map_data.universities|length + 1)//2:] %}
+    <div class="state-card">
+      <h5>{{ school.name }}</h5>
+      <ul>
+        <li><strong>{{ school.city }}</strong><span>QS {{ school.qs }} · US News {{ school.usnews }}</span></li>
+      </ul>
+    </div>
+    {% endfor %}
+  </aside>
+</section>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const mapData = {{ map_data|tojson }};
+const map = L.map('studyMap', {zoomControl:true}).setView(mapData.map_center, mapData.zoom || 5);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(map);
+
+const points = [];
+(mapData.universities || []).forEach((school) => {
+  const marker = L.circleMarker([school.lat, school.lng], {
+    radius: 7,
+    color: '#1d4ed8',
+    fillColor: '#60a5fa',
+    fillOpacity: 0.85,
+    weight: 1.5
+  }).addTo(map);
+  marker.bindPopup(`<strong>${school.name}</strong><br>${school.city}<br>QS ${school.qs} · US News ${school.usnews}`);
+  points.push([school.lat, school.lng]);
+});
+
+if (points.length > 1) {
+  map.fitBounds(points, {padding:[30,30]});
+}
+</script>
+{% endblock %}
+

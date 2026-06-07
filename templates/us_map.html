@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="panel p-4 p-md-5 my-4">
+  <h2 class="fw-bold mb-2">美国留学地图</h2>
+  <p class="text-secondary mb-0">按州查看院校分布，侧栏展示州内大学及 QS / US News 排名。</p>
+</section>
+
+<section class="us-map-layout mb-4">
+  <aside class="us-map-side">
+    {% for state in state_cards[:(state_cards|length)//2] %}
+    <div class="state-card">
+      <h5>{{ state.state_name_cn }}</h5>
+      <ul>
+        {% for school in state.universities %}
+        <li><strong>{{ school.name }}</strong><span>QS {{ school.qs }} · US News {{ school.usnews }}</span></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </aside>
+
+  <div class="us-map-center panel p-2">
+    <div id="usMap"></div>
+  </div>
+
+  <aside class="us-map-side">
+    {% for state in state_cards[(state_cards|length)//2:] %}
+    <div class="state-card">
+      <h5>{{ state.state_name_cn }}</h5>
+      <ul>
+        {% for school in state.universities %}
+        <li><strong>{{ school.name }}</strong><span>QS {{ school.qs }} · US News {{ school.usnews }}</span></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </aside>
+</section>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const map = L.map('usMap', {zoomControl:true}).setView([39.8, -98.5], 4);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(map);
+
+const stateNameCN = {
+  California:'加利福尼亚州',Texas:'德克萨斯州',NewYork:'纽约州',Massachusetts:'马萨诸塞州',Illinois:'伊利诺伊州',
+  Washington:'华盛顿州',Pennsylvania:'宾夕法尼亚州',Michigan:'密歇根州',Florida:'佛罗里达州',Ohio:'俄亥俄州'
+};
+
+fetch('https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json')
+  .then(r=>r.json())
+  .then(geo=>{
+    const colors=['#bfdbfe','#ddd6fe','#fde68a','#fecaca','#bbf7d0','#bae6fd','#fbcfe8','#fde68a','#c7d2fe','#fed7aa'];
+    L.geoJSON(geo,{
+      style:(f)=>({color:'#334155',weight:1,fillColor:colors[(f.properties.name.length)%colors.length],fillOpacity:0.65}),
+      onEachFeature:(f,l)=>{
+        const key=f.properties.name.replace(/\s+/g,'');
+        const label=stateNameCN[key] || f.properties.name;
+        l.bindTooltip(label,{permanent:true,direction:'center',className:'state-label'});
+      }
+    }).addTo(map);
+  });
+</script>
+{% endblock %}
+

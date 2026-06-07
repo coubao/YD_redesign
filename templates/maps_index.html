@@ -1,0 +1,687 @@
+{% extends 'base.html' %}
+{% block content %}
+{% set map_panels = [
+  {
+    'id': 'usa',
+    'flag': '🇺🇸',
+    'tab': '美国',
+    'title_cn': '美国大学分布图',
+    'title_en': 'University Map of the USA',
+    'subtitle': '覆盖美国主要州别与大学集群，按州展示院校名称、QS排名与US News排名。',
+    'map_viewbox': '0 0 720 430',
+    'zones': [
+      {'label': '西海岸', 'd': 'M54 137 L144 96 L234 122 L255 226 L186 302 L91 270 Z', 'color': '#7dd3c7'},
+      {'label': '山地州', 'd': 'M206 126 L322 104 L362 236 L263 282 L236 206 Z', 'color': '#8fd2e8'},
+      {'label': '中西部', 'd': 'M323 105 L454 116 L480 236 L363 276 L346 223 Z', 'color': '#39b6d6'},
+      {'label': '南部', 'd': 'M334 266 L493 236 L613 292 L559 360 L395 348 Z', 'color': '#142f8f'},
+      {'label': '东北部', 'd': 'M492 116 L625 82 L671 156 L613 250 L490 235 Z', 'color': '#0f4ea3'},
+      {'label': '阿拉斯加', 'd': 'M50 338 L126 326 L156 384 L88 408 Z', 'color': '#27b6a5'},
+      {'label': '夏威夷', 'd': 'M210 367 L282 380 L258 402 L196 390 Z', 'color': '#f2b44b'}
+    ],
+    'groups': [
+      {'region': '华盛顿州', 'budget': '58-90万/年', 'x': 125, 'y': 120, 'schools': [
+        {'name': '华盛顿大学', 'qs': '81', 'us': '8'}
+      ]},
+      {'region': '新罕布什尔州', 'budget': '52-73万/年', 'x': 625, 'y': 108, 'schools': [
+        {'name': '达特茅斯学院', 'qs': '247', 'us': '326'}
+      ]},
+      {'region': '科罗拉多州', 'budget': '44-75万/年', 'x': 286, 'y': 205, 'schools': [
+        {'name': '科罗拉多大学博尔德', 'qs': '299', 'us': '107'}
+      ]},
+      {'region': '伊利诺伊州', 'budget': '40-95万/年', 'x': 436, 'y': 194, 'schools': [
+        {'name': '芝加哥大学', 'qs': '13', 'us': '26'},
+        {'name': '西北大学', 'qs': '42', 'us': '24'},
+        {'name': '伊利诺伊大学香槟分校', 'qs': '70', 'us': '109'}
+      ]},
+      {'region': '华盛顿特区', 'budget': '65-95万/年', 'x': 590, 'y': 218, 'schools': [
+        {'name': '乔治华盛顿大学', 'qs': '358', 'us': '245'}
+      ]},
+      {'region': '加利福尼亚州', 'budget': '56-105万/年', 'x': 107, 'y': 226, 'schools': [
+        {'name': '斯坦福大学', 'qs': '3', 'us': '3'},
+        {'name': '加州理工学院', 'qs': '10', 'us': '23'},
+        {'name': '加州大学伯克利分校', 'qs': '17', 'us': '6'},
+        {'name': '南加州大学', 'qs': '146', 'us': '77'},
+        {'name': '加州大学洛杉矶分校', 'qs': '46', 'us': '13'},
+        {'name': '加州大学戴维斯分校', 'qs': '293', 'us': '96'},
+        {'name': '加州大学圣塔芭芭拉分校', 'qs': '179', 'us': '91'},
+        {'name': '加州大学河滨分校', 'qs': '440', 'us': '242'},
+        {'name': '加州大学圣地亚哥分校', 'qs': '66', 'us': '21'},
+        {'name': '加州大学圣克鲁兹分校', 'qs': '458', 'us': '133'},
+        {'name': '加州大学欧文分校', 'qs': '114', 'us': '96'}
+      ]},
+      {'region': '密歇根州', 'budget': '53-66万/年', 'x': 467, 'y': 151, 'schools': [
+        {'name': '密歇根大学安娜堡分校', 'qs': '45', 'us': '21'},
+        {'name': '密歇根州立大学', 'qs': '151', 'us': '133'}
+      ]},
+      {'region': '明尼苏达州', 'budget': '40-75万/年', 'x': 414, 'y': 132, 'schools': [
+        {'name': '明尼苏达大学双城分校', 'qs': '210', 'us': '72'}
+      ]},
+      {'region': '密苏里州', 'budget': '40-60万/年', 'x': 421, 'y': 237, 'schools': [
+        {'name': '圣路易斯华盛顿大学', 'qs': '167', 'us': '31'}
+      ]},
+      {'region': '印第安纳州', 'budget': '38-65万/年', 'x': 480, 'y': 208, 'schools': [
+        {'name': '普渡大学', 'qs': '88', 'us': '173'},
+        {'name': '圣母大学', 'qs': '294', 'us': '407'},
+        {'name': '印第安纳大学', 'qs': '306', 'us': '163'}
+      ]},
+      {'region': '马里兰州', 'budget': '40-80万/年', 'x': 585, 'y': 236, 'schools': [
+        {'name': '约翰霍普金斯大学', 'qs': '24', 'us': '14'},
+        {'name': '马里兰大学', 'qs': '207', 'us': '72'}
+      ]},
+      {'region': '犹他州', 'budget': '44-51万/年', 'x': 222, 'y': 190, 'schools': [
+        {'name': '犹他大学', 'qs': '540', 'us': '141'}
+      ]},
+      {'region': '俄勒冈州', 'budget': '40-75万/年', 'x': 116, 'y': 159, 'schools': [
+        {'name': '俄勒冈健康与科学大学', 'qs': '-', 'us': '196'},
+        {'name': '俄勒冈大学', 'qs': '-', 'us': '-'},
+        {'name': '俄勒冈州立大学', 'qs': '-', 'us': '-'}
+      ]},
+      {'region': '田纳西州', 'budget': '40-60万/年', 'x': 482, 'y': 282, 'schools': [
+        {'name': '范德堡大学', 'qs': '250', 'us': '66'}
+      ]},
+      {'region': '佐治亚州', 'budget': '40-60万/年', 'x': 545, 'y': 314, 'schools': [
+        {'name': '埃默里大学', 'qs': '182', 'us': '69'},
+        {'name': '佐治亚理工学院', 'qs': '123', 'us': '79'}
+      ]},
+      {'region': '威斯康星州', 'budget': '40-75万/年', 'x': 439, 'y': 151, 'schools': [
+        {'name': '威斯康星大学麦迪逊分校', 'qs': '110', 'us': '72'}
+      ]},
+      {'region': '佛罗里达州', 'budget': '35-80万/年', 'x': 581, 'y': 353, 'schools': [
+        {'name': '佛罗里达大学', 'qs': '212', 'us': '109'},
+        {'name': '迈阿密大学', 'qs': '314', 'us': '234'}
+      ]},
+      {'region': '俄亥俄州', 'budget': '40-68万/年', 'x': 515, 'y': 215, 'schools': [
+        {'name': '凯斯西储大学', 'qs': '294', 'us': '176'},
+        {'name': '俄亥俄州立大学', 'qs': '190', 'us': '66'}
+      ]},
+      {'region': '德克萨斯州', 'budget': '40-60万/年', 'x': 383, 'y': 323, 'schools': [
+        {'name': '莱斯大学', 'qs': '119', 'us': '29'},
+        {'name': '德州大学西南医学中心', 'qs': '597', 'us': '103'},
+        {'name': '德州大学奥斯汀分校', 'qs': '68', 'us': '65'},
+        {'name': '德州农工大学', 'qs': '144', 'us': '187'}
+      ]},
+      {'region': '亚利桑那州', 'budget': '30-60万/年', 'x': 218, 'y': 266, 'schools': [
+        {'name': '亚利桑那大学', 'qs': '287', 'us': '115'},
+        {'name': '亚利桑那州立大学', 'qs': '173', 'us': '192'}
+      ]},
+      {'region': '马萨诸塞州', 'budget': '45-90万/年', 'x': 636, 'y': 130, 'schools': [
+        {'name': '哈佛大学', 'qs': '5', 'us': '1'},
+        {'name': '麻省理工学院', 'qs': '1', 'us': '2'},
+        {'name': '塔夫茨大学', 'qs': '334', 'us': '296'},
+        {'name': '波士顿大学', 'qs': '88', 'us': '86'},
+        {'name': '东北大学', 'qs': '384', 'us': '220'},
+        {'name': '麻省大学', 'qs': '247', 'us': '162'}
+      ]},
+      {'region': '新泽西州', 'budget': '45-70万/年', 'x': 602, 'y': 190, 'schools': [
+        {'name': '普林斯顿大学', 'qs': '25', 'us': '16'},
+        {'name': '罗格斯大学', 'qs': '328', 'us': '156'}
+      ]},
+      {'region': '罗德岛州', 'budget': '62-95万/年', 'x': 644, 'y': 153, 'schools': [
+        {'name': '布朗大学', 'qs': '69', 'us': '150'}
+      ]},
+      {'region': '纽约州', 'budget': '50-110万/年', 'x': 586, 'y': 159, 'schools': [
+        {'name': '哥伦比亚大学', 'qs': '38', 'us': '10'},
+        {'name': '康奈尔大学', 'qs': '16', 'us': '16'},
+        {'name': '纽约大学', 'qs': '55', 'us': '32'},
+        {'name': '罗切斯特大学', 'qs': '236', 'us': '201'},
+        {'name': '纽约州立大学石溪分校', 'qs': '452', 'us': '226'}
+      ]},
+      {'region': '康涅狄格州', 'budget': '40-80万/年', 'x': 622, 'y': 164, 'schools': [
+        {'name': '耶鲁大学', 'qs': '21', 'us': '9'}
+      ]},
+      {'region': '弗吉尼亚州', 'budget': '40-80万/年', 'x': 561, 'y': 253, 'schools': [
+        {'name': '弗吉尼亚大学', 'qs': '257', 'us': '137'},
+        {'name': '弗吉尼亚理工大学', 'qs': '-', 'us': '-'}
+      ]},
+      {'region': '宾夕法尼亚州', 'budget': '40-80万/年', 'x': 561, 'y': 194, 'schools': [
+        {'name': '宾夕法尼亚大学', 'qs': '15', 'us': '15'},
+        {'name': '宾州州立大学', 'qs': '82', 'us': '91'},
+        {'name': '卡耐基梅隆大学', 'qs': '52', 'us': '126'},
+        {'name': '匹兹堡大学', 'qs': '281', 'us': '52'}
+      ]},
+      {'region': '北卡罗来纳州', 'budget': '40-90万/年', 'x': 558, 'y': 280, 'schools': [
+        {'name': '杜克大学', 'qs': '62', 'us': '27'},
+        {'name': '北卡罗来纳大学教堂山分校', 'qs': '140', 'us': '51'},
+        {'name': '北卡罗来纳州立大学', 'qs': '272', 'us': '26'}
+      ]}
+    ],
+    'advantages': ['院校层次丰富，从综合大学到顶尖研究型大学覆盖广。', 'STEM、商科、社会科学、艺术与交叉学科选择充分。', '科研、实习、校友网络和产业资源密集。', '适合低龄、本科、硕士、博士与长期职业规划组合。']
+  },
+  {
+    'id': 'uk',
+    'flag': '🇬🇧',
+    'tab': '英国',
+    'title_cn': '英国大学分布图',
+    'title_en': 'University Map of the UK',
+    'subtitle': '按英国地区展示代表性院校与排名信息，适合快速比较G5、罗素集团及区域强校。',
+    'map_viewbox': '0 0 520 520',
+    'zones': [
+      {'label': '苏格兰', 'd': 'M226 44 L318 74 L338 162 L260 204 L196 150 Z', 'color': '#78cce1'},
+      {'label': '北爱尔兰', 'd': 'M116 242 L178 220 L204 274 L150 318 L94 292 Z', 'color': '#5fbfd8'},
+      {'label': '北部', 'd': 'M276 194 L356 178 L392 248 L328 288 L266 256 Z', 'color': '#087fbc'},
+      {'label': '中西部', 'd': 'M262 262 L328 292 L326 368 L248 386 L220 318 Z', 'color': '#123f9a'},
+      {'label': '东部', 'd': 'M332 284 L410 268 L438 348 L360 386 L326 354 Z', 'color': '#5ec5d2'},
+      {'label': '威尔士', 'd': 'M166 326 L226 316 L246 392 L190 438 L128 394 Z', 'color': '#0b4ea2'},
+      {'label': '西南部', 'd': 'M228 388 L314 374 L306 462 L202 474 Z', 'color': '#9cc8ef'},
+      {'label': '伦敦及东南', 'd': 'M320 382 L430 356 L470 432 L350 472 Z', 'color': '#0a2c88'}
+    ],
+    'groups': [
+      {'region': '苏格兰地区', 'budget': '40-55万/年', 'x': 258, 'y': 120, 'schools': [
+        {'name': '爱丁堡大学', 'qs': '34', 'us': '39'},
+        {'name': '格拉斯哥大学', 'qs': '79', 'us': '62'},
+        {'name': '圣安德鲁斯大学', 'qs': '113', 'us': '403'},
+        {'name': '阿伯丁大学', 'qs': '262', 'us': '371'}
+      ]},
+      {'region': '英格兰东北部', 'budget': '45-50万/年', 'x': 336, 'y': 228, 'schools': [
+        {'name': '杜伦大学', 'qs': '94', 'us': '292'},
+        {'name': '纽卡斯尔大学', 'qs': '137', 'us': '170'}
+      ]},
+      {'region': '英格兰约克郡', 'budget': '45-50万/年', 'x': 342, 'y': 268, 'schools': [
+        {'name': '利兹大学', 'qs': '86', 'us': '133'},
+        {'name': '约克大学', 'qs': '169', 'us': '302'},
+        {'name': '谢菲尔德大学', 'qs': '92', 'us': '166'}
+      ]},
+      {'region': '英格兰中部', 'budget': '45-50万/年', 'x': 326, 'y': 330, 'schools': [
+        {'name': '诺丁汉大学', 'qs': '97', 'us': '153'},
+        {'name': '莱斯特大学', 'qs': '326', 'us': '166'}
+      ]},
+      {'region': '北爱尔兰地区', 'budget': '40-45万/年', 'x': 148, 'y': 266, 'schools': [
+        {'name': '贝尔法斯特女王大学', 'qs': '199', 'us': '230'}
+      ]},
+      {'region': '英格兰中西部', 'budget': '40-45万/年', 'x': 278, 'y': 336, 'schools': [
+        {'name': '伯明翰大学', 'qs': '76', 'us': '94'},
+        {'name': '华威大学', 'qs': '74', 'us': '182'}
+      ]},
+      {'region': '威尔士地区', 'budget': '45万左右/年', 'x': 178, 'y': 378, 'schools': [
+        {'name': '卡迪夫大学', 'qs': '181', 'us': '192'}
+      ]},
+      {'region': '英格兰西南部', 'budget': '45-55万/年', 'x': 262, 'y': 430, 'schools': [
+        {'name': '布里斯托大学', 'qs': '51', 'us': '105'},
+        {'name': '埃克塞特大学', 'qs': '155', 'us': '127'}
+      ]},
+      {'region': '英格兰东部', 'budget': '45-80万/年', 'x': 396, 'y': 334, 'schools': [
+        {'name': '剑桥大学', 'qs': '6', 'us': '5'},
+        {'name': '萨塞克斯大学', 'qs': '278', 'us': '259'}
+      ]},
+      {'region': '英格兰西北部', 'budget': '40-45万/年', 'x': 292, 'y': 280, 'schools': [
+        {'name': '曼彻斯特大学', 'qs': '35', 'us': '68'},
+        {'name': '兰卡斯特大学', 'qs': '157', 'us': '267'},
+        {'name': '利物浦大学', 'qs': '147', 'us': '137'}
+      ]},
+      {'region': '伦敦地区', 'budget': '70-80万/年', 'x': 390, 'y': 420, 'schools': [
+        {'name': '帝国理工学院', 'qs': '2', 'us': '11'},
+        {'name': '伦敦大学学院', 'qs': '9', 'us': '7'},
+        {'name': '伦敦国王学院', 'qs': '31', 'us': '36'},
+        {'name': '伦敦政治经济学院', 'qs': '56', 'us': '234'},
+        {'name': '伦敦玛丽女王学院', 'qs': '110', 'us': '94'}
+      ]},
+      {'region': '英格兰东南部', 'budget': '45-80万/年', 'x': 382, 'y': 442, 'schools': [
+        {'name': '牛津大学', 'qs': '4', 'us': '4'},
+        {'name': '南安普顿大学', 'qs': '87', 'us': '118'},
+        {'name': '萨里大学', 'qs': '262', 'us': '326'},
+        {'name': '雷丁大学', 'qs': '194', 'us': '385'}
+      ]}
+    ],
+    'advantages': ['院校众多，专业丰富，选择广泛。', '学制短，本科或研究生可更快完成学业路径。', '签证政策成熟，材料准备与申请节奏清晰。', '交通便利，适合多城市、多院校组合申请。']
+  },
+  {
+    'id': 'canada',
+    'flag': '🇨🇦',
+    'tab': '加拿大',
+    'title_cn': '加拿大大学分布图',
+    'title_en': 'University Map of Canada',
+    'subtitle': '以省份为单位整理加拿大核心院校，兼顾排名、预算与长期规划视角。',
+    'map_viewbox': '0 0 720 430',
+    'zones': [
+      {'label': '英属哥伦比亚', 'd': 'M64 200 L158 156 L210 322 L86 346 Z', 'color': '#97d66f'},
+      {'label': '阿尔伯塔', 'd': 'M190 160 L286 152 L304 330 L212 324 Z', 'color': '#26c4bd'},
+      {'label': '萨斯喀彻温', 'd': 'M292 154 L368 154 L374 330 L306 330 Z', 'color': '#136eb5'},
+      {'label': '曼尼托巴', 'd': 'M372 156 L442 164 L434 330 L376 332 Z', 'color': '#12299a'},
+      {'label': '安大略', 'd': 'M430 220 L548 218 L610 330 L496 372 L432 320 Z', 'color': '#b8d64b'},
+      {'label': '魁北克', 'd': 'M528 152 L652 172 L646 288 L548 322 L506 232 Z', 'color': '#45c6b5'},
+      {'label': '大西洋省份', 'd': 'M636 286 L698 296 L692 352 L632 338 Z', 'color': '#f3bf4c'},
+      {'label': '北部地区', 'd': 'M214 40 L472 54 L590 134 L180 138 Z', 'color': '#8ed7eb'}
+    ],
+    'groups': [
+      {'region': '英属哥伦比亚省', 'budget': '55-70万/年', 'x': 130, 'y': 245, 'schools': [
+        {'name': '不列颠哥伦比亚大学', 'qs': '40', 'us': '41'}
+      ]},
+      {'region': '魁北克省', 'budget': '40-65万/年', 'x': 574, 'y': 238, 'schools': [
+        {'name': '麦吉尔大学', 'qs': '27', 'us': '62'},
+        {'name': '蒙特利尔大学', 'qs': '168', 'us': '192'}
+      ]},
+      {'region': '阿尔伯塔省', 'budget': '40-55万/年', 'x': 246, 'y': 252, 'schools': [
+        {'name': '阿尔伯塔大学', 'qs': '94', 'us': '156'},
+        {'name': '卡尔加里大学', 'qs': '211', 'us': '204'}
+      ]},
+      {'region': '安大略省', 'budget': '55-75万/年', 'x': 514, 'y': 316, 'schools': [
+        {'name': '多伦多大学', 'qs': '29', 'us': '16'},
+        {'name': '滑铁卢大学', 'qs': '119', 'us': '197'},
+        {'name': '韦仕敦大学', 'qs': '151', 'us': '314'},
+        {'name': '麦克马斯特大学', 'qs': '173', 'us': '146'},
+        {'name': '渥太华大学', 'qs': '219', 'us': '256'},
+        {'name': '女王大学', 'qs': '191', 'us': '416'}
+      ]}
+    ],
+    'advantages': ['公立体系成熟，学费相对克制，求学期间可合法打工。', '社会治安稳定，对国际学生友好。', '部分省份有学费返还或毕业工签相关路径。', '教育声誉好，公立大学和学院广泛受到认可。']
+  },
+  {
+    'id': 'australia',
+    'flag': '🇦🇺',
+    'tab': '澳大利亚',
+    'title_cn': '澳大利亚大学分布图',
+    'title_en': 'University Map of Australia',
+    'subtitle': '覆盖澳洲主要州与核心院校，便于比较八大、科技大学与区域院校。',
+    'map_viewbox': '0 0 700 430',
+    'zones': [
+      {'label': '西澳大利亚', 'd': 'M60 150 L264 96 L298 266 L178 356 L66 298 Z', 'color': '#86aee8'},
+      {'label': '北领地', 'd': 'M276 92 L396 112 L382 240 L300 254 Z', 'color': '#38b6d6'},
+      {'label': '昆士兰', 'd': 'M396 106 L548 126 L588 242 L490 282 L384 244 Z', 'color': '#73d2cf'},
+      {'label': '南澳大利亚', 'd': 'M294 256 L396 246 L418 340 L306 356 Z', 'color': '#1583bd'},
+      {'label': '新南威尔士', 'd': 'M470 284 L586 246 L622 332 L514 374 Z', 'color': '#102f91'},
+      {'label': '维多利亚', 'd': 'M444 342 L514 370 L486 406 L418 382 Z', 'color': '#6b63bf'},
+      {'label': '塔斯马尼亚', 'd': 'M488 402 L544 400 L526 428 L478 426 Z', 'color': '#3ab47c'}
+    ],
+    'groups': [
+      {'region': '西澳大利亚', 'budget': '40-50万/年', 'x': 164, 'y': 224, 'schools': [
+        {'name': '西澳大学', 'qs': '77', 'us': '98'},
+        {'name': '科廷大学', 'qs': '183', 'us': '152'}
+      ]},
+      {'region': '昆士兰州', 'budget': '40-50万/年', 'x': 486, 'y': 182, 'schools': [
+        {'name': '昆士兰大学', 'qs': '42', 'us': '43'},
+        {'name': '昆士兰科技大学', 'qs': '226', 'us': '182'},
+        {'name': '格里菲斯大学', 'qs': '268', 'us': '238'}
+      ]},
+      {'region': '新南威尔士州', 'budget': '40-60万/年', 'x': 542, 'y': 320, 'schools': [
+        {'name': '悉尼大学', 'qs': '25', 'us': '29'},
+        {'name': '新南威尔士大学', 'qs': '20', 'us': '34'},
+        {'name': '悉尼科技大学', 'qs': '96', 'us': '83'},
+        {'name': '麦考瑞大学', 'qs': '138', 'us': '178'},
+        {'name': '卧龙岗大学', 'qs': '184', 'us': '212'},
+        {'name': '纽卡斯尔大学', 'qs': '227', 'us': '244'},
+        {'name': '西悉尼大学', 'qs': '400', 'us': '265'}
+      ]},
+      {'region': '维多利亚州', 'budget': '45-55万/年', 'x': 466, 'y': 372, 'schools': [
+        {'name': '墨尔本大学', 'qs': '19', 'us': '30'},
+        {'name': '莫纳什大学', 'qs': '36', 'us': '38'},
+        {'name': '皇家墨尔本理工大学', 'qs': '125', 'us': '198'},
+        {'name': '迪肯大学', 'qs': '207', 'us': '173'},
+        {'name': '斯威本科技大学', 'qs': '294', 'us': '-'},
+        {'name': '乐卓博大学', 'qs': '233', 'us': '278'}
+      ]},
+      {'region': '南澳大利亚', 'budget': '40-45万/年', 'x': 352, 'y': 310, 'schools': [
+        {'name': '阿德莱德大学', 'qs': '82', 'us': '99'}
+      ]},
+      {'region': '堪培拉-首都地区', 'budget': '45-50万/年', 'x': 512, 'y': 340, 'schools': [
+        {'name': '澳州国立大学', 'qs': '32', 'us': '86'}
+      ]},
+      {'region': '塔斯马尼亚州', 'budget': '38-45万/年', 'x': 512, 'y': 414, 'schools': [
+        {'name': '塔斯马尼亚大学', 'qs': '314', 'us': '281'}
+      ]}
+    ],
+    'advantages': ['留学费用合理，奖学金丰厚，澳币汇率相对友好。', '世界前100所大学占据多个席位，院校国际认可度高。', '本科3-4年，硕士1-2年，路径清晰。', '毕业后符合条件的国际学生可申请工作签证。']
+  },
+  {
+    'id': 'asia',
+    'flag': '🇸🇬',
+    'tab': '新加坡&香港',
+    'title_cn': '新加坡 · 马来西亚 · 中国香港 · 中国澳门大学分布图',
+    'title_en': 'University Map of Singapore, Malaysia, Hong Kong & Macao',
+    'subtitle': '整合亚洲热门留学目的地，适合英美澳加之外的高质量联申方案。',
+    'map_viewbox': '0 0 720 430',
+    'zones': [
+      {'label': '新加坡', 'd': 'M90 80 L300 50 L368 150 L178 184 Z', 'color': '#5fc8df'},
+      {'label': '马来西亚', 'd': 'M92 230 L272 200 L314 310 L156 346 Z', 'color': '#2aaec7'},
+      {'label': '沙巴/砂拉越', 'd': 'M382 230 L596 208 L626 300 L432 328 Z', 'color': '#95c953'},
+      {'label': '中国香港', 'd': 'M114 336 L354 314 L420 390 L206 414 Z', 'color': '#314aaa'},
+      {'label': '中国澳门', 'd': 'M512 332 L602 318 L628 394 L528 408 Z', 'color': '#56c7d8'}
+    ],
+    'groups': [
+      {'region': '新加坡', 'budget': '35-45万/年', 'x': 210, 'y': 122, 'schools': [
+        {'name': '新加坡国立大学', 'qs': '8', 'us': '20'},
+        {'name': '南洋理工大学', 'qs': '12', 'us': '28'},
+        {'name': '新加坡科技设计大学', 'qs': '-', 'us': '-'},
+        {'name': '新加坡管理大学', 'qs': '-', 'us': '-'}
+      ]},
+      {'region': '马来西亚', 'budget': '10-25万/年', 'x': 220, 'y': 268, 'schools': [
+        {'name': '马来亚大学', 'qs': '58', 'us': '331'},
+        {'name': '马来西亚国民大学', 'qs': '126', 'us': '572'},
+        {'name': '马来西亚博特拉大学', 'qs': '134', 'us': '578'},
+        {'name': '马来西亚理科大学', 'qs': '134', 'us': '416'},
+        {'name': '马来西亚理工大学', 'qs': '153', 'us': '376'},
+        {'name': '马来西亚莫纳什大学', 'qs': '排名与本校共享', 'us': '排名与本校共享'},
+        {'name': '马来西亚诺丁汉大学', 'qs': '排名与本校共享', 'us': '排名与本校共享'},
+        {'name': '马来西亚赫瑞瓦特大学', 'qs': '排名与本校共享', 'us': '排名与本校共享'}
+      ]},
+      {'region': '中国香港', 'budget': '30-55万/年', 'x': 264, 'y': 370, 'schools': [
+        {'name': '香港大学', 'qs': '11', 'us': '44'},
+        {'name': '香港中文大学', 'qs': '32', 'us': '37'},
+        {'name': '香港城市大学', 'qs': '63', 'us': '54'},
+        {'name': '香港理工大学', 'qs': '54', 'us': '58'},
+        {'name': '香港科技大学', 'qs': '44', 'us': '101'},
+        {'name': '香港浸会大学', 'qs': '-', 'us': '-'},
+        {'name': '岭南大学', 'qs': '-', 'us': '-'},
+        {'name': '香港教育大学', 'qs': '-', 'us': '-'}
+      ]},
+      {'region': '中国澳门', 'budget': '15-25万/年', 'x': 560, 'y': 368, 'schools': [
+        {'name': '澳门大学', 'qs': '285', 'us': '230'},
+        {'name': '澳门科技大学', 'qs': '-', 'us': '-'},
+        {'name': '澳门城市大学', 'qs': '-', 'us': '-'},
+        {'name': '澳门理工大学', 'qs': '-', 'us': '-'},
+        {'name': '澳门旅游学院', 'qs': '-', 'us': '-'}
+      ]}
+    ],
+    'advantages': ['距离近、文化适应成本低，适合亚洲多地联申。', '新加坡与香港商科、工程、计算机等方向资源集中。', '学费与生活成本梯度丰富，适合不同预算家庭。', '可与英美澳加形成高质量、多梯度申请组合。']
+  }
+] %}
+
+<script>
+  window.tailwind = window.tailwind || {};
+  window.tailwind.config = { corePlugins: { preflight: false } };
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  .yd-atlas {
+    --yd-navy: #061a3a;
+    --yd-blue: #073f92;
+    --yd-blue-2: #0b66bd;
+    --yd-cyan: #22bfd3;
+    --yd-gold: #d4a64d;
+    background:
+      radial-gradient(circle at 16% 4%, rgba(34, 191, 211, .16), transparent 26rem),
+      linear-gradient(180deg, #f7fbff 0%, #eef5fb 44%, #ffffff 100%);
+    color: #102033;
+    font-family: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+
+  .yd-atlas .yd-serif {
+    font-family: "Noto Serif SC", Georgia, "Times New Roman", serif;
+  }
+
+  .yd-map-tab.is-active {
+    background: linear-gradient(135deg, var(--yd-blue), var(--yd-blue-2));
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 16px 40px rgba(7, 63, 146, .22);
+  }
+
+  .yd-country-panel {
+    display: none;
+  }
+
+  .yd-country-panel.is-active {
+    display: block;
+  }
+
+  .yd-panel-shell {
+    box-shadow: 0 30px 90px rgba(15, 23, 42, .12);
+  }
+
+  .yd-title-bar {
+    background:
+      radial-gradient(circle at 88% 22%, rgba(34, 191, 211, .38), transparent 22rem),
+      linear-gradient(135deg, #062f7a 0%, #0758ae 58%, #06428e 100%);
+  }
+
+  .yd-map-canvas {
+    background:
+      linear-gradient(135deg, rgba(255,255,255,.92), rgba(239,247,255,.86)),
+      radial-gradient(circle at 52% 44%, rgba(34, 191, 211, .10), transparent 20rem);
+  }
+
+  .yd-map-zone {
+    stroke: rgba(255, 255, 255, .92);
+    stroke-width: 2.2;
+    filter: drop-shadow(0 10px 18px rgba(7, 40, 100, .12));
+    transition: transform .25s ease, filter .25s ease;
+  }
+
+  .yd-map-marker {
+    filter: drop-shadow(0 6px 12px rgba(6, 26, 58, .24));
+  }
+
+  .yd-region-card {
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+
+  .yd-region-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(11, 102, 189, .32);
+    box-shadow: 0 18px 46px rgba(15, 23, 42, .10);
+  }
+
+  .yd-rank-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    font-size: 12px;
+  }
+
+  .yd-rank-table th {
+    background: linear-gradient(135deg, #083f92, #0c75c9);
+    color: #fff;
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .yd-rank-table th:nth-child(2),
+  .yd-rank-table th:nth-child(3),
+  .yd-rank-table td:nth-child(2),
+  .yd-rank-table td:nth-child(3) {
+    text-align: center;
+  }
+
+  .yd-rank-table td {
+    border-bottom: 1px solid rgba(148, 163, 184, .16);
+    padding: 8px 10px;
+    vertical-align: top;
+  }
+
+  .yd-rank-table tbody tr:nth-child(odd) td {
+    background: #f8fbff;
+  }
+
+  .yd-rank-table tbody tr:nth-child(even) td {
+    background: #edf8fc;
+  }
+
+  .yd-rank-table td:nth-child(2),
+  .yd-rank-table td:nth-child(3) {
+    color: #073f92;
+    font-weight: 800;
+  }
+
+  @media (max-width: 768px) {
+    .yd-rank-table {
+      font-size: 11px;
+    }
+  }
+</style>
+
+<main class="yd-atlas">
+  <section class="px-6 py-14 md:px-10 md:py-20">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+        <div>
+          <p class="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-[#0b66bd]">Study Destination Atlas</p>
+          <h1 class="yd-serif text-5xl font-semibold leading-tight text-[#061a3a] md:text-7xl">留学地图</h1>
+        </div>
+      </div>
+
+      <div class="mt-10 flex flex-wrap gap-3" role="tablist" aria-label="国家留学地图切换">
+        {% for panel in map_panels %}
+        <button class="yd-map-tab {% if loop.first %}is-active{% endif %} rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-bold text-slate-600 transition hover:border-[#0b66bd] hover:text-[#0b66bd]" type="button" data-map-tab="{{ panel.id }}" role="tab" aria-selected="{% if loop.first %}true{% else %}false{% endif %}">
+          {{ panel.flag }} {{ panel.tab }}
+        </button>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="px-4 pb-20 md:px-8 md:pb-28">
+    <div class="mx-auto max-w-[1500px]">
+      {% for panel in map_panels %}
+      {% set totals = namespace(count=0) %}
+      {% for group in panel.groups %}
+        {% set totals.count = totals.count + group.schools|length %}
+      {% endfor %}
+
+      <article class="yd-country-panel {% if loop.first %}is-active{% endif %}" data-map-panel="{{ panel.id }}" role="tabpanel">
+        <div class="yd-panel-shell overflow-hidden rounded-2xl border border-slate-200 bg-white">
+          <header class="yd-title-bar flex flex-col gap-5 px-5 py-6 text-white md:flex-row md:items-center md:justify-between md:px-8">
+            <div class="flex items-start gap-4">
+              <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-white text-4xl shadow-[0_14px_32px_rgba(0,0,0,.16)]">{{ panel.flag }}</div>
+              <div>
+                <h2 class="text-3xl font-black leading-tight md:text-5xl">{{ panel.title_cn }}</h2>
+                <p class="mt-2 text-lg font-semibold text-white/80 md:text-2xl">{{ panel.title_en }}</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 text-center sm:grid-cols-3">
+              <div class="rounded-xl border border-white/18 bg-white/12 px-4 py-3 backdrop-blur">
+                <p class="text-2xl font-black">{{ panel.groups|length }}</p>
+                <p class="text-xs font-semibold text-white/70">区域分组</p>
+              </div>
+              <div class="rounded-xl border border-white/18 bg-white/12 px-4 py-3 backdrop-blur">
+                <p class="text-2xl font-black">{{ totals.count }}</p>
+                <p class="text-xs font-semibold text-white/70">所列院校</p>
+              </div>
+              <div class="rounded-xl border border-white/18 bg-white/12 px-4 py-3 backdrop-blur max-sm:col-span-2">
+                <p class="text-2xl font-black">QS / US</p>
+                <p class="text-xs font-semibold text-white/70">双排名视图</p>
+              </div>
+            </div>
+          </header>
+
+          <div class="grid gap-8 bg-[#f8fbff] p-5 lg:grid-cols-[minmax(360px,0.92fr)_minmax(520px,1.08fr)] lg:p-8">
+            <div class="space-y-5 lg:sticky lg:top-6 lg:self-start">
+              <div class="yd-map-canvas overflow-hidden rounded-2xl border border-slate-200 p-4 shadow-inner">
+                <div class="mb-4 flex items-center justify-between gap-4">
+                  <div>
+                    <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#0b66bd]">Digital Map</p>
+                    <h3 class="mt-1 text-2xl font-black text-[#061a3a]">{{ panel.tab }}院校区域总览</h3>
+                  </div>
+                  <span class="rounded-full bg-[#e7f8fb] px-3 py-1 text-xs font-bold text-[#087f9f]">原创示意地图</span>
+                </div>
+
+                <svg class="h-auto w-full" viewBox="{{ panel.map_viewbox }}" role="img" aria-label="{{ panel.title_cn }}原创示意地图">
+                  <defs>
+                    <filter id="atlasShadow-{{ panel.id }}" x="-20%" y="-20%" width="140%" height="140%">
+                      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#082450" flood-opacity="0.12"/>
+                    </filter>
+                  </defs>
+                  <rect x="0" y="0" width="100%" height="100%" rx="24" fill="#eef7fc"/>
+                  {% for zone in panel.zones %}
+                  <path class="yd-map-zone" d="{{ zone.d }}" fill="{{ zone.color }}" filter="url(#atlasShadow-{{ panel.id }})"></path>
+                  {% endfor %}
+                  {% for zone in panel.zones %}
+                  <text x="50%" y="50%" fill="transparent">{{ zone.label }}</text>
+                  {% endfor %}
+                  {% for group in panel.groups %}
+                  <g transform="translate({{ group.x }}, {{ group.y }})" class="yd-map-marker">
+                    <circle r="8" fill="#ffffff"></circle>
+                    <circle r="5" fill="#d4a64d"></circle>
+                    <text x="13" y="4" fill="#061a3a" font-size="10" font-weight="800">{{ group.region }}</text>
+                  </g>
+                  {% endfor %}
+                </svg>
+
+                <p class="mt-4 text-sm leading-7 text-slate-600">{{ panel.subtitle }}</p>
+              </div>
+
+              <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_16px_46px_rgba(15,23,42,.07)]">
+                <h3 class="text-xl font-black text-[#061a3a]">该国家/地区留学优势</h3>
+                <ul class="mt-4 grid gap-3">
+                  {% for advantage in panel.advantages %}
+                  <li class="flex gap-3 text-sm leading-7 text-slate-700">
+                    <span class="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#22bfd3]"></span>
+                    <span>{{ advantage }}</span>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+
+            <div>
+              <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#0b66bd]">University Tables</p>
+                  <h3 class="mt-1 text-3xl font-black text-[#061a3a]">大学信息表格</h3>
+                </div>
+              </div>
+
+              <div class="grid gap-4 xl:grid-cols-2">
+                {% for group in panel.groups %}
+                <section class="yd-region-card overflow-hidden rounded-xl border border-slate-200 bg-white">
+                  <div class="flex items-center justify-between gap-4 bg-gradient-to-r from-[#073f92] to-[#0b66bd] px-4 py-3 text-white">
+                    <h4 class="text-lg font-black">{{ group.region }}</h4>
+                    <span class="shrink-0 rounded-full bg-white/15 px-3 py-1 text-xs font-bold">{{ group.budget }}</span>
+                  </div>
+                  <table class="yd-rank-table">
+                    <thead>
+                      <tr>
+                        <th>学校名称</th>
+                        <th>QS排名</th>
+                        <th>US News排名</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for school in group.schools %}
+                      <tr>
+                        <td>{{ school.name }}</td>
+                        <td>{{ school.qs }}</td>
+                        <td>{{ school.us }}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </section>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          <footer class="grid gap-5 bg-gradient-to-r from-[#062f7a] via-[#0758ae] to-[#062f7a] p-5 text-white md:grid-cols-[1fr_220px] md:p-7">
+            <div>
+              <h3 class="text-2xl font-black">申请规划提示</h3>
+              <p class="mt-3 max-w-4xl text-sm leading-7 text-white/82">建议结合院校排名、专业强度、地理位置、预算、毕业去向与个人背景制定选校梯度。排名数据仅作为初筛参考，最终申请策略应以专业匹配和学生长期目标为核心。</p>
+            </div>
+            <div class="rounded-xl bg-white p-4 text-center shadow-[0_16px_44px_rgba(0,0,0,.18)]">
+              <img class="mx-auto aspect-square w-full max-w-[150px] rounded-lg border border-slate-200 object-cover" src="{{ url_for('static', filename='wechat-qr.jpg') }}" alt="微信二维码">
+              <p class="mt-3 text-base font-black text-[#073f92]">微信咨询入口</p>
+              <p class="text-xs font-semibold text-slate-500">扫码添加微信咨询</p>
+            </div>
+          </footer>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var tabs = Array.from(document.querySelectorAll('[data-map-tab]'));
+    var panels = Array.from(document.querySelectorAll('[data-map-panel]'));
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var target = tab.getAttribute('data-map-tab');
+
+        tabs.forEach(function (item) {
+          var active = item === tab;
+          item.classList.toggle('is-active', active);
+          item.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+
+        panels.forEach(function (panel) {
+          panel.classList.toggle('is-active', panel.getAttribute('data-map-panel') === target);
+        });
+      });
+    });
+  });
+</script>
+{% endblock %}

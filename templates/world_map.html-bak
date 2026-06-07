@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="panel p-4 p-md-5 my-4">
+  <h2 class="fw-bold mb-2">世界名校地图</h2>
+  <p class="text-secondary mb-0">基于你上传的 <code>schools.geojson</code> 展示名校分布。</p>
+</section>
+
+<section class="panel p-3 p-md-4 mb-4">
+  {% if not geojson_exists %}
+  <div class="offer-empty mb-3">未检测到地图数据文件，请将 <code>schools.geojson</code> 放到 <code>static/data/</code>。</div>
+  {% endif %}
+  <div id="worldSchoolMap" class="world-map-box"></div>
+</section>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  const map = L.map('worldSchoolMap').setView([20, 0], 2);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+
+  fetch("{{ url_for('static', filename='data/schools.geojson') }}")
+    .then(resp => {
+      if (!resp.ok) throw new Error('GeoJSON not found');
+      return resp.json();
+    })
+    .then(data => {
+      const layer = L.geoJSON(data, {
+        pointToLayer: (feature, latlng) => {
+          const props = feature.properties || {};
+          const iconUrl = props.icon || props.iconUrl || props['marker-url'] || props['markerUrl'];
+          if (iconUrl) {
+            const icon = L.icon({
+              iconUrl,
+              iconSize: [30, 30],
+              iconAnchor: [15, 30],
+              popupAnchor: [0, -26]
+            });
+            return L.marker(latlng, { icon });
+          }
+          return L.marker(latlng);
+        },
+        onEachFeature: (feature, layer) => {
+          const props = feature.properties || {};
+          const title = props.name || props.Name || props.school || props.title || '名校点位';
+          const desc = props.description || props.desc || '';
+          layer.bindPopup(`<strong>${title}</strong>${desc ? `<br>${desc}` : ''}`);
+        }
+      }).addTo(map);
+
+      const bounds = layer.getBounds();
+      if (bounds.isValid()) {
+        map.fitBounds(bounds, {padding:[20,20]});
+      }
+    })
+    .catch(() => {
+      console.warn('schools.geojson 未加载成功');
+    });
+</script>
+{% endblock %}
+

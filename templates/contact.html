@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block content %}
+<script>
+  window.tailwind = window.tailwind || {};
+  window.tailwind.config = { corePlugins: { preflight: false } };
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  .yd-contact-page {
+    --yd-navy: #061a3a;
+    --yd-teal: #0f766e;
+    --yd-mint: #2dd4bf;
+    --yd-gold: #d6a84f;
+    --yd-cloud: #f7fafc;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(45, 212, 191, .14), transparent 30rem),
+      radial-gradient(circle at 88% 8%, rgba(214, 168, 79, .14), transparent 30rem),
+      linear-gradient(180deg, #f8fbff 0%, #f7fafc 46%, #ffffff 100%);
+    color: #0f172a;
+    font-family: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+
+  .yd-contact-page .yd-serif {
+    font-family: "Noto Serif SC", Georgia, "Times New Roman", serif;
+  }
+
+  .yd-contact-card {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  }
+
+  .yd-contact-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(15, 118, 110, .30);
+    box-shadow: 0 24px 70px rgba(15, 23, 42, .12);
+  }
+</style>
+
+<main class="yd-contact-page">
+  <section class="px-6 py-20 md:px-10 md:py-28">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+        <div>
+          <p class="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-[#0f766e]">Contact Grace Li</p>
+          <h1 class="yd-serif text-5xl font-semibold leading-tight text-[#061a3a] md:text-7xl">联系我们</h1>
+        </div>
+        <p class="text-lg leading-9 text-slate-600">从一次清晰的申请诊断开始。请通过微信添加咨询，沟通学生背景、目标国家、预算与时间线，我们会给出更明确的下一步路径。</p>
+      </div>
+
+      <div class="mt-14 grid gap-6 lg:grid-cols-[1.05fr_.95fr]">
+        <section class="yd-contact-card rounded-lg border border-slate-200 bg-white/95 p-6 shadow-[0_20px_60px_rgba(15,23,42,.08)] backdrop-blur md:p-10">
+          <p class="text-sm font-bold uppercase tracking-[0.18em] text-[#d6a84f]">Office</p>
+          <h2 class="yd-serif mt-4 text-3xl font-semibold text-[#061a3a] md:text-5xl">瀛动教育</h2>
+
+          <div class="mt-8 rounded-lg border border-[#0f766e]/20 bg-[#ecfeff] p-6">
+            <p class="text-sm font-bold text-[#0f766e]">公司地址</p>
+            <p class="mt-3 text-2xl font-semibold leading-9 text-[#061a3a]">北京市海淀区互联网金融中心802</p>
+          </div>
+
+          <div class="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-6">
+            <p class="text-sm font-bold text-slate-500">服务范围</p>
+            <div class="mt-4 flex flex-wrap gap-3">
+              <span class="rounded-full bg-white px-4 py-2 text-sm font-bold text-[#061a3a] shadow-[0_10px_28px_rgba(15,23,42,.06)]">低龄</span>
+              <span class="rounded-full bg-white px-4 py-2 text-sm font-bold text-[#061a3a] shadow-[0_10px_28px_rgba(15,23,42,.06)]">本科</span>
+              <span class="rounded-full bg-white px-4 py-2 text-sm font-bold text-[#061a3a] shadow-[0_10px_28px_rgba(15,23,42,.06)]">硕士</span>
+              <span class="rounded-full bg-white px-4 py-2 text-sm font-bold text-[#061a3a] shadow-[0_10px_28px_rgba(15,23,42,.06)]">博士</span>
+            </div>
+          </div>
+
+          <div class="mt-6 rounded-lg border border-slate-200 bg-white p-6">
+            <p class="text-sm font-bold text-[#0f766e]">预约建议</p>
+            <p class="mt-3 text-base leading-8 text-slate-600">建议提前准备学生成绩单、活动经历、目标国家/地区、预算范围与期望入学时间，便于首次沟通直接进入策略判断。</p>
+          </div>
+        </section>
+
+        <section class="yd-contact-card rounded-lg border border-slate-200 bg-[#061a3a] p-6 text-white shadow-[0_24px_70px_rgba(6,26,58,.22)] md:p-10">
+          <p class="text-sm font-bold uppercase tracking-[0.18em] text-[#2dd4bf]">WeChat</p>
+          <h2 class="yd-serif mt-4 text-3xl font-semibold md:text-5xl">扫码添加微信咨询</h2>
+          <p class="mt-4 text-base leading-8 text-white/68">添加微信后，可发送学生当前年级、目标国家、成绩背景和意向专业，便于快速判断申请路径。</p>
+
+          <div class="mt-8 rounded-lg bg-white p-4 shadow-[0_24px_70px_rgba(0,0,0,.20)]">
+            <img class="mx-auto w-full max-w-[300px] rounded-lg" src="{{ url_for('static', filename='wechat-qr.jpg') }}" alt="微信二维码">
+          </div>
+          <p class="mt-4 text-center text-sm font-bold text-[#2dd4bf]">扫码添加微信咨询</p>
+
+          <div class="mt-8 grid gap-3 sm:grid-cols-2">
+            <div class="rounded-lg border border-white/12 bg-white/8 p-4">
+              <p class="text-sm font-bold text-[#2dd4bf]">沟通重点</p>
+              <p class="mt-2 text-base font-semibold">背景诊断与路径建议</p>
+            </div>
+            <div class="rounded-lg border border-white/12 bg-white/8 p-4">
+              <p class="text-sm font-bold text-[#2dd4bf]">适用阶段</p>
+              <p class="mt-2 text-base font-semibold">低龄 / 本科 / 硕士 / 博士</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-slate-200 bg-white/90 px-6 py-20 md:px-10 md:py-28">
+    <div class="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
+      <article class="yd-contact-card rounded-lg border border-slate-200 bg-white p-6 shadow-[0_16px_50px_rgba(15,23,42,.07)]">
+        <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#0f766e]">01</p>
+        <h3 class="mt-4 text-2xl font-semibold text-[#061a3a]">背景诊断</h3>
+        <p class="mt-3 text-base leading-8 text-slate-600">梳理学生课程、成绩、活动、语言、竞赛、科研与目标院校之间的差距。</p>
+      </article>
+      <article class="yd-contact-card rounded-lg border border-slate-200 bg-white p-6 shadow-[0_16px_50px_rgba(15,23,42,.07)]">
+        <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#0f766e]">02</p>
+        <h3 class="mt-4 text-2xl font-semibold text-[#061a3a]">路径建议</h3>
+        <p class="mt-3 text-base leading-8 text-slate-600">根据国家、专业、时间线与预算，判断申请策略、背景提升和材料准备重点。</p>
+      </article>
+      <article class="yd-contact-card rounded-lg border border-slate-200 bg-white p-6 shadow-[0_16px_50px_rgba(15,23,42,.07)]">
+        <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#0f766e]">03</p>
+        <h3 class="mt-4 text-2xl font-semibold text-[#061a3a]">执行计划</h3>
+        <p class="mt-3 text-base leading-8 text-slate-600">明确下一阶段需要完成的选校、文书、标化、推荐信、作品集或签证准备工作。</p>
+      </article>
+    </div>
+  </section>
+</main>
+{% endblock %}

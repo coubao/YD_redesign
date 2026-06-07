@@ -1,0 +1,664 @@
+{% extends 'base.html' %}
+{% block content %}
+<script>
+  window.tailwind = window.tailwind || {};
+  window.tailwind.config = {
+    corePlugins: { preflight: false },
+    theme: {
+      extend: {
+        colors: {
+          grace: {
+            navy: '#061a3a',
+            ink: '#0f172a',
+            teal: '#0f766e',
+            mint: '#2dd4bf',
+            gold: '#d6a84f',
+            cloud: '#f7fafc'
+          }
+        },
+        boxShadow: {
+          soft: '0 20px 60px rgba(15, 23, 42, 0.10)',
+          glow: '0 18px 48px rgba(15, 118, 110, 0.22)'
+        }
+      }
+    }
+  };
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  :root {
+    --yd-navy: #061a3a;
+    --yd-ink: #0f172a;
+    --yd-teal: #0f766e;
+    --yd-mint: #2dd4bf;
+    --yd-gold: #d6a84f;
+    --yd-cloud: #f7fafc;
+  }
+
+  body {
+    background: var(--yd-cloud);
+    color: var(--yd-ink);
+  }
+
+  .site-navbar {
+    background: rgba(255, 255, 255, 0.86);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+    box-shadow: 0 14px 44px rgba(15, 23, 42, 0.06);
+    backdrop-filter: blur(18px);
+  }
+
+  .site-navbar .container {
+    max-width: 1180px;
+  }
+
+  .brand-title,
+  .menu-list a {
+    letter-spacing: 0;
+  }
+
+  .brand-title {
+    color: var(--yd-navy);
+  }
+
+  .brand-sub {
+    color: #64748b;
+  }
+
+  .menu-list a {
+    color: #334155;
+    font-weight: 600;
+  }
+
+  .menu-list a::after {
+    background: linear-gradient(90deg, var(--yd-teal), var(--yd-gold));
+  }
+
+  .nav-actions {
+    display: none;
+  }
+
+  .menu-toggle {
+    color: var(--yd-navy);
+  }
+
+  @media (min-width: 992px) {
+    .site-navbar #mainMenu {
+      display: block !important;
+      visibility: visible !important;
+    }
+  }
+
+  .site-navbar #mainMenu.show {
+    visibility: visible;
+  }
+
+  .yd-home {
+    overflow: hidden;
+    background:
+      linear-gradient(180deg, rgba(247, 250, 252, 0) 0%, #f7fafc 32rem),
+      #f7fafc;
+    font-family: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+
+  .yd-home .text-grace-navy { color: var(--yd-navy) !important; }
+  .yd-home .text-grace-teal { color: var(--yd-teal) !important; }
+  .yd-home .text-grace-mint { color: var(--yd-mint) !important; }
+  .yd-home .bg-grace-navy { background-color: var(--yd-navy) !important; }
+  .yd-home .bg-grace-mint { background-color: var(--yd-mint) !important; }
+  .yd-home .bg-grace-gold { background-color: var(--yd-gold) !important; }
+  .yd-home .border-grace-teal { border-color: var(--yd-teal) !important; }
+  .yd-home .hover\:bg-grace-mint:hover { background-color: var(--yd-mint) !important; }
+  .yd-home .hover\:bg-grace-teal:hover { background-color: var(--yd-teal) !important; }
+  .yd-home .hover\:text-grace-navy:hover { color: var(--yd-navy) !important; }
+  .yd-home .hover\:text-grace-teal:hover { color: var(--yd-teal) !important; }
+  .yd-home .hover\:border-grace-teal:hover { border-color: var(--yd-teal) !important; }
+
+  .yd-hero {
+    position: relative;
+    min-height: calc(100vh - 72px);
+    isolation: isolate;
+    background-image:
+      linear-gradient(90deg, rgba(3, 12, 30, 0.88) 0%, rgba(3, 12, 30, 0.66) 48%, rgba(3, 12, 30, 0.34) 100%),
+      url('https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=2200&q=85');
+    background-position: center;
+    background-size: cover;
+  }
+
+  .yd-hero::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 30%;
+    z-index: -1;
+    background: linear-gradient(180deg, rgba(247, 250, 252, 0), #f7fafc);
+  }
+
+  .yd-typing {
+    display: inline-block;
+    max-width: 100%;
+    width: 0;
+    overflow: hidden;
+    border-right: 2px solid rgba(214, 168, 79, 0.95);
+    white-space: nowrap;
+    animation: ydTyping 2.15s steps(15, end) 0.7s forwards, ydCursor 0.85s step-end infinite;
+  }
+
+  .yd-hero-title {
+    font-family: "Noto Serif SC", Georgia, "Times New Roman", serif;
+  }
+
+  .yd-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .yd-reveal.is-visible,
+  .yd-hero .yd-reveal {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .yd-hero .yd-reveal {
+    animation: ydFadeUp 0.85s ease both;
+  }
+
+  .yd-hero .yd-reveal:nth-child(2) {
+    animation-delay: 0.12s;
+  }
+
+  .yd-hero .yd-reveal:nth-child(3) {
+    animation-delay: 0.24s;
+  }
+
+  .yd-hero .yd-reveal:nth-child(4) {
+    animation-delay: 0.36s;
+  }
+
+  .yd-section-label {
+    color: var(--yd-teal);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .yd-timeline {
+    position: relative;
+  }
+
+  .yd-timeline::before {
+    content: "";
+    position: absolute;
+    left: 0.65rem;
+    top: 0.4rem;
+    bottom: 0.4rem;
+    width: 1px;
+    background: linear-gradient(180deg, rgba(15, 118, 110, 0.18), rgba(214, 168, 79, 0.55), rgba(15, 118, 110, 0.16));
+  }
+
+  .yd-timeline-item {
+    position: relative;
+    padding-left: 2.25rem;
+  }
+
+  .yd-timeline-item::before {
+    content: "";
+    position: absolute;
+    left: 0.34rem;
+    top: 0.42rem;
+    width: 0.62rem;
+    height: 0.62rem;
+    border-radius: 999px;
+    background: #fff;
+    border: 2px solid var(--yd-gold);
+    box-shadow: 0 0 0 6px rgba(214, 168, 79, 0.12);
+  }
+
+  .yd-marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .yd-offer-track {
+    display: flex;
+    width: max-content;
+    animation: ydMarquee var(--marquee-duration, 12s) linear infinite;
+    will-change: transform;
+  }
+
+  .yd-offer-track.is-reverse {
+    animation-name: ydMarqueeReverse;
+  }
+
+  .yd-marquee:hover .yd-offer-track {
+    animation-play-state: paused;
+  }
+
+  .yd-offer-group {
+    display: flex;
+    gap: 1rem;
+    padding-right: 1rem;
+  }
+
+  .yd-offer-card {
+    flex: 0 0 auto;
+    width: 12.5rem;
+    border: 1px solid rgba(226, 232, 240, 0.92);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.10);
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+
+  .yd-offer-card:hover {
+    transform: translateY(-4px) scale(1.025);
+    border-color: rgba(45, 212, 191, 0.46);
+    box-shadow: 0 24px 56px rgba(15, 23, 42, 0.16);
+  }
+
+  .yd-offer-card img {
+    display: block;
+    width: 100%;
+    height: 15.5rem;
+    object-fit: cover;
+  }
+
+  .yd-testimonial-track {
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .yd-testimonial-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .yd-testimonial-card {
+    scroll-snap-align: start;
+  }
+
+  .floating-cta {
+    background: linear-gradient(90deg, var(--yd-navy), var(--yd-teal));
+    box-shadow: 0 16px 44px rgba(6, 26, 58, 0.28);
+  }
+
+  @keyframes ydTyping {
+    from { width: 0; }
+    to { width: 15em; }
+  }
+
+  @keyframes ydCursor {
+    50% { border-color: transparent; }
+  }
+
+  @keyframes ydFadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes ydMarquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @keyframes ydMarqueeReverse {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+  }
+
+  @media (max-width: 768px) {
+    .yd-hero {
+      min-height: 760px;
+      background-position: center;
+    }
+
+    .yd-typing {
+      width: auto;
+      border-right: 0;
+      white-space: normal;
+      animation: ydFadeUp 0.7s ease both;
+    }
+
+    .yd-offer-card {
+      width: 10.25rem;
+    }
+
+    .yd-offer-card img {
+      height: 13.25rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .yd-typing,
+    .yd-hero .yd-reveal,
+    .yd-reveal,
+    .yd-offer-track {
+      animation: none;
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .yd-typing {
+      width: auto;
+      border-right: 0;
+    }
+  }
+</style>
+
+<main class="yd-home">
+  <section class="yd-hero flex items-center" id="about">
+    <div class="mx-auto w-full max-w-7xl px-6 py-12 md:px-10 lg:py-12">
+      <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_21rem] lg:items-end">
+        <div class="max-w-5xl text-white">
+          <p class="yd-reveal mb-5 inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90 shadow-soft backdrop-blur">
+            <span class="h-2 w-2 rounded-full bg-grace-gold"></span>
+            Grace Li · 瀛动教育 · 精品留学规划
+          </p>
+
+          <h1 class="yd-hero-title yd-reveal mb-6 max-w-4xl text-5xl font-semibold leading-[1.08] text-white md:text-6xl lg:text-6xl">
+            把世界名校申请，做成清晰的成长规划
+          </h1>
+
+          <p class="yd-reveal mb-8 max-w-2xl text-lg leading-8 text-white/82 md:text-xl">
+            <span class="yd-typing">申请节奏清晰，结果更有确定感</span>
+            <span class="mt-4 block text-white/76">20年全球升学经验，专注美本、美研、低龄留学和多国混申，为家庭建立从定位、背景提升到录取落地的完整路径。</span>
+          </p>
+
+          <div class="yd-reveal flex flex-col gap-3 sm:flex-row">
+            <a class="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-base font-bold text-grace-navy shadow-glow transition duration-200 hover:-translate-y-0.5 hover:bg-grace-mint hover:text-grace-navy" href="{{ url_for('contact_page') }}">
+              预约30分钟咨询
+              <span class="ml-2">→</span>
+            </a>
+            <a class="inline-flex items-center justify-center rounded-full border border-white/26 bg-white/10 px-6 py-3 text-base font-bold text-white backdrop-blur transition duration-200 hover:-translate-y-0.5 hover:border-white/60 hover:bg-white/16" href="#offers-wall">
+              查看录取成果
+            </a>
+          </div>
+        </div>
+
+        <div class="hidden gap-3 md:grid md:grid-cols-3 lg:grid-cols-1">
+          <div class="yd-reveal rounded-lg border border-white/16 bg-white/10 p-5 text-white shadow-soft backdrop-blur">
+            <p class="text-3xl font-semibold">20年</p>
+            <p class="mt-2 text-sm leading-6 text-white/72">中学、本科、硕士、博士申请与规划经验</p>
+          </div>
+          <div class="yd-reveal rounded-lg border border-white/16 bg-white/10 p-5 text-white shadow-soft backdrop-blur">
+            <p class="text-3xl font-semibold">G5 / 藤校</p>
+            <p class="mt-2 text-sm leading-6 text-white/72">高目标院校定位、文书策略与过程管理</p>
+          </div>
+          <div class="yd-reveal rounded-lg border border-white/16 bg-white/10 p-5 text-white shadow-soft backdrop-blur">
+            <p class="text-3xl font-semibold">{{ offer_count or 18 }}+</p>
+            <p class="mt-2 text-sm leading-6 text-white/72">精选 offer 案例持续更新，结果可见</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-slate-200/80 bg-white/82">
+    <div class="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-6 py-7 text-sm font-semibold text-slate-500 md:grid-cols-4 md:px-10">
+      <div class="yd-reveal">美国本科 / 研究生</div>
+      <div class="yd-reveal">英国 G5 / 港新澳加</div>
+      <div class="yd-reveal">低龄留学规划</div>
+      <div class="yd-reveal">排名工具 / 留学地图</div>
+    </div>
+  </section>
+
+  <section class="px-6 py-20 md:px-10 md:py-28" id="services">
+    <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+      <div class="yd-reveal">
+        <div class="relative">
+          <img class="h-[520px] w-full rounded-lg object-cover shadow-soft md:h-[680px]" src="{{ url_for('static', filename='grace-photo.jpg') }}" alt="李晓宇 Grace" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=900&q=80';">
+          <div class="absolute bottom-5 left-5 right-5 rounded-lg border border-white/24 bg-white/90 p-5 shadow-soft backdrop-blur">
+            <p class="text-sm font-bold text-grace-teal">Grace Li / 李晓宇</p>
+            <p class="mt-2 text-2xl font-semibold leading-8 text-grace-navy">用长期主义做升学规划，让每一步都有证据链。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="yd-reveal">
+        <p class="yd-section-label mb-4">Advisor Profile</p>
+        <h2 class="yd-hero-title mb-6 text-4xl font-semibold leading-[1.15] text-grace-navy md:text-6xl">主讲：李晓宇 Grace</h2>
+        <div class="grid gap-3 md:grid-cols-3">
+          <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft">
+            <p class="text-sm font-bold text-grace-teal">U.S.News</p>
+            <p class="mt-2 text-lg font-semibold leading-7 text-slate-900">高级升学顾问</p>
+          </div>
+          <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft">
+            <p class="text-sm font-bold text-grace-teal">NAFSA</p>
+            <p class="mt-2 text-lg font-semibold leading-7 text-slate-900">国际教育联盟会员</p>
+          </div>
+          <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft">
+            <p class="text-sm font-bold text-grace-teal">2005起</p>
+            <p class="mt-2 text-lg font-semibold leading-7 text-slate-900">阳光留学项目监督人</p>
+          </div>
+        </div>
+
+        <p class="mt-8 text-lg leading-9 text-slate-600">
+          职业经历20年，拥有全球中学、本科、硕士、博士升学规划指导经验。Grace 主张过程性教育与养成式培养，通过导学式跟踪帮助学生建立长期竞争力，不因国别限定教育路径，而是以学生成长目标匹配最合适的教育方案。
+        </p>
+
+        <div class="mt-10 grid gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+          <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-soft">
+            <h3 class="mb-5 text-xl font-semibold text-grace-navy">专业方法</h3>
+            <div class="grid gap-4">
+              <div class="rounded-lg bg-slate-50 p-4">
+                <p class="font-semibold text-slate-900">定位先于申请</p>
+                <p class="mt-1 text-sm leading-6 text-slate-600">先校准学术、活动、家庭偏好和长期职业目标，再确定国家、院校和专业路径。</p>
+              </div>
+              <div class="rounded-lg bg-slate-50 p-4">
+                <p class="font-semibold text-slate-900">过程可追踪</p>
+                <p class="mt-1 text-sm leading-6 text-slate-600">用清晰时间线管理标化、选校、文书、面试和补充材料，减少申请季不确定性。</p>
+              </div>
+              <div class="rounded-lg bg-slate-50 p-4">
+                <p class="font-semibold text-slate-900">结果有复盘</p>
+                <p class="mt-1 text-sm leading-6 text-slate-600">每轮结果反推策略，持续更新选校池和申请叙事。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="yd-timeline grid gap-6">
+            <div class="yd-timeline-item">
+              <p class="text-sm font-bold text-grace-teal">2013年</p>
+              <p class="mt-1 font-semibold text-slate-900">美国德州访学，持续拓展全球教育资源</p>
+            </div>
+            <div class="yd-timeline-item">
+              <p class="text-sm font-bold text-grace-teal">2011年</p>
+              <p class="mt-1 font-semibold text-slate-900">开始践行低龄及全球教育专业化申请</p>
+            </div>
+            <div class="yd-timeline-item">
+              <p class="text-sm font-bold text-grace-teal">2009年</p>
+              <p class="mt-1 font-semibold text-slate-900">PA英国名校申请负责人</p>
+            </div>
+            <div class="yd-timeline-item">
+              <p class="text-sm font-bold text-grace-teal">2005年</p>
+              <p class="mt-1 font-semibold text-slate-900">英孚教育海外全球大客户项目市场负责人</p>
+            </div>
+            <div class="yd-timeline-item">
+              <p class="text-sm font-bold text-grace-teal">2003年</p>
+              <p class="mt-1 font-semibold text-slate-900">CCTV英文新闻编译；荷兰瓦赫宁根大学研究生毕业</p>
+            </div>
+            <div class="yd-timeline-item">
+              <p class="text-sm font-bold text-grace-teal">2004年</p>
+              <p class="mt-1 font-semibold text-slate-900">英国牛剑访学，建立英美教育体系比较视角</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-grace-navy px-6 py-20 text-white md:px-10 md:py-28" id="offers-wall">
+    <div class="mx-auto max-w-7xl">
+      <div class="yd-reveal mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div>
+          <p class="mb-4 text-sm font-bold text-grace-mint">Offer Wall</p>
+          <h2 class="yd-hero-title text-4xl font-semibold leading-[1.15] md:text-6xl">Offer</h2>
+        </div>
+      </div>
+
+      {% if offer_slides %}
+      <div class="space-y-5">
+        <div class="yd-marquee" style="--marquee-duration: 12s;">
+          <div class="yd-offer-track">
+            <div class="yd-offer-group">
+              {% for slide in offer_slides %}
+                {% for image in slide %}
+                <figure class="yd-offer-card">
+                  <img src="{{ url_for('static', filename=image) }}" alt="offer-{{ loop.index }}" loading="lazy">
+                </figure>
+                {% endfor %}
+              {% endfor %}
+            </div>
+            <div class="yd-offer-group" aria-hidden="true">
+              {% for slide in offer_slides %}
+                {% for image in slide %}
+                <figure class="yd-offer-card">
+                  <img src="{{ url_for('static', filename=image) }}" alt="" loading="lazy">
+                </figure>
+                {% endfor %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="yd-marquee" style="--marquee-duration: 10s;">
+          <div class="yd-offer-track is-reverse">
+            <div class="yd-offer-group">
+              {% for slide in offer_slides|reverse %}
+                {% for image in slide|reverse %}
+                <figure class="yd-offer-card">
+                  <img src="{{ url_for('static', filename=image) }}" alt="offer-reverse-{{ loop.index }}" loading="lazy">
+                </figure>
+                {% endfor %}
+              {% endfor %}
+            </div>
+            <div class="yd-offer-group" aria-hidden="true">
+              {% for slide in offer_slides|reverse %}
+                {% for image in slide|reverse %}
+                <figure class="yd-offer-card">
+                  <img src="{{ url_for('static', filename=image) }}" alt="" loading="lazy">
+                </figure>
+                {% endfor %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="rounded-lg border border-dashed border-white/24 bg-white/8 p-6 text-white/72">
+        尚未检测到 offer 图片，请将图片上传到 <code>static/offers/</code> 目录。
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="px-6 py-20 md:px-10 md:py-28" id="ranking">
+    <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+      <div class="yd-reveal">
+        <p class="yd-section-label mb-4">Decision Tools</p>
+        <h2 class="yd-hero-title text-4xl font-semibold leading-[1.15] text-grace-navy md:text-6xl">用数据建立更稳的选校池</h2>
+        <p class="mt-6 text-lg leading-9 text-slate-600">排名工具和留学地图把院校、地区和申请目标放在同一张决策桌上，帮助家庭快速筛选、比较和迭代申请方案。</p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a class="inline-flex items-center justify-center rounded-full bg-grace-navy px-6 py-3 font-bold text-white shadow-soft transition duration-200 hover:-translate-y-0.5 hover:bg-grace-teal" href="{{ url_for('index') }}">
+            进入排行榜
+            <span class="ml-2">→</span>
+          </a>
+          <a class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 font-bold text-grace-navy shadow-soft transition duration-200 hover:-translate-y-0.5 hover:border-grace-teal hover:text-grace-teal" href="{{ url_for('study_maps_index') }}">
+            查看留学地图
+          </a>
+        </div>
+      </div>
+
+      <div class="yd-reveal grid gap-4 md:grid-cols-2">
+        <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-soft">
+          <p class="text-sm font-bold text-grace-teal">01</p>
+          <h3 class="mt-4 text-2xl font-semibold text-slate-900">院校排名检索</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-600">按学校、英文名、地区快速筛选，建立初步候选名单。</p>
+        </div>
+        <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-soft">
+          <p class="text-sm font-bold text-grace-teal">02</p>
+          <h3 class="mt-4 text-2xl font-semibold text-slate-900">地区路径比较</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-600">把美国、英国、加拿大、香港、澳洲放在同一视角分析。</p>
+        </div>
+        <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-soft md:col-span-2">
+          <p class="text-sm font-bold text-grace-teal">03</p>
+          <h3 class="mt-4 text-2xl font-semibold text-slate-900">咨询前置准备</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-600">带着目标清单进入咨询，让第一次沟通直接进入策略层。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-slate-200 bg-white px-6 py-20 md:px-10 md:py-28" id="testimonials">
+    <div class="mx-auto max-w-7xl">
+      <div class="yd-reveal mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+        <div>
+          <p class="yd-section-label mb-4">Testimonials</p>
+          <h2 class="yd-hero-title text-4xl font-semibold leading-[1.15] text-grace-navy md:text-6xl">来自家庭的真实反馈</h2>
+        </div>
+        <p class="max-w-lg text-base leading-8 text-slate-600">咨询不是堆砌材料，而是在关键节点给出清晰判断，让家庭在申请季保持稳定节奏。</p>
+      </div>
+
+      <div class="yd-testimonial-track flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
+        <article class="yd-testimonial-card min-w-[82vw] rounded-lg border border-slate-200 bg-slate-50 p-6 shadow-soft md:min-w-0">
+          <p class="text-lg leading-9 text-slate-800">“Grace老师的时间线管理非常扎实，我们在申请季几乎没有踩坑。”</p>
+          <p class="mt-6 text-sm font-bold text-grace-teal">家长M · 上海</p>
+        </article>
+        <article class="yd-testimonial-card min-w-[82vw] rounded-lg border border-slate-200 bg-slate-50 p-6 shadow-soft md:min-w-0">
+          <p class="text-lg leading-9 text-slate-800">“从专业定位到文书，整个过程非常有方向感，每一次修改都知道为什么。”</p>
+          <p class="mt-6 text-sm font-bold text-grace-teal">学生K · 北京国际部</p>
+        </article>
+        <article class="yd-testimonial-card min-w-[82vw] rounded-lg border border-slate-200 bg-slate-50 p-6 shadow-soft md:min-w-0">
+          <p class="text-lg leading-9 text-slate-800">“老师对学校与专业匹配度把控非常细，结果超出预期。”</p>
+          <p class="mt-6 text-sm font-bold text-grace-teal">学生H · 深圳</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-6 py-20 md:px-10 md:py-28">
+    <div class="yd-reveal mx-auto max-w-7xl rounded-lg bg-grace-navy px-6 py-14 text-white shadow-soft md:px-12">
+      <div class="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div>
+          <p class="mb-4 text-sm font-bold text-grace-mint">Next Step</p>
+          <h2 class="yd-hero-title max-w-3xl text-4xl font-semibold leading-[1.15] md:text-6xl">从一次清晰诊断开始，重建你的申请策略。</h2>
+          <p class="mt-5 max-w-2xl text-lg leading-8 text-white/68">带上成绩、活动、目标国家和家庭偏好，我们会先判断路径是否合理，再确定下一步执行节奏。</p>
+        </div>
+        <a class="inline-flex items-center justify-center rounded-full bg-white px-7 py-3 font-bold text-grace-navy shadow-glow transition duration-200 hover:-translate-y-0.5 hover:bg-grace-mint" href="{{ url_for('contact_page') }}">
+          立即预约咨询
+          <span class="ml-2">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var nodes = document.querySelectorAll('.yd-reveal');
+    if (!('IntersectionObserver' in window)) {
+      nodes.forEach(function (node) { node.classList.add('is-visible'); });
+      return;
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    nodes.forEach(function (node) { observer.observe(node); });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,285 @@
+{
+  "maps": [
+    {
+      "slug": "uk",
+      "country_name_cn": "英国",
+      "map_center": [
+        54.5,
+        -3.0
+      ],
+      "zoom": 5,
+      "universities": [
+        {
+          "name": "University of Oxford",
+          "city": "Oxford",
+          "qs": 3,
+          "usnews": 4,
+          "lat": 51.7548,
+          "lng": -1.2544
+        },
+        {
+          "name": "University of Cambridge",
+          "city": "Cambridge",
+          "qs": 2,
+          "usnews": 8,
+          "lat": 52.2053,
+          "lng": 0.1218
+        },
+        {
+          "name": "Imperial College London",
+          "city": "London",
+          "qs": 6,
+          "usnews": 13,
+          "lat": 51.4988,
+          "lng": -0.1749
+        }
+      ]
+    },
+    {
+      "slug": "canada",
+      "country_name_cn": "加拿大",
+      "map_center": [
+        56.1,
+        -106.3
+      ],
+      "zoom": 4,
+      "universities": [
+        {
+          "name": "University of Toronto",
+          "city": "Toronto",
+          "qs": 25,
+          "usnews": 18,
+          "lat": 43.6629,
+          "lng": -79.3957
+        },
+        {
+          "name": "University of British Columbia",
+          "city": "Vancouver",
+          "qs": 38,
+          "usnews": 35,
+          "lat": 49.2606,
+          "lng": -123.246
+        },
+        {
+          "name": "McGill University",
+          "city": "Montreal",
+          "qs": 29,
+          "usnews": 54,
+          "lat": 45.5048,
+          "lng": -73.5772
+        }
+      ]
+    },
+    {
+      "slug": "australia",
+      "country_name_cn": "澳大利亚",
+      "map_center": [
+        -25.3,
+        133.8
+      ],
+      "zoom": 4,
+      "universities": [
+        {
+          "name": "University of Melbourne",
+          "city": "Melbourne",
+          "qs": 13,
+          "usnews": 27,
+          "lat": -37.7963,
+          "lng": 144.9614
+        },
+        {
+          "name": "UNSW Sydney",
+          "city": "Sydney",
+          "qs": 19,
+          "usnews": 37,
+          "lat": -33.9173,
+          "lng": 151.2313
+        },
+        {
+          "name": "Australian National University",
+          "city": "Canberra",
+          "qs": 30,
+          "usnews": 62,
+          "lat": -35.2777,
+          "lng": 149.1185
+        }
+      ]
+    },
+    {
+      "slug": "ireland",
+      "country_name_cn": "爱尔兰",
+      "map_center": [
+        53.2,
+        -8.2
+      ],
+      "zoom": 7,
+      "universities": [
+        {
+          "name": "Trinity College Dublin",
+          "city": "Dublin",
+          "qs": 87,
+          "usnews": 206,
+          "lat": 53.3438,
+          "lng": -6.2546
+        },
+        {
+          "name": "University College Dublin",
+          "city": "Dublin",
+          "qs": 126,
+          "usnews": 236,
+          "lat": 53.3078,
+          "lng": -6.2227
+        },
+        {
+          "name": "University of Galway",
+          "city": "Galway",
+          "qs": 289,
+          "usnews": 564,
+          "lat": 53.2784,
+          "lng": -9.0618
+        }
+      ]
+    },
+    {
+      "slug": "netherlands",
+      "country_name_cn": "荷兰",
+      "map_center": [
+        52.2,
+        5.3
+      ],
+      "zoom": 7,
+      "universities": [
+        {
+          "name": "University of Amsterdam",
+          "city": "Amsterdam",
+          "qs": 55,
+          "usnews": 38,
+          "lat": 52.355,
+          "lng": 4.955
+        },
+        {
+          "name": "Delft University of Technology",
+          "city": "Delft",
+          "qs": 49,
+          "usnews": 169,
+          "lat": 51.9985,
+          "lng": 4.3734
+        },
+        {
+          "name": "Leiden University",
+          "city": "Leiden",
+          "qs": 141,
+          "usnews": 56,
+          "lat": 52.1586,
+          "lng": 4.4822
+        }
+      ]
+    },
+    {
+      "slug": "hong-kong",
+      "country_name_cn": "中国香港",
+      "map_center": [
+        22.3193,
+        114.1694
+      ],
+      "zoom": 10,
+      "universities": [
+        {
+          "name": "The University of Hong Kong",
+          "city": "Pok Fu Lam",
+          "qs": 17,
+          "usnews": 55,
+          "lat": 22.283,
+          "lng": 114.1371
+        },
+        {
+          "name": "The Chinese University of Hong Kong",
+          "city": "Sha Tin",
+          "qs": 36,
+          "usnews": 42,
+          "lat": 22.4196,
+          "lng": 114.2068
+        },
+        {
+          "name": "HKUST",
+          "city": "Clear Water Bay",
+          "qs": 47,
+          "usnews": 105,
+          "lat": 22.3364,
+          "lng": 114.2655
+        }
+      ]
+    },
+    {
+      "slug": "macau",
+      "country_name_cn": "中国澳门",
+      "map_center": [
+        22.1987,
+        113.5439
+      ],
+      "zoom": 12,
+      "universities": [
+        {
+          "name": "University of Macau",
+          "city": "Hengqin",
+          "qs": 245,
+          "usnews": 262,
+          "lat": 22.127,
+          "lng": 113.546
+        },
+        {
+          "name": "Macau University of Science and Technology",
+          "city": "Taipa",
+          "qs": 464,
+          "usnews": 801,
+          "lat": 22.1492,
+          "lng": 113.56
+        },
+        {
+          "name": "City University of Macau",
+          "city": "Taipa",
+          "qs": 901,
+          "usnews": 999,
+          "lat": 22.1547,
+          "lng": 113.5552
+        }
+      ]
+    },
+    {
+      "slug": "singapore",
+      "country_name_cn": "新加坡",
+      "map_center": [
+        1.3521,
+        103.8198
+      ],
+      "zoom": 11,
+      "universities": [
+        {
+          "name": "National University of Singapore",
+          "city": "Kent Ridge",
+          "qs": 8,
+          "usnews": 22,
+          "lat": 1.2966,
+          "lng": 103.7764
+        },
+        {
+          "name": "Nanyang Technological University",
+          "city": "Jurong West",
+          "qs": 15,
+          "usnews": 30,
+          "lat": 1.3483,
+          "lng": 103.6831
+        },
+        {
+          "name": "Singapore Management University",
+          "city": "Downtown",
+          "qs": 545,
+          "usnews": 725,
+          "lat": 1.2963,
+          "lng": 103.8502
+        }
+      ]
+    }
+  ]
+}
+
