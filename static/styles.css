@@ -65,10 +65,10 @@ body{
 
 .floating-cta{position:fixed;right:16px;bottom:18px;background:linear-gradient(90deg,#1e3a8d,#2dd4bf);color:#fff;padding:.72rem 1rem;border-radius:999px;text-decoration:none;z-index:50;box-shadow:0 10px 24px rgba(30,58,138,.35)}
 .section-spaced{padding-top:1.35rem;padding-bottom:1.35rem}
-.site-beian{display:flex;justify-content:center;background:#fff;border-top:1px solid #e2e8f0;padding:1rem 5rem 1rem 1rem}
-.site-beian a{display:inline-flex;align-items:center;gap:.45rem;color:#64748b;text-decoration:none;font-size:.9rem;font-weight:600}
+.site-beian{display:flex;align-items:center;justify-content:center;width:100%;background:#fff;border-top:1px solid #e2e8f0;padding:18px 24px 24px;text-align:center}
+.site-beian a{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;color:#64748b;text-decoration:none;font-size:.9rem;font-weight:600;line-height:1.35}
 .site-beian a:hover{color:#0f766e}
-.site-beian img{width:18px;height:20px;object-fit:contain;display:block}
+.site-beian img{width:18px;height:20px;object-fit:contain;display:block;flex:0 0 auto;image-rendering:auto}
 
 @media (max-width: 992px){
   .grace-profile-clean{grid-template-columns:1fr;padding:2rem 1rem;margin:1rem auto;border-radius:14px}
