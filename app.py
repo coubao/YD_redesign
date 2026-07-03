@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, send_file
+from flask import Flask, abort, render_template, request, redirect, url_for, flash, send_file
 
 try:
     from flask_sqlalchemy import SQLAlchemy
@@ -15,6 +15,18 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 import re
 import json
+from secrets import token_urlsafe
+from intake_schema import (
+    ACADEMIC_RECORD_FIELDS,
+    ACTIVITY_CATEGORIES,
+    ACTIVITY_FIELDS,
+    INTAKE_SECTIONS,
+    MATERIAL_OPTIONS,
+    TESTING_RECORD_FIELDS,
+    build_intake_docx,
+    load_intake_data,
+    parse_intake_form,
+)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'change-me-in-production'
@@ -77,6 +89,9 @@ class Booking(db.Model):
     question: Mapped[str] = mapped_column(Text, nullable=False)
     meeting_method: Mapped[str] = mapped_column(String(80), default='腾讯会议')
     status: Mapped[str] = mapped_column(String(40), default='pending')
+    intake_token: Mapped[str] = mapped_column(String(80), default=lambda: token_urlsafe(24))
+    intake_data: Mapped[str] = mapped_column(Text, default='')
+    intake_submitted_at: Mapped[str] = mapped_column(String(32), default='')
     created_at: Mapped[str] = mapped_column(String(32), default=lambda: datetime.now().isoformat(timespec='seconds'))
 
 
@@ -226,40 +241,79 @@ def build_booking_context(form_data=None):
     }
 
 
+def ensure_booking_token(booking_record):
+    if not booking_record.intake_token:
+        booking_record.intake_token = token_urlsafe(24)
+        db.session.commit()
+    return booking_record.intake_token
+
+
+def render_intake_form(booking_record, intake_data, saved=False):
+    return render_template(
+        'booking_intake.html',
+        booking=booking_record,
+        intake=intake_data,
+        intake_sections=INTAKE_SECTIONS,
+        academic_record_fields=ACADEMIC_RECORD_FIELDS,
+        testing_record_fields=TESTING_RECORD_FIELDS,
+        activity_categories=ACTIVITY_CATEGORIES,
+        activity_fields=ACTIVITY_FIELDS,
+        material_options=MATERIAL_OPTIONS,
+        saved=saved,
+    )
+
+
+def save_intake_form(booking_record):
+    intake_data = parse_intake_form(request.form)
+    booking_record.intake_data = json.dumps(intake_data, ensure_ascii=False)
+    booking_record.intake_submitted_at = datetime.now().isoformat(timespec='seconds')
+    db.session.commit()
+    flash('咨询前信息采集表已保存。', 'success')
+
+
 
 def ensure_ranking_schema():
     # Lightweight SQLite schema patching for users upgrading from older columns
     db.create_all()
     cols = {row[1] for row in db.session.execute(sql_text("PRAGMA table_info(ranking)")).fetchall()}
-    if not cols:
-        return
 
     ddl = []
-    if 'school_name' not in cols:
+    if cols and 'school_name' not in cols:
         ddl.append("ALTER TABLE ranking ADD COLUMN school_name VARCHAR(200) DEFAULT ''")
-    if 'english_name' not in cols:
+    if cols and 'english_name' not in cols:
         ddl.append("ALTER TABLE ranking ADD COLUMN english_name VARCHAR(200) DEFAULT ''")
-    if 'region' not in cols:
+    if cols and 'region' not in cols:
         ddl.append("ALTER TABLE ranking ADD COLUMN region VARCHAR(200) DEFAULT ''")
-    if 'qs' not in cols:
+    if cols and 'qs' not in cols:
         ddl.append("ALTER TABLE ranking ADD COLUMN qs FLOAT DEFAULT 0")
-    if 'usnews' not in cols:
+    if cols and 'usnews' not in cols:
         ddl.append("ALTER TABLE ranking ADD COLUMN usnews FLOAT DEFAULT 0")
-    if 'the' not in cols:
+    if cols and 'the' not in cols:
         ddl.append("ALTER TABLE ranking ADD COLUMN the FLOAT DEFAULT 0")
-    if 'arwu' not in cols:
+    if cols and 'arwu' not in cols:
         ddl.append("ALTER TABLE ranking ADD COLUMN arwu FLOAT DEFAULT 0")
-    if 'history_data' not in cols:
+    if cols and 'history_data' not in cols:
         ddl.append("ALTER TABLE ranking ADD COLUMN history_data TEXT DEFAULT ''")
 
     for stmt in ddl:
         db.session.execute(sql_text(stmt))
 
     # Backfill school_name from old column if present and new column empty
-    if 'school' in cols:
+    if cols and 'school' in cols:
         db.session.execute(sql_text("UPDATE ranking SET school_name = school WHERE (school_name IS NULL OR school_name = '') AND school IS NOT NULL"))
-    if 'location' in cols:
+    if cols and 'location' in cols:
         db.session.execute(sql_text("UPDATE ranking SET region = location WHERE (region IS NULL OR region = '') AND location IS NOT NULL"))
+
+    booking_cols = {row[1] for row in db.session.execute(sql_text("PRAGMA table_info(booking)")).fetchall()}
+    booking_ddl = []
+    if booking_cols and 'intake_token' not in booking_cols:
+        booking_ddl.append("ALTER TABLE booking ADD COLUMN intake_token VARCHAR(80) DEFAULT ''")
+    if booking_cols and 'intake_data' not in booking_cols:
+        booking_ddl.append("ALTER TABLE booking ADD COLUMN intake_data TEXT DEFAULT ''")
+    if booking_cols and 'intake_submitted_at' not in booking_cols:
+        booking_ddl.append("ALTER TABLE booking ADD COLUMN intake_submitted_at VARCHAR(32) DEFAULT ''")
+    for stmt in booking_ddl:
+        db.session.execute(sql_text(stmt))
     db.session.commit()
 
 @app.before_request
@@ -385,7 +439,35 @@ def consultation():
 @app.get('/booking/success/<int:booking_id>')
 def booking_success(booking_id):
     booking_record = Booking.query.get_or_404(booking_id)
+    ensure_booking_token(booking_record)
     return render_template('booking_success.html', booking=booking_record)
+
+
+@app.route('/booking/<int:booking_id>/intake/<token>', methods=['GET', 'POST'])
+def booking_intake(booking_id, token):
+    booking_record = Booking.query.get_or_404(booking_id)
+    if not booking_record.intake_token or token != booking_record.intake_token:
+        abort(404)
+    intake_data = load_intake_data(booking_record.intake_data)
+
+    if request.method == 'POST':
+        save_intake_form(booking_record)
+        return redirect(url_for('booking_intake', booking_id=booking_record.id, token=booking_record.intake_token, saved=1))
+
+    return render_intake_form(booking_record, intake_data, request.args.get('saved') == '1')
+
+
+@app.route('/admin/bookings/<int:booking_id>/intake', methods=['GET', 'POST'])
+def admin_booking_intake(booking_id):
+    booking_record = Booking.query.get_or_404(booking_id)
+    ensure_booking_token(booking_record)
+    intake_data = load_intake_data(booking_record.intake_data)
+
+    if request.method == 'POST':
+        save_intake_form(booking_record)
+        return redirect(url_for('admin_booking_intake', booking_id=booking_record.id, saved=1))
+
+    return render_intake_form(booking_record, intake_data, request.args.get('saved') == '1')
 
 @app.get('/offers')
 def offers():
@@ -430,6 +512,35 @@ def admin():
     avg_score = round(sum(r.qs for r in rankings) / total, 1) if total else 0
     total_locations = len({r.region for r in rankings if r.region})
     return render_template('admin.html', rankings=rankings, total=total, avg_score=avg_score, total_locations=total_locations)
+
+
+@app.get('/admin/bookings')
+def admin_bookings():
+    bookings = Booking.query.order_by(Booking.booking_date.desc(), Booking.time_slot.desc(), Booking.id.desc()).all()
+    total = len(bookings)
+    intake_count = sum(1 for booking_record in bookings if booking_record.intake_submitted_at)
+    upcoming_count = sum(1 for booking_record in bookings if booking_record.booking_date >= date.today().isoformat())
+    return render_template(
+        'admin_bookings.html',
+        bookings=bookings,
+        total=total,
+        intake_count=intake_count,
+        upcoming_count=upcoming_count,
+    )
+
+
+@app.get('/admin/bookings/<int:booking_id>/download-intake')
+def download_booking_intake(booking_id):
+    booking_record = Booking.query.get_or_404(booking_id)
+    intake_data = load_intake_data(booking_record.intake_data)
+    docx_buffer = build_intake_docx(booking_record, intake_data)
+    safe_name = re.sub(r'[^\w\u4e00-\u9fff-]+', '_', booking_record.name).strip('_') or f'booking_{booking_record.id}'
+    return send_file(
+        docx_buffer,
+        mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        as_attachment=True,
+        download_name=f'咨询前信息采集表_{safe_name}_{booking_record.booking_date}.docx',
+    )
 
 
 

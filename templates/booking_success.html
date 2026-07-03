@@ -46,8 +46,15 @@
         <p class="mt-2 whitespace-pre-line leading-8 text-slate-800">{{ booking.question }}</p>
       </div>
 
+      <div class="mt-6 rounded-2xl border border-[#0f766e]/20 bg-[#ecfdf5] p-5">
+        <p class="text-sm font-black uppercase tracking-[0.16em] text-[#0f766e]">Next Step</p>
+        <h3 class="mt-2 text-2xl font-black text-[#061a3a]">继续填写咨询前信息采集表</h3>
+        <p class="mt-2 leading-8 text-slate-700">完成后顾问可以提前了解学生背景、成绩、活动经历、目标方向和家长最关心的问题，让 1 小时诊断会更高效。</p>
+      </div>
+
       <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-        <a class="inline-flex items-center justify-center rounded-full bg-[#061a3a] px-7 py-3 font-black text-white no-underline transition hover:bg-[#0f766e]" href="{{ url_for('home') }}">返回首页</a>
+        <a class="inline-flex items-center justify-center rounded-full bg-[#061a3a] px-7 py-3 font-black text-white no-underline transition hover:bg-[#0f766e]" href="{{ url_for('booking_intake', booking_id=booking.id, token=booking.intake_token) }}">填写采集表</a>
+        <a class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-7 py-3 font-black text-[#061a3a] no-underline transition hover:border-[#0f766e] hover:text-[#0f766e]" href="{{ url_for('home') }}">返回首页</a>
         <a class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-7 py-3 font-black text-[#061a3a] no-underline transition hover:border-[#0f766e] hover:text-[#0f766e]" href="{{ url_for('booking') }}">继续预约</a>
       </div>
     </div>

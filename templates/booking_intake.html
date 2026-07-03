@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% block content %}
+<script>
+  window.tailwind = window.tailwind || {};
+  window.tailwind.config = { corePlugins: { preflight: false } };
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  .yd-intake {
+    background:
+      radial-gradient(circle at 12% 0%, rgba(45, 212, 191, .14), transparent 30rem),
+      radial-gradient(circle at 88% 8%, rgba(214, 168, 79, .14), transparent 30rem),
+      linear-gradient(180deg, #f8fbff 0%, #eef6fb 48%, #ffffff 100%);
+    color: #0f172a;
+    font-family: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  .yd-intake .yd-serif {
+    font-family: "Noto Serif SC", Georgia, "Times New Roman", serif;
+  }
+  .yd-intake input,
+  .yd-intake select,
+  .yd-intake textarea {
+    font-size: 16px;
+  }
+  .yd-intake-table {
+    min-width: 760px;
+  }
+</style>
+
+<main class="yd-intake">
+  <section class="px-5 py-14 md:px-10 md:py-20">
+    <div class="mx-auto max-w-6xl">
+      <div class="mb-8 rounded-[28px] bg-[#061a3a] p-7 text-white shadow-[0_28px_90px_rgba(15,23,42,.16)] md:p-10">
+        <p class="text-sm font-black uppercase tracking-[0.18em] text-[#2dd4bf]">Grace Strategy Diagnostic</p>
+        <h1 class="yd-serif mt-4 text-4xl font-semibold leading-tight md:text-6xl">咨询前信息采集表</h1>
+        <p class="mt-4 max-w-3xl text-lg leading-8 text-white/78">请家长在咨询前 24 小时完成填写；如信息不完整，可先填写已知部分。本表用于帮助顾问提前建立判断，提高 1 小时诊断效率。</p>
+        <div class="mt-6 grid gap-3 text-sm font-bold text-white/86 md:grid-cols-4">
+          <div class="rounded-2xl bg-white/10 p-4">预约编号：#{{ booking.id }}</div>
+          <div class="rounded-2xl bg-white/10 p-4">{{ booking.booking_date }}</div>
+          <div class="rounded-2xl bg-white/10 p-4">{{ booking.time_slot }}</div>
+          <div class="rounded-2xl bg-white/10 p-4">{{ booking.meeting_method }}</div>
+        </div>
+      </div>
+
+      {% if saved %}
+      <div class="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-base font-bold text-emerald-800">
+        已保存。你可以继续修改并再次提交，后台下载的 Word 文件会使用最新内容。
+      </div>
+      {% endif %}
+
+      <form method="post" class="grid gap-7">
+        {% for section in intake_sections %}
+        <section class="rounded-[26px] border border-slate-200 bg-white p-5 shadow-[0_18px_54px_rgba(15,23,42,.08)] md:p-7">
+          <div class="mb-6">
+            <h2 class="text-2xl font-black text-[#061a3a]">{{ section.title }}</h2>
+            <p class="mt-2 text-base leading-7 text-slate-500">{{ section.description }}</p>
+          </div>
+          <div class="grid gap-5 md:grid-cols-2">
+            {% for field in section.fields %}
+            <div class="{% if field.type == 'textarea' %}md:col-span-2{% endif %}">
+              <label class="mb-2 block text-sm font-black text-slate-700" for="{{ field.name }}">{{ field.label }}</label>
+              {% if field.type == 'select' %}
+              <select class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="{{ field.name }}" name="{{ field.name }}">
+                <option value="">请选择</option>
+                {% for option in field.options %}
+                <option value="{{ option }}" {% if intake.get(field.name) == option %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+              </select>
+              {% elif field.type == 'multi_checkbox' %}
+              {% set selected_values = intake.get(field.name, []) %}
+              <div class="grid gap-2 sm:grid-cols-2">
+                {% for option in field.options %}
+                <label class="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-bold text-slate-700">
+                  <input class="h-4 w-4 accent-[#0f766e]" type="checkbox" name="{{ field.name }}" value="{{ option }}" {% if option in selected_values %}checked{% endif %}>
+                  <span>{{ option }}</span>
+                </label>
+                {% endfor %}
+              </div>
+              {% elif field.type == 'textarea' %}
+              <textarea class="min-h-[120px] w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="{{ field.name }}" name="{{ field.name }}">{{ intake.get(field.name, '') }}</textarea>
+              {% else %}
+              <input class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="{{ field.name }}" name="{{ field.name }}" value="{{ intake.get(field.name, '') }}">
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+
+          {% if section.key == 'academic' %}
+          {% set academic_records = intake.get('academic_records', []) %}
+          <div class="mt-7">
+            <h3 class="mb-3 text-lg font-black text-[#061a3a]">成绩明细</h3>
+            <div class="overflow-x-auto rounded-2xl border border-slate-200">
+              <table class="yd-intake-table w-full border-collapse bg-white text-sm">
+                <thead class="bg-[#ecfdf5] text-[#065f46]">
+                  <tr>{% for key, label in academic_record_fields %}<th class="border-b border-slate-200 px-3 py-3 text-left font-black">{{ label }}</th>{% endfor %}</tr>
+                </thead>
+                <tbody>
+                  {% for i in range(4) %}
+                  {% if i < academic_records|length %}{% set row = academic_records[i] %}{% else %}{% set row = {} %}{% endif %}
+                  <tr>
+                    {% for key, label in academic_record_fields %}
+                    <td class="border-b border-slate-100 p-2"><input class="w-full rounded-xl border border-slate-200 px-3 py-2" name="academic_{{ i }}_{{ key }}" value="{{ row.get(key, '') }}"></td>
+                    {% endfor %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endif %}
+
+          {% if section.key == 'testing' %}
+          {% set testing_records = intake.get('testing_records', []) %}
+          <div class="mt-7">
+            <h3 class="mb-3 text-lg font-black text-[#061a3a]">考试/课程明细</h3>
+            <div class="overflow-x-auto rounded-2xl border border-slate-200">
+              <table class="yd-intake-table w-full border-collapse bg-white text-sm">
+                <thead class="bg-[#ecfdf5] text-[#065f46]">
+                  <tr>{% for key, label in testing_record_fields %}<th class="border-b border-slate-200 px-3 py-3 text-left font-black">{{ label }}</th>{% endfor %}</tr>
+                </thead>
+                <tbody>
+                  {% for i in range(4) %}
+                  {% if i < testing_records|length %}{% set row = testing_records[i] %}{% else %}{% set row = {} %}{% endif %}
+                  <tr>
+                    {% for key, label in testing_record_fields %}
+                    <td class="border-b border-slate-100 p-2"><input class="w-full rounded-xl border border-slate-200 px-3 py-2" name="testing_{{ i }}_{{ key }}" value="{{ row.get(key, '') }}"></td>
+                    {% endfor %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endif %}
+        </section>
+        {% endfor %}
+
+        <section class="rounded-[26px] border border-slate-200 bg-white p-5 shadow-[0_18px_54px_rgba(15,23,42,.08)] md:p-7">
+          <h2 class="text-2xl font-black text-[#061a3a]">四、活动、竞赛、奖项与特殊经历</h2>
+          <p class="mt-2 text-base leading-7 text-slate-500">请优先填写真实投入较多、能讲出过程和成果的经历。</p>
+          {% set activities = intake.get('activities', {}) %}
+          <div class="mt-6 grid gap-4">
+            {% for category in activity_categories %}
+            {% set row = activities.get(category.key, {}) %}
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <h3 class="mb-3 text-base font-black text-[#0f766e]">{{ category.label }}</h3>
+              <div class="grid gap-3 md:grid-cols-5">
+                {% for key, label in activity_fields %}
+                <div>
+                  <label class="mb-1 block text-xs font-black text-slate-500">{{ label }}</label>
+                  <input class="w-full rounded-xl border border-slate-200 px-3 py-2" name="activity_{{ category.key }}_{{ key }}" value="{{ row.get(key, '') }}">
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="rounded-[26px] border border-slate-200 bg-white p-5 shadow-[0_18px_54px_rgba(15,23,42,.08)] md:p-7">
+          <h2 class="text-2xl font-black text-[#061a3a]">七、家长最希望本次咨询解决的三个问题</h2>
+          {% set consult_questions = intake.get('consult_questions', []) %}
+          <div class="mt-5 grid gap-4">
+            {% for i in range(1, 4) %}
+            <div>
+              <label class="mb-2 block text-sm font-black text-slate-700">问题 {{ i }}</label>
+              <textarea class="min-h-[90px] w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" name="consult_question_{{ i }}">{% if i <= consult_questions|length %}{{ consult_questions[i - 1] }}{% endif %}</textarea>
+            </div>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="rounded-[26px] border border-slate-200 bg-white p-5 shadow-[0_18px_54px_rgba(15,23,42,.08)] md:p-7">
+          <h2 class="text-2xl font-black text-[#061a3a]">八、资料上传清单</h2>
+          <p class="mt-2 text-base leading-7 text-slate-500">第一版先确认资料准备状态，后续可继续升级为文件上传。</p>
+          {% set selected_materials = intake.get('materials', []) %}
+          <div class="mt-5 grid gap-3 md:grid-cols-2">
+            {% for material in material_options %}
+            <label class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-700">
+              <input class="h-4 w-4 accent-[#0f766e]" type="checkbox" name="materials" value="{{ material }}" {% if material in selected_materials %}checked{% endif %}>
+              <span>{{ material }}</span>
+            </label>
+            {% endfor %}
+          </div>
+          <div class="mt-5">
+            <label class="mb-2 block text-sm font-black text-slate-700">资料补充说明</label>
+            <textarea class="min-h-[100px] w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" name="materials_note">{{ intake.get('materials_note', '') }}</textarea>
+          </div>
+        </section>
+
+        <div class="sticky bottom-4 z-10 rounded-[26px] border border-slate-200 bg-white/90 p-4 shadow-[0_18px_54px_rgba(15,23,42,.16)] backdrop-blur">
+          <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <p class="text-sm font-bold text-slate-500">提交后信息会进入后台，可下载为 Word 采集表。</p>
+            <button class="rounded-full bg-[#061a3a] px-8 py-4 text-base font-black text-white shadow-[0_18px_42px_rgba(6,26,58,.22)] transition hover:-translate-y-0.5 hover:bg-[#0f766e]" type="submit">保存采集表</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+{% endblock %}
