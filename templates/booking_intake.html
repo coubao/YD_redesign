@@ -34,7 +34,7 @@
       <div class="mb-8 rounded-[28px] bg-[#061a3a] p-7 text-white shadow-[0_28px_90px_rgba(15,23,42,.16)] md:p-10">
         <p class="text-sm font-black uppercase tracking-[0.18em] text-[#2dd4bf]">Grace Strategy Diagnostic</p>
         <h1 class="yd-serif mt-4 text-4xl font-semibold leading-tight md:text-6xl">咨询前信息采集表</h1>
-        <p class="mt-4 max-w-3xl text-lg leading-8 text-white/78">请家长在咨询前 24 小时完成填写；如信息不完整，可先填写已知部分。本表用于帮助顾问提前建立判断，提高 1 小时诊断效率。</p>
+        <p class="mt-4 max-w-3xl text-lg leading-8 text-white/78">学生基本信息为必填，其余部分可先填写已知内容。提供的信息越全面，顾问的判断结果越准确。</p>
         <div class="mt-6 grid gap-3 text-sm font-bold text-white/86 md:grid-cols-4">
           <div class="rounded-2xl bg-white/10 p-4">预约编号：#{{ booking.id }}</div>
           <div class="rounded-2xl bg-white/10 p-4">{{ booking.booking_date }}</div>
@@ -49,6 +49,18 @@
       </div>
       {% endif %}
 
+      {% if errors %}
+      <div class="mb-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-base font-bold text-red-700">
+        {% for error in errors %}
+        <p class="mb-1 last:mb-0">{{ error }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="mb-6 rounded-2xl border border-[#0f766e]/20 bg-[#ecfdf5] p-5 text-base leading-8 text-slate-700">
+        <strong class="text-[#0f766e]">填写提示：</strong>学生基本信息为必填项；成绩、标化、活动、目标、预算等部分为选填项。提供信息越全面，本次战略诊断的判断会越准确。
+      </div>
+
       <form method="post" class="grid gap-7">
         {% for section in intake_sections %}
         <section class="rounded-[26px] border border-slate-200 bg-white p-5 shadow-[0_18px_54px_rgba(15,23,42,.08)] md:p-7">
@@ -59,9 +71,12 @@
           <div class="grid gap-5 md:grid-cols-2">
             {% for field in section.fields %}
             <div class="{% if field.type == 'textarea' %}md:col-span-2{% endif %}">
-              <label class="mb-2 block text-sm font-black text-slate-700" for="{{ field.name }}">{{ field.label }}</label>
+              <label class="mb-2 block text-sm font-black text-slate-700" for="{{ field.name }}">
+                {{ field.label }}
+                {% if field.required %}<span class="ml-2 rounded-full bg-[#0f766e]/10 px-2 py-0.5 text-xs text-[#0f766e]">必填</span>{% endif %}
+              </label>
               {% if field.type == 'select' %}
-              <select class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="{{ field.name }}" name="{{ field.name }}">
+              <select class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="{{ field.name }}" name="{{ field.name }}" {% if field.required %}required{% endif %}>
                 <option value="">请选择</option>
                 {% for option in field.options %}
                 <option value="{{ option }}" {% if intake.get(field.name) == option %}selected{% endif %}>{{ option }}</option>
@@ -80,7 +95,7 @@
               {% elif field.type == 'textarea' %}
               <textarea class="min-h-[120px] w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="{{ field.name }}" name="{{ field.name }}">{{ intake.get(field.name, '') }}</textarea>
               {% else %}
-              <input class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="{{ field.name }}" name="{{ field.name }}" value="{{ intake.get(field.name, '') }}">
+              <input class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="{{ field.name }}" name="{{ field.name }}" value="{{ intake.get(field.name, '') }}" {% if field.required %}required{% endif %}>
               {% endif %}
             </div>
             {% endfor %}
@@ -191,7 +206,7 @@
 
         <div class="sticky bottom-4 z-10 rounded-[26px] border border-slate-200 bg-white/90 p-4 shadow-[0_18px_54px_rgba(15,23,42,.16)] backdrop-blur">
           <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <p class="text-sm font-bold text-slate-500">提交后预约状态会变为“已确认”，后台可下载为 Word 采集表。</p>
+            <p class="text-sm font-bold text-slate-500">学生基本信息必填，其余选填；信息越全面，判断结果越准确。提交后预约状态会变为“已确认”。</p>
             <button class="rounded-full bg-[#061a3a] px-8 py-4 text-base font-black text-white shadow-[0_18px_42px_rgba(6,26,58,.22)] transition hover:-translate-y-0.5 hover:bg-[#0f766e]" type="submit">提交并确认预约</button>
           </div>
         </div>

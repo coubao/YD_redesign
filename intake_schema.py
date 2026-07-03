@@ -39,18 +39,18 @@ INTAKE_SECTIONS = [
         'title': '一、学生与家庭基本信息',
         'description': '用于确认学生背景、家庭决策节奏和现有服务状态。',
         'fields': [
-            {'name': 'student_name', 'label': '学生姓名', 'type': 'text'},
+            {'name': 'student_name', 'label': '学生姓名', 'type': 'text', 'required': True},
             {'name': 'english_name', 'label': '英文名/昵称', 'type': 'text'},
-            {'name': 'current_grade', 'label': '目前年级', 'type': 'select', 'options': GRADE_OPTIONS},
+            {'name': 'current_grade', 'label': '目前年级', 'type': 'select', 'options': GRADE_OPTIONS, 'required': True},
             {'name': 'graduation_year', 'label': '毕业年份', 'type': 'text'},
-            {'name': 'current_school', 'label': '目前学校', 'type': 'text'},
-            {'name': 'city', 'label': '所在城市', 'type': 'text'},
-            {'name': 'curriculum', 'label': '课程体系', 'type': 'multi_checkbox', 'options': CURRICULUM_OPTIONS},
+            {'name': 'current_school', 'label': '目前学校', 'type': 'text', 'required': True},
+            {'name': 'city', 'label': '所在城市', 'type': 'text', 'required': True},
+            {'name': 'curriculum', 'label': '课程体系', 'type': 'multi_checkbox', 'options': CURRICULUM_OPTIONS, 'required': True},
             {'name': 'curriculum_other', 'label': '课程体系补充', 'type': 'text'},
             {'name': 'agency_status', 'label': '是否已有机构', 'type': 'select', 'options': ['无', '有']},
             {'name': 'agency_name', 'label': '机构名称', 'type': 'text'},
-            {'name': 'parent_contact', 'label': '家长联系人', 'type': 'text'},
-            {'name': 'phone_wechat', 'label': '联系电话/微信', 'type': 'text'},
+            {'name': 'parent_contact', 'label': '家长联系人', 'type': 'text', 'required': True},
+            {'name': 'phone_wechat', 'label': '联系电话/微信', 'type': 'text', 'required': True},
             {'name': 'decision_maker', 'label': '家庭决策人', 'type': 'select', 'options': DECISION_MAKER_OPTIONS},
             {'name': 'decision_status', 'label': '决策状态', 'type': 'select', 'options': DECISION_STATUS_OPTIONS},
         ],
@@ -202,6 +202,22 @@ def parse_intake_form(form):
     data['materials'] = [value.strip() for value in form.getlist('materials') if value.strip()]
     data['materials_note'] = form.get('materials_note', '').strip()
     return data
+
+
+def validate_intake_data(data):
+    errors = []
+    for section in INTAKE_SECTIONS:
+        for field in section['fields']:
+            if not field.get('required'):
+                continue
+            value = data.get(field['name'])
+            if isinstance(value, list):
+                is_missing = not value
+            else:
+                is_missing = not str(value or '').strip()
+            if is_missing:
+                errors.append(f'请填写学生基本信息：{field["label"]}。')
+    return errors
 
 
 def format_intake_value(value):

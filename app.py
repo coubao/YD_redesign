@@ -26,6 +26,7 @@ from intake_schema import (
     build_intake_docx,
     load_intake_data,
     parse_intake_form,
+    validate_intake_data,
 )
 
 app = Flask(__name__)
@@ -101,13 +102,12 @@ BOOKING_STATUS_LABELS = {
     BOOKING_STATUS_PENDING_INTAKE: '待填写资料',
     BOOKING_STATUS_CONFIRMED: '已确认',
 }
-BOOKING_SLOT_DURATION_MINUTES = 60
-BOOKING_SLOT_STEP_MINUTES = 30
-BOOKING_BUFFER_MINUTES = 30
+BOOKING_SLOT_DURATION_MINUTES = 120
+BOOKING_SLOT_STEP_MINUTES = 120
+BOOKING_BUFFER_MINUTES = 0
 BOOKING_DAILY_WINDOWS = [
-    ('morning', '上午', 9 * 60, 12 * 60),
-    ('afternoon', '下午', 14 * 60, 17 * 60),
-    ('evening', '晚上', 19 * 60, 21 * 60),
+    ('morning', '上午', 10 * 60, 12 * 60),
+    ('afternoon', '下午', 14 * 60, 16 * 60),
 ]
 
 BOOKING_TARGET_COUNTRIES = ['美国', '英国', '加拿大', '澳大利亚', '新加坡&香港', '多国联申', '暂未确定']
@@ -210,8 +210,8 @@ def build_slot_status_map(day_values):
                 state = 'past'
                 label = '已过期'
             elif any(booking_slots_conflict(slot, booked_slot) for booked_slot in booked_slots):
-                state = 'buffer'
-                label = '间隔保护'
+                state = 'booked'
+                label = '已预约'
 
             slot_statuses[slot] = {
                 'state': state,
@@ -254,7 +254,7 @@ def ensure_booking_token(booking_record):
     return booking_record.intake_token
 
 
-def render_intake_form(booking_record, intake_data, saved=False):
+def render_intake_form(booking_record, intake_data, saved=False, errors=None):
     return render_template(
         'booking_intake.html',
         booking=booking_record,
@@ -266,16 +266,21 @@ def render_intake_form(booking_record, intake_data, saved=False):
         activity_fields=ACTIVITY_FIELDS,
         material_options=MATERIAL_OPTIONS,
         saved=saved,
+        errors=errors or [],
     )
 
 
 def save_intake_form(booking_record):
     intake_data = parse_intake_form(request.form)
+    errors = validate_intake_data(intake_data)
+    if errors:
+        return False, intake_data, errors
     booking_record.intake_data = json.dumps(intake_data, ensure_ascii=False)
     booking_record.intake_submitted_at = datetime.now().isoformat(timespec='seconds')
     booking_record.status = BOOKING_STATUS_CONFIRMED
     db.session.commit()
     flash('咨询前信息采集表已提交，预约已确认。', 'success')
+    return True, intake_data, []
 
 
 
@@ -479,7 +484,9 @@ def booking_intake(booking_id, token):
     intake_data = load_intake_data(booking_record.intake_data)
 
     if request.method == 'POST':
-        save_intake_form(booking_record)
+        is_valid, intake_data, errors = save_intake_form(booking_record)
+        if not is_valid:
+            return render_intake_form(booking_record, intake_data, errors=errors), 400
         return redirect(url_for('booking_confirmed', booking_id=booking_record.id, token=booking_record.intake_token))
 
     return render_intake_form(booking_record, intake_data, request.args.get('saved') == '1')
@@ -502,7 +509,9 @@ def admin_booking_intake(booking_id):
     intake_data = load_intake_data(booking_record.intake_data)
 
     if request.method == 'POST':
-        save_intake_form(booking_record)
+        is_valid, intake_data, errors = save_intake_form(booking_record)
+        if not is_valid:
+            return render_intake_form(booking_record, intake_data, errors=errors), 400
         return redirect(url_for('admin_booking_intake', booking_id=booking_record.id, saved=1))
 
     return render_intake_form(booking_record, intake_data, request.args.get('saved') == '1')
