@@ -80,12 +80,13 @@ class Booking(db.Model):
     created_at: Mapped[str] = mapped_column(String(32), default=lambda: datetime.now().isoformat(timespec='seconds'))
 
 
-BOOKING_TIME_SLOTS = [
-    '10:00-11:00',
-    '11:30-12:30',
-    '14:00-15:00',
-    '15:30-16:30',
-    '19:00-20:00',
+BOOKING_SLOT_DURATION_MINUTES = 60
+BOOKING_SLOT_STEP_MINUTES = 30
+BOOKING_BUFFER_MINUTES = 30
+BOOKING_DAILY_WINDOWS = [
+    ('morning', '上午', 9 * 60, 12 * 60),
+    ('afternoon', '下午', 14 * 60, 17 * 60),
+    ('evening', '晚上', 19 * 60, 21 * 60),
 ]
 
 BOOKING_TARGET_COUNTRIES = ['美国', '英国', '加拿大', '澳大利亚', '新加坡&香港', '多国联申', '暂未确定']
@@ -93,15 +94,59 @@ BOOKING_STAGES = ['低龄申请', '本科申请', '硕士申请', '博士申请'
 WEEKDAY_LABELS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
 
 
+def format_booking_minutes(minutes):
+    return f'{minutes // 60:02d}:{minutes % 60:02d}'
+
+
+def parse_booking_time(time_text):
+    hour, minute = time_text.split(':', 1)
+    return int(hour) * 60 + int(minute)
+
+
+def parse_booking_slot(slot):
+    start_text, end_text = slot.split('-', 1)
+    return parse_booking_time(start_text), parse_booking_time(end_text)
+
+
+def build_booking_slot_groups():
+    groups = []
+    all_slots = []
+    for key, label, start, end in BOOKING_DAILY_WINDOWS:
+        slots = []
+        current = start
+        while current + BOOKING_SLOT_DURATION_MINUTES <= end:
+            slot = f'{format_booking_minutes(current)}-{format_booking_minutes(current + BOOKING_SLOT_DURATION_MINUTES)}'
+            slots.append(slot)
+            all_slots.append(slot)
+            current += BOOKING_SLOT_STEP_MINUTES
+        groups.append({
+            'key': key,
+            'label': label,
+            'window': f'{format_booking_minutes(start)}-{format_booking_minutes(end)}',
+            'slots': slots,
+        })
+    return all_slots, groups
+
+
+BOOKING_TIME_SLOTS, BOOKING_SLOT_GROUPS = build_booking_slot_groups()
+
+
 def build_booking_days(days_count=14):
-    start = date.today() + timedelta(days=1)
+    start = date.today()
     days = []
-    for offset in range(days_count):
+    offset = 0
+    while len(days) < days_count:
         current = start + timedelta(days=offset)
+        offset += 1
+        if current.weekday() == 6:
+            continue
         days.append({
             'value': current.isoformat(),
             'label': current.strftime('%m月%d日'),
+            'day_number': current.strftime('%d'),
+            'month_label': current.strftime('%m月'),
             'weekday': WEEKDAY_LABELS[current.weekday()],
+            'is_today': current == date.today(),
         })
     return days
 
@@ -114,13 +159,67 @@ def get_booked_slots_by_date(day_values):
     return booked
 
 
+def booking_slots_conflict(candidate_slot, booked_slot):
+    candidate_start, candidate_end = parse_booking_slot(candidate_slot)
+    booked_start, booked_end = parse_booking_slot(booked_slot)
+    blocked_start = booked_start - BOOKING_BUFFER_MINUTES
+    blocked_end = booked_end + BOOKING_BUFFER_MINUTES
+    return candidate_start < blocked_end and candidate_end > blocked_start
+
+
+def build_slot_status_map(day_values):
+    booked_map = get_booked_slots_by_date(day_values)
+    today_value = date.today().isoformat()
+    now = datetime.now()
+    current_minutes = now.hour * 60 + now.minute
+    status_map = {}
+
+    for day_value in day_values:
+        booked_slots = booked_map.get(day_value, [])
+        slot_statuses = {}
+        for slot in BOOKING_TIME_SLOTS:
+            slot_start, _ = parse_booking_slot(slot)
+            state = 'available'
+            label = '可预约'
+
+            if slot in booked_slots:
+                state = 'booked'
+                label = '已预约'
+            elif day_value == today_value and slot_start <= current_minutes:
+                state = 'past'
+                label = '已过期'
+            elif any(booking_slots_conflict(slot, booked_slot) for booked_slot in booked_slots):
+                state = 'buffer'
+                label = '间隔保护'
+
+            slot_statuses[slot] = {
+                'state': state,
+                'label': label,
+                'disabled': state != 'available',
+            }
+        status_map[day_value] = slot_statuses
+
+    return status_map
+
+
 def build_booking_context(form_data=None):
     available_days = build_booking_days()
     day_values = [item['value'] for item in available_days]
+    slot_status_map = build_slot_status_map(day_values)
+
+    for day_item in available_days:
+        statuses = slot_status_map.get(day_item['value'], {})
+        available_count = sum(1 for item in statuses.values() if item['state'] == 'available')
+        day_item['available_count'] = available_count
+        day_item['is_full'] = available_count == 0
+
+    default_date = next((item['value'] for item in available_days if item['available_count'] > 0), available_days[0]['value'])
     return {
         'available_days': available_days,
         'time_slots': BOOKING_TIME_SLOTS,
-        'booked_map': get_booked_slots_by_date(day_values),
+        'slot_groups': BOOKING_SLOT_GROUPS,
+        'slot_status_map': slot_status_map,
+        'default_date': default_date,
         'target_countries': BOOKING_TARGET_COUNTRIES,
         'stages': BOOKING_STAGES,
         'form': form_data or {},
@@ -242,6 +341,10 @@ def booking():
         errors.append('请选择可预约日期。')
     if form_data['time_slot'] not in BOOKING_TIME_SLOTS:
         errors.append('请选择可预约时间段。')
+    elif form_data['booking_date'] in allowed_dates:
+        slot_status = build_slot_status_map([form_data['booking_date']]).get(form_data['booking_date'], {}).get(form_data['time_slot'])
+        if not slot_status or slot_status['state'] != 'available':
+            errors.append('该时间段暂不可预约，请选择绿色可预约时段。')
     for field, label in [
         ('name', '姓名'),
         ('contact', '联系方式'),
