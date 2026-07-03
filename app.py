@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash, sen
 
 try:
     from flask_sqlalchemy import SQLAlchemy
-    from sqlalchemy import Integer, String, Float, Text, text as sql_text
+    from sqlalchemy import Integer, String, Float, Text, UniqueConstraint, text as sql_text
+    from sqlalchemy.exc import IntegrityError
     from sqlalchemy.orm import Mapped, mapped_column
 except ModuleNotFoundError as exc:
     raise ModuleNotFoundError(
@@ -10,6 +11,7 @@ except ModuleNotFoundError as exc:
     ) from exc
 import csv
 import io
+from datetime import date, datetime, timedelta
 from pathlib import Path
 import re
 import json
@@ -57,6 +59,72 @@ class Ranking(db.Model):
     the: Mapped[float] = mapped_column(Float, default=0.0)
     arwu: Mapped[float] = mapped_column(Float, default=0.0)
     history_data: Mapped[str] = mapped_column(Text, default='')
+
+
+class Booking(db.Model):
+    __tablename__ = 'booking'
+    __table_args__ = (
+        UniqueConstraint('booking_date', 'time_slot', name='uq_booking_date_time_slot'),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    booking_date: Mapped[str] = mapped_column(String(20), nullable=False)
+    time_slot: Mapped[str] = mapped_column(String(32), nullable=False)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    contact: Mapped[str] = mapped_column(String(160), nullable=False)
+    target_country: Mapped[str] = mapped_column(String(120), nullable=False)
+    stage: Mapped[str] = mapped_column(String(120), nullable=False)
+    question: Mapped[str] = mapped_column(Text, nullable=False)
+    meeting_method: Mapped[str] = mapped_column(String(80), default='腾讯会议')
+    status: Mapped[str] = mapped_column(String(40), default='pending')
+    created_at: Mapped[str] = mapped_column(String(32), default=lambda: datetime.now().isoformat(timespec='seconds'))
+
+
+BOOKING_TIME_SLOTS = [
+    '10:00-11:00',
+    '11:30-12:30',
+    '14:00-15:00',
+    '15:30-16:30',
+    '19:00-20:00',
+]
+
+BOOKING_TARGET_COUNTRIES = ['美国', '英国', '加拿大', '澳大利亚', '新加坡&香港', '多国联申', '暂未确定']
+BOOKING_STAGES = ['低龄申请', '本科申请', '硕士申请', '博士申请', '转学/转专业', '背景提升规划', '其他']
+WEEKDAY_LABELS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+
+
+def build_booking_days(days_count=14):
+    start = date.today() + timedelta(days=1)
+    days = []
+    for offset in range(days_count):
+        current = start + timedelta(days=offset)
+        days.append({
+            'value': current.isoformat(),
+            'label': current.strftime('%m月%d日'),
+            'weekday': WEEKDAY_LABELS[current.weekday()],
+        })
+    return days
+
+
+def get_booked_slots_by_date(day_values):
+    bookings = Booking.query.filter(Booking.booking_date.in_(day_values)).all()
+    booked = {}
+    for item in bookings:
+        booked.setdefault(item.booking_date, []).append(item.time_slot)
+    return booked
+
+
+def build_booking_context(form_data=None):
+    available_days = build_booking_days()
+    day_values = [item['value'] for item in available_days]
+    return {
+        'available_days': available_days,
+        'time_slots': BOOKING_TIME_SLOTS,
+        'booked_map': get_booked_slots_by_date(day_values),
+        'target_countries': BOOKING_TARGET_COUNTRIES,
+        'stages': BOOKING_STAGES,
+        'form': form_data or {},
+    }
 
 
 
@@ -149,6 +217,72 @@ def services():
 @app.get('/contact')
 def contact_page():
     return render_template('contact.html')
+
+@app.route('/booking', methods=['GET', 'POST'])
+def booking():
+    context = build_booking_context()
+
+    if request.method == 'GET':
+        return render_template('booking.html', **context)
+
+    form_data = {
+        'booking_date': request.form.get('booking_date', '').strip(),
+        'time_slot': request.form.get('time_slot', '').strip(),
+        'name': request.form.get('name', '').strip(),
+        'contact': request.form.get('contact', '').strip(),
+        'target_country': request.form.get('target_country', '').strip(),
+        'stage': request.form.get('stage', '').strip(),
+        'question': request.form.get('question', '').strip(),
+    }
+    available_days = build_booking_days()
+    allowed_dates = {item['value'] for item in available_days}
+    errors = []
+
+    if form_data['booking_date'] not in allowed_dates:
+        errors.append('请选择可预约日期。')
+    if form_data['time_slot'] not in BOOKING_TIME_SLOTS:
+        errors.append('请选择可预约时间段。')
+    for field, label in [
+        ('name', '姓名'),
+        ('contact', '联系方式'),
+        ('target_country', '目标国家'),
+        ('stage', '申请阶段'),
+        ('question', '咨询问题'),
+    ]:
+        if not form_data[field]:
+            errors.append(f'请填写{label}。')
+
+    if not errors and Booking.query.filter_by(
+        booking_date=form_data['booking_date'],
+        time_slot=form_data['time_slot'],
+    ).first():
+        errors.append('该时间段刚刚被预约，请选择其他时间。')
+
+    if errors:
+        context = build_booking_context(form_data)
+        return render_template('booking.html', errors=errors, **context), 400
+
+    booking_record = Booking(**form_data, meeting_method='腾讯会议')
+    try:
+        db.session.add(booking_record)
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        context = build_booking_context(form_data)
+        return render_template('booking.html', errors=['该时间段刚刚被预约，请选择其他时间。'], **context), 409
+
+    return redirect(url_for('booking_success', booking_id=booking_record.id))
+
+
+@app.get('/consultation')
+def consultation():
+    return redirect(url_for('booking'))
+
+
+@app.get('/booking/success/<int:booking_id>')
+def booking_success(booking_id):
+    booking_record = Booking.query.get_or_404(booking_id)
+    return render_template('booking_success.html', booking=booking_record)
 
 @app.get('/offers')
 def offers():
