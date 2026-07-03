@@ -45,7 +45,7 @@
 
       {% if saved %}
       <div class="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-base font-bold text-emerald-800">
-        已保存。你可以继续修改并再次提交，后台下载的 Word 文件会使用最新内容。
+        已提交，预约状态已变为“已确认”。你也可以继续修改并再次提交，后台下载的 Word 文件会使用最新内容。
       </div>
       {% endif %}
 
@@ -191,8 +191,8 @@
 
         <div class="sticky bottom-4 z-10 rounded-[26px] border border-slate-200 bg-white/90 p-4 shadow-[0_18px_54px_rgba(15,23,42,.16)] backdrop-blur">
           <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <p class="text-sm font-bold text-slate-500">提交后信息会进入后台，可下载为 Word 采集表。</p>
-            <button class="rounded-full bg-[#061a3a] px-8 py-4 text-base font-black text-white shadow-[0_18px_42px_rgba(6,26,58,.22)] transition hover:-translate-y-0.5 hover:bg-[#0f766e]" type="submit">保存采集表</button>
+            <p class="text-sm font-bold text-slate-500">提交后预约状态会变为“已确认”，后台可下载为 Word 采集表。</p>
+            <button class="rounded-full bg-[#061a3a] px-8 py-4 text-base font-black text-white shadow-[0_18px_42px_rgba(6,26,58,.22)] transition hover:-translate-y-0.5 hover:bg-[#0f766e]" type="submit">提交并确认预约</button>
           </div>
         </div>
       </form>

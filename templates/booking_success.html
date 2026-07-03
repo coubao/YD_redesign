@@ -7,55 +7,61 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <main class="bg-gradient-to-b from-[#f8fbff] via-[#eef6fb] to-white px-6 py-20 md:px-10 md:py-28">
-  <section class="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_28px_90px_rgba(15,23,42,.12)]">
-    <div class="bg-gradient-to-r from-[#061a3a] via-[#0b4b89] to-[#0f766e] p-8 text-white md:p-10">
-      <p class="text-sm font-bold uppercase tracking-[0.18em] text-[#2dd4bf]">Booking Confirmed</p>
-      <h1 class="mt-4 text-4xl font-black md:text-6xl">预约已提交</h1>
-      <p class="mt-4 text-lg leading-8 text-white/78">我们已记录你的 1 小时留学咨询预约。后续会通过你填写的联系方式确认腾讯会议安排。</p>
+  <section class="mx-auto max-w-5xl overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_28px_90px_rgba(15,23,42,.12)]">
+    <div class="bg-gradient-to-r from-[#061a3a] via-[#0b4b89] to-[#0f766e] p-8 text-white md:p-12">
+      <p class="text-sm font-black uppercase tracking-[0.18em] text-[#2dd4bf]">Time Slot Reserved</p>
+      <h1 class="mt-4 text-4xl font-black leading-tight md:text-6xl">时间已暂时锁定</h1>
+      <p class="mt-4 max-w-3xl text-lg leading-8 text-white/78">请继续填写咨询前信息采集表。完成资料提交后，这次 1 小时腾讯会议咨询才会正式确认。</p>
     </div>
 
-    <div class="grid gap-5 p-6 md:grid-cols-2 md:p-10">
-      <div class="rounded-xl border border-slate-200 bg-slate-50 p-5">
+    <div class="grid gap-5 p-6 md:grid-cols-4 md:p-10">
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+        <p class="text-sm font-bold text-slate-500">预约状态</p>
+        <p class="mt-2 text-2xl font-black text-[#d6a84f]">待填写资料</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
         <p class="text-sm font-bold text-slate-500">预约日期</p>
         <p class="mt-2 text-2xl font-black text-[#061a3a]">{{ booking.booking_date }}</p>
       </div>
-      <div class="rounded-xl border border-slate-200 bg-slate-50 p-5">
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
         <p class="text-sm font-bold text-slate-500">预约时间</p>
         <p class="mt-2 text-2xl font-black text-[#061a3a]">{{ booking.time_slot }}</p>
       </div>
-      <div class="rounded-xl border border-slate-200 bg-slate-50 p-5">
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
         <p class="text-sm font-bold text-slate-500">咨询方式</p>
         <p class="mt-2 text-2xl font-black text-[#061a3a]">{{ booking.meeting_method }}</p>
-      </div>
-      <div class="rounded-xl border border-slate-200 bg-slate-50 p-5">
-        <p class="text-sm font-bold text-slate-500">预约编号</p>
-        <p class="mt-2 text-2xl font-black text-[#061a3a]">#{{ booking.id }}</p>
       </div>
     </div>
 
     <div class="border-t border-slate-200 p-6 md:p-10">
-      <h2 class="text-2xl font-black text-[#061a3a]">预约信息</h2>
-      <dl class="mt-5 grid gap-4 text-base md:grid-cols-2">
-        <div><dt class="font-bold text-slate-500">姓名</dt><dd class="mt-1 text-slate-900">{{ booking.name }}</dd></div>
-        <div><dt class="font-bold text-slate-500">联系方式</dt><dd class="mt-1 text-slate-900">{{ booking.contact }}</dd></div>
-        <div><dt class="font-bold text-slate-500">目标国家</dt><dd class="mt-1 text-slate-900">{{ booking.target_country }}</dd></div>
-        <div><dt class="font-bold text-slate-500">申请阶段</dt><dd class="mt-1 text-slate-900">{{ booking.stage }}</dd></div>
-      </dl>
-      <div class="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-5">
-        <p class="font-bold text-slate-500">咨询问题</p>
-        <p class="mt-2 whitespace-pre-line leading-8 text-slate-800">{{ booking.question }}</p>
-      </div>
+      <a class="group block rounded-[28px] border border-[#0f766e]/20 bg-[#ecfdf5] p-6 no-underline shadow-[0_18px_54px_rgba(15,118,110,.12)] transition hover:-translate-y-1 hover:border-[#0f766e]/40 hover:shadow-[0_24px_70px_rgba(15,118,110,.18)] md:p-8" href="{{ url_for('booking_intake', booking_id=booking.id, token=booking.intake_token) }}">
+        <div class="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p class="text-sm font-black uppercase tracking-[0.16em] text-[#0f766e]">Required Next Step</p>
+            <h2 class="mt-2 text-3xl font-black text-[#061a3a]">继续填写咨询前信息采集表</h2>
+            <p class="mt-3 max-w-2xl text-base leading-8 text-slate-700">这一步会帮助顾问提前了解学生背景、成绩、活动经历、目标方向和家长最关心的问题。提交后预约状态会变为“已确认”。</p>
+          </div>
+          <span class="inline-flex shrink-0 items-center justify-center rounded-full bg-[#061a3a] px-7 py-4 text-base font-black text-white transition group-hover:bg-[#0f766e]">立即填写 →</span>
+        </div>
+      </a>
 
-      <div class="mt-6 rounded-2xl border border-[#0f766e]/20 bg-[#ecfdf5] p-5">
-        <p class="text-sm font-black uppercase tracking-[0.16em] text-[#0f766e]">Next Step</p>
-        <h3 class="mt-2 text-2xl font-black text-[#061a3a]">继续填写咨询前信息采集表</h3>
-        <p class="mt-2 leading-8 text-slate-700">完成后顾问可以提前了解学生背景、成绩、活动经历、目标方向和家长最关心的问题，让 1 小时诊断会更高效。</p>
+      <div class="mt-7">
+        <h3 class="text-2xl font-black text-[#061a3a]">基础预约信息</h3>
+        <dl class="mt-5 grid gap-4 text-base md:grid-cols-2">
+          <div><dt class="font-bold text-slate-500">姓名</dt><dd class="mt-1 text-slate-900">{{ booking.name }}</dd></div>
+          <div><dt class="font-bold text-slate-500">联系方式</dt><dd class="mt-1 text-slate-900">{{ booking.contact }}</dd></div>
+          <div><dt class="font-bold text-slate-500">目标国家</dt><dd class="mt-1 text-slate-900">{{ booking.target_country }}</dd></div>
+          <div><dt class="font-bold text-slate-500">申请阶段</dt><dd class="mt-1 text-slate-900">{{ booking.stage }}</dd></div>
+        </dl>
+        <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          <p class="font-bold text-slate-500">咨询问题</p>
+          <p class="mt-2 whitespace-pre-line leading-8 text-slate-800">{{ booking.question }}</p>
+        </div>
       </div>
 
       <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-        <a class="inline-flex items-center justify-center rounded-full bg-[#061a3a] px-7 py-3 font-black text-white no-underline transition hover:bg-[#0f766e]" href="{{ url_for('booking_intake', booking_id=booking.id, token=booking.intake_token) }}">填写采集表</a>
         <a class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-7 py-3 font-black text-[#061a3a] no-underline transition hover:border-[#0f766e] hover:text-[#0f766e]" href="{{ url_for('home') }}">返回首页</a>
-        <a class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-7 py-3 font-black text-[#061a3a] no-underline transition hover:border-[#0f766e] hover:text-[#0f766e]" href="{{ url_for('booking') }}">继续预约</a>
+        <a class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-7 py-3 font-black text-[#061a3a] no-underline transition hover:border-[#0f766e] hover:text-[#0f766e]" href="{{ url_for('booking') }}">重新选择时间</a>
       </div>
     </div>
   </section>

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<script>
+  window.tailwind = window.tailwind || {};
+  window.tailwind.config = { corePlugins: { preflight: false } };
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<main class="bg-gradient-to-b from-[#f8fbff] via-[#eef6fb] to-white px-6 py-20 md:px-10 md:py-28">
+  <section class="mx-auto max-w-4xl overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_28px_90px_rgba(15,23,42,.12)]">
+    <div class="bg-gradient-to-r from-[#061a3a] via-[#0b4b89] to-[#0f766e] p-8 text-white md:p-12">
+      <p class="text-sm font-black uppercase tracking-[0.18em] text-[#2dd4bf]">Booking Confirmed</p>
+      <h1 class="mt-4 text-4xl font-black leading-tight md:text-6xl">预约已确认</h1>
+      <p class="mt-4 max-w-3xl text-lg leading-8 text-white/78">咨询前信息采集表已提交。我们会基于你填写的资料准备 1 小时腾讯会议诊断内容。</p>
+    </div>
+
+    <div class="grid gap-5 p-6 md:grid-cols-2 md:p-10">
+      <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+        <p class="text-sm font-bold text-emerald-700">预约状态</p>
+        <p class="mt-2 text-3xl font-black text-emerald-800">已确认</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+        <p class="text-sm font-bold text-slate-500">预约编号</p>
+        <p class="mt-2 text-3xl font-black text-[#061a3a]">#{{ booking.id }}</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+        <p class="text-sm font-bold text-slate-500">预约日期</p>
+        <p class="mt-2 text-2xl font-black text-[#061a3a]">{{ booking.booking_date }}</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+        <p class="text-sm font-bold text-slate-500">预约时间</p>
+        <p class="mt-2 text-2xl font-black text-[#061a3a]">{{ booking.time_slot }}</p>
+      </div>
+    </div>
+
+    <div class="border-t border-slate-200 p-6 md:p-10">
+      <h2 class="text-2xl font-black text-[#061a3a]">后续安排</h2>
+      <div class="mt-5 grid gap-4">
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          <p class="font-black text-[#0f766e]">1. 顾问提前阅读资料</p>
+          <p class="mt-2 leading-8 text-slate-700">我们会基于成绩、课程、活动经历、目标方向和家长问题提前准备诊断重点。</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          <p class="font-black text-[#0f766e]">2. 腾讯会议沟通</p>
+          <p class="mt-2 leading-8 text-slate-700">会议安排会通过你填写的联系方式进行确认，请留意微信、电话或邮箱消息。</p>
+        </div>
+      </div>
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a class="inline-flex items-center justify-center rounded-full bg-[#061a3a] px-7 py-3 font-black text-white no-underline transition hover:bg-[#0f766e]" href="{{ url_for('booking_intake', booking_id=booking.id, token=booking.intake_token) }}">查看/更新采集表</a>
+        <a class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-7 py-3 font-black text-[#061a3a] no-underline transition hover:border-[#0f766e] hover:text-[#0f766e]" href="{{ url_for('home') }}">返回首页</a>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

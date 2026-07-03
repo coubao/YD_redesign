@@ -23,12 +23,12 @@
         <p class="mt-2 text-4xl font-black text-[#061a3a]">{{ total }}</p>
       </div>
       <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_16px_46px_rgba(15,23,42,.07)]">
-        <p class="text-sm font-bold text-slate-500">已填写采集表</p>
-        <p class="mt-2 text-4xl font-black text-[#0f766e]">{{ intake_count }}</p>
+        <p class="text-sm font-bold text-slate-500">已确认预约</p>
+        <p class="mt-2 text-4xl font-black text-[#0f766e]">{{ confirmed_count }}</p>
       </div>
       <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_16px_46px_rgba(15,23,42,.07)]">
-        <p class="text-sm font-bold text-slate-500">未过期预约</p>
-        <p class="mt-2 text-4xl font-black text-[#d6a84f]">{{ upcoming_count }}</p>
+        <p class="text-sm font-bold text-slate-500">待填写资料</p>
+        <p class="mt-2 text-4xl font-black text-[#d6a84f]">{{ pending_intake_count }}</p>
       </div>
     </div>
 
@@ -41,7 +41,7 @@
               <th class="px-4 py-4 text-left font-black">客户</th>
               <th class="px-4 py-4 text-left font-black">目标</th>
               <th class="px-4 py-4 text-left font-black">咨询问题</th>
-              <th class="px-4 py-4 text-left font-black">采集表</th>
+              <th class="px-4 py-4 text-left font-black">预约状态</th>
               <th class="px-4 py-4 text-left font-black">操作</th>
             </tr>
           </thead>
@@ -65,11 +65,12 @@
                 <p class="line-clamp-3">{{ booking.question }}</p>
               </td>
               <td class="px-4 py-4">
-                {% if booking.intake_submitted_at %}
-                <span class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700">已填写</span>
+                {% if booking.status == status_confirmed %}
+                <span class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700">已确认</span>
                 <p class="mt-2 text-xs text-slate-400">{{ booking.intake_submitted_at }}</p>
                 {% else %}
-                <span class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-500">未填写</span>
+                <span class="inline-flex rounded-full bg-amber-50 px-3 py-1 text-xs font-black text-amber-700">待填写资料</span>
+                <p class="mt-2 text-xs text-slate-400">时间已锁定，尚未正式确认</p>
                 {% endif %}
               </td>
               <td class="px-4 py-4">

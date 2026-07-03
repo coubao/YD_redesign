@@ -88,13 +88,19 @@ class Booking(db.Model):
     stage: Mapped[str] = mapped_column(String(120), nullable=False)
     question: Mapped[str] = mapped_column(Text, nullable=False)
     meeting_method: Mapped[str] = mapped_column(String(80), default='腾讯会议')
-    status: Mapped[str] = mapped_column(String(40), default='pending')
+    status: Mapped[str] = mapped_column(String(40), default='pending_intake')
     intake_token: Mapped[str] = mapped_column(String(80), default=lambda: token_urlsafe(24))
     intake_data: Mapped[str] = mapped_column(Text, default='')
     intake_submitted_at: Mapped[str] = mapped_column(String(32), default='')
     created_at: Mapped[str] = mapped_column(String(32), default=lambda: datetime.now().isoformat(timespec='seconds'))
 
 
+BOOKING_STATUS_PENDING_INTAKE = 'pending_intake'
+BOOKING_STATUS_CONFIRMED = 'confirmed'
+BOOKING_STATUS_LABELS = {
+    BOOKING_STATUS_PENDING_INTAKE: '待填写资料',
+    BOOKING_STATUS_CONFIRMED: '已确认',
+}
 BOOKING_SLOT_DURATION_MINUTES = 60
 BOOKING_SLOT_STEP_MINUTES = 30
 BOOKING_BUFFER_MINUTES = 30
@@ -267,8 +273,9 @@ def save_intake_form(booking_record):
     intake_data = parse_intake_form(request.form)
     booking_record.intake_data = json.dumps(intake_data, ensure_ascii=False)
     booking_record.intake_submitted_at = datetime.now().isoformat(timespec='seconds')
+    booking_record.status = BOOKING_STATUS_CONFIRMED
     db.session.commit()
-    flash('咨询前信息采集表已保存。', 'success')
+    flash('咨询前信息采集表已提交，预约已确认。', 'success')
 
 
 
@@ -314,6 +321,19 @@ def ensure_ranking_schema():
         booking_ddl.append("ALTER TABLE booking ADD COLUMN intake_submitted_at VARCHAR(32) DEFAULT ''")
     for stmt in booking_ddl:
         db.session.execute(sql_text(stmt))
+
+    refreshed_booking_cols = {row[1] for row in db.session.execute(sql_text("PRAGMA table_info(booking)")).fetchall()}
+    if 'status' in refreshed_booking_cols:
+        if 'intake_submitted_at' in refreshed_booking_cols:
+            db.session.execute(sql_text(
+                "UPDATE booking SET status = 'confirmed' "
+                "WHERE intake_submitted_at IS NOT NULL AND intake_submitted_at != '' "
+                "AND (status IS NULL OR status = '' OR status = 'pending' OR status = 'pending_intake')"
+            ))
+        db.session.execute(sql_text(
+            "UPDATE booking SET status = 'pending_intake' "
+            "WHERE status IS NULL OR status = '' OR status = 'pending'"
+        ))
     db.session.commit()
 
 @app.before_request
@@ -419,7 +439,7 @@ def booking():
         context = build_booking_context(form_data)
         return render_template('booking.html', errors=errors, **context), 400
 
-    booking_record = Booking(**form_data, meeting_method='腾讯会议')
+    booking_record = Booking(**form_data, meeting_method='腾讯会议', status=BOOKING_STATUS_PENDING_INTAKE)
     try:
         db.session.add(booking_record)
         db.session.commit()
@@ -428,7 +448,7 @@ def booking():
         context = build_booking_context(form_data)
         return render_template('booking.html', errors=['该时间段刚刚被预约，请选择其他时间。'], **context), 409
 
-    return redirect(url_for('booking_success', booking_id=booking_record.id))
+    return redirect(url_for('booking_success', booking_id=booking_record.id, token=ensure_booking_token(booking_record)))
 
 
 @app.get('/consultation')
@@ -437,9 +457,17 @@ def consultation():
 
 
 @app.get('/booking/success/<int:booking_id>')
-def booking_success(booking_id):
+def booking_success_legacy(booking_id):
+    abort(404)
+
+
+@app.get('/booking/success/<int:booking_id>/<token>')
+def booking_success(booking_id, token):
     booking_record = Booking.query.get_or_404(booking_id)
-    ensure_booking_token(booking_record)
+    if not booking_record.intake_token or token != booking_record.intake_token:
+        abort(404)
+    if booking_record.status == BOOKING_STATUS_CONFIRMED:
+        return redirect(url_for('booking_confirmed', booking_id=booking_record.id, token=booking_record.intake_token))
     return render_template('booking_success.html', booking=booking_record)
 
 
@@ -452,9 +480,19 @@ def booking_intake(booking_id, token):
 
     if request.method == 'POST':
         save_intake_form(booking_record)
-        return redirect(url_for('booking_intake', booking_id=booking_record.id, token=booking_record.intake_token, saved=1))
+        return redirect(url_for('booking_confirmed', booking_id=booking_record.id, token=booking_record.intake_token))
 
     return render_intake_form(booking_record, intake_data, request.args.get('saved') == '1')
+
+
+@app.get('/booking/<int:booking_id>/confirmed/<token>')
+def booking_confirmed(booking_id, token):
+    booking_record = Booking.query.get_or_404(booking_id)
+    if not booking_record.intake_token or token != booking_record.intake_token:
+        abort(404)
+    if booking_record.status != BOOKING_STATUS_CONFIRMED:
+        return redirect(url_for('booking_intake', booking_id=booking_record.id, token=booking_record.intake_token))
+    return render_template('booking_confirmed.html', booking=booking_record)
 
 
 @app.route('/admin/bookings/<int:booking_id>/intake', methods=['GET', 'POST'])
@@ -518,14 +556,18 @@ def admin():
 def admin_bookings():
     bookings = Booking.query.order_by(Booking.booking_date.desc(), Booking.time_slot.desc(), Booking.id.desc()).all()
     total = len(bookings)
-    intake_count = sum(1 for booking_record in bookings if booking_record.intake_submitted_at)
+    confirmed_count = sum(1 for booking_record in bookings if booking_record.status == BOOKING_STATUS_CONFIRMED)
+    pending_intake_count = sum(1 for booking_record in bookings if booking_record.status != BOOKING_STATUS_CONFIRMED)
     upcoming_count = sum(1 for booking_record in bookings if booking_record.booking_date >= date.today().isoformat())
     return render_template(
         'admin_bookings.html',
         bookings=bookings,
         total=total,
-        intake_count=intake_count,
+        confirmed_count=confirmed_count,
+        pending_intake_count=pending_intake_count,
         upcoming_count=upcoming_count,
+        status_labels=BOOKING_STATUS_LABELS,
+        status_confirmed=BOOKING_STATUS_CONFIRMED,
     )
 
 
