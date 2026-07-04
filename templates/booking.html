@@ -27,16 +27,17 @@
   }
 
   .yd-day-strip {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+    width: 100%;
+    min-width: 0;
     max-width: 100%;
-    overflow-x: auto;
-    padding-bottom: 6px;
-    scroll-snap-type: x proximity;
+    overflow: visible;
   }
 
   .yd-day-strip::-webkit-scrollbar {
-    height: 5px;
+    display: none;
   }
 
   .yd-day-strip::-webkit-scrollbar-thumb {
@@ -45,8 +46,8 @@
   }
 
   .yd-day-chip {
-    flex: 0 0 86px;
-    scroll-snap-align: start;
+    width: 100%;
+    min-width: 0;
     border: 1px solid #dbe4ef;
     border-radius: 20px;
     background: #fff;
@@ -120,6 +121,18 @@
     background: rgba(100, 116, 139, .14);
     color: #64748b;
   }
+
+  .yd-booking-panel,
+  .yd-booking-panel form,
+  .yd-booking-panel form > *,
+  .yd-booking-panel fieldset {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .yd-copy-section {
+    scroll-margin-top: 96px;
+  }
 </style>
 
 <main class="yd-booking-page">
@@ -140,10 +153,31 @@
         </div>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-start">
-        <article class="grid gap-7">
-          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
-            <p class="text-lg leading-9 text-slate-700">在海外升学申请越来越复杂的今天，很多家庭并不缺信息，真正缺的是判断。</p>
+      <div class="mb-8 grid gap-3 md:grid-cols-4">
+        <a class="rounded-2xl border border-slate-200 bg-white p-4 text-[#061a3a] no-underline shadow-[0_14px_36px_rgba(15,23,42,.06)] transition hover:-translate-y-0.5 hover:border-[#0f8f68]" href="#need">
+          <p class="text-xs font-black uppercase tracking-[0.16em] text-[#0f8f68]">01</p>
+          <p class="mt-2 font-black">判断痛点</p>
+        </a>
+        <a class="rounded-2xl border border-slate-200 bg-white p-4 text-[#061a3a] no-underline shadow-[0_14px_36px_rgba(15,23,42,.06)] transition hover:-translate-y-0.5 hover:border-[#0f8f68]" href="#why">
+          <p class="text-xs font-black uppercase tracking-[0.16em] text-[#0f8f68]">02</p>
+          <p class="mt-2 font-black">合作原因</p>
+        </a>
+        <a class="rounded-2xl border border-slate-200 bg-white p-4 text-[#061a3a] no-underline shadow-[0_14px_36px_rgba(15,23,42,.06)] transition hover:-translate-y-0.5 hover:border-[#0f8f68]" href="#grace-service">
+          <p class="text-xs font-black uppercase tracking-[0.16em] text-[#0f8f68]">03</p>
+          <p class="mt-2 font-black">服务内容</p>
+        </a>
+        <a class="rounded-2xl border border-slate-200 bg-white p-4 text-[#061a3a] no-underline shadow-[0_14px_36px_rgba(15,23,42,.06)] transition hover:-translate-y-0.5 hover:border-[#0f8f68]" href="#fit">
+          <p class="text-xs font-black uppercase tracking-[0.16em] text-[#0f8f68]">04</p>
+          <p class="mt-2 font-black">适合家庭</p>
+        </a>
+      </div>
+
+      <div class="grid min-w-0 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] lg:items-start">
+        <article class="grid min-w-0 gap-7">
+          <section id="need" class="yd-copy-section rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+            <p class="text-sm font-black uppercase tracking-[0.18em] text-[#0f8f68]">Why This Service</p>
+            <h2 class="mt-3 text-3xl font-black text-[#061a3a]">家长真正需要的，是可靠判断</h2>
+            <p class="mt-5 text-lg leading-9 text-slate-700">在海外升学申请越来越复杂的今天，很多家庭并不缺信息，真正缺的是判断。</p>
             <div class="mt-6 grid gap-3 text-base font-bold text-[#061a3a] md:grid-cols-2">
               <p class="rounded-2xl bg-slate-50 p-4">孩子适合什么路径？</p>
               <p class="rounded-2xl bg-slate-50 p-4">目标院校是否现实？</p>
@@ -155,7 +189,7 @@
             <p class="mt-6 text-lg leading-9 text-slate-700">基于这样的初衷，超哥留学正式携手Grace老师，共同推出美本申请规划服务，为有美国本科申请需求的家庭提供更加专业、清晰、个性化且可落地的申请支持。</p>
           </section>
 
-          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+          <section id="why" class="yd-copy-section rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
             <h2 class="text-3xl font-black text-[#061a3a]">为什么是超哥留学与Grace老师</h2>
             <div class="mt-5 grid gap-5 text-base leading-8 text-slate-700">
               <p>超哥长期深耕海外升学内容与家长咨询领域，持续关注留学行业中的信息差、服务不透明和申请焦虑问题。过去几年，超哥接触了大量准备美本申请的家庭，也深知家长在选择申请服务时最担心的不是“有没有机构”，而是：</p>
@@ -173,7 +207,7 @@
             </div>
           </section>
 
-          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+          <section id="problems" class="yd-copy-section rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
             <h2 class="text-3xl font-black text-[#061a3a]">我们希望解决的问题</h2>
             <div class="mt-5 grid gap-5 text-base leading-8 text-slate-700">
               <p>美本申请不是简单地列学校、写文书、递交系统。真正影响申请结果的，往往是更早、更隐蔽、也更关键的问题：</p>
@@ -198,7 +232,7 @@
             </div>
           </section>
 
-          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+          <section id="grace-service" class="yd-copy-section rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
             <h2 class="text-3xl font-black text-[#061a3a]">Grace老师负责什么</h2>
             <p class="mt-5 text-base leading-8 text-slate-700">在本项美本申请服务中，Grace老师将主导学生的整体申请规划与关键申请环节，包括：</p>
             <div class="mt-5 grid gap-3 md:grid-cols-2">
@@ -210,7 +244,7 @@
             <p class="mt-3 text-base leading-8 text-slate-700">从第一次诊断开始，到最终录取结果分析和择校建议，每一个关键节点都会有清晰的判断、明确的任务和持续的跟进。</p>
           </section>
 
-          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+          <section class="yd-copy-section rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
             <h2 class="text-3xl font-black text-[#061a3a]">超哥留学负责什么</h2>
             <div class="mt-5 grid gap-4 text-base leading-8 text-slate-700">
               <p>超哥留学作为合作发起方，将继续发挥其在家长信任、行业判断和服务监督方面的优势。</p>
@@ -220,10 +254,10 @@
             </div>
           </section>
 
-          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+          <section id="fit" class="yd-copy-section rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
             <h2 class="text-3xl font-black text-[#061a3a]">我们适合什么样的家庭</h2>
             <div class="mt-5 grid gap-3">
-              {% for item in ['计划申请美国本科，希望冲刺Top30、Top50或综合优质大学的学生；','已经进入国际课程体系，需要系统规划申请路径的学生；','英美港新多国混申，但家庭尚未明确主申请策略的学生；','成绩较好，但活动、专业方向和申请主线不清晰的学生；','已经做过一些活动和竞赛，但缺少系统整合的学生；','家长希望有人长期负责申请进度、材料质量和关键节点判断的家庭；','不希望被项目和机构牵着走，而是希望基于孩子自身情况做长期规划的家庭。'] %}
+              {% for item in ['计划申请美国本科，需要系统判断目标与路径的学生；','需要系统规划申请路径的学生；','英美港新多国混申，但家庭尚未明确主申请策略的学生；','成绩较好，但活动、专业方向和申请主线不清晰的学生；','已经做过一些活动和竞赛，但缺少系统整合的学生；','家长希望有人长期负责申请进度、材料质量和关键节点判断的家庭；','不希望被项目和机构牵着走，而是希望基于孩子自身情况做长期规划的家庭。'] %}
               <p class="rounded-2xl bg-slate-50 p-4 text-base leading-8 text-slate-700">{{ item }}</p>
               {% endfor %}
             </div>
@@ -233,7 +267,7 @@
             </div>
           </section>
 
-          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+          <section class="yd-copy-section rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
             <h2 class="text-3xl font-black text-[#061a3a]">我们的服务原则</h2>
             <div class="mt-5 grid gap-3">
               {% for item in ['第一，基于孩子真实情况做判断，而不是盲目拔高目标。','第二，基于长期发展设计申请路径，而不是短期堆砌履历。','第三，基于申请逻辑整合材料，而不是机械罗列活动。','第四，基于家庭实际情况制定方案，而不是复制标准模板。','第五，重视过程管理，让每一个关键节点都有依据、有记录、有反馈。'] %}
@@ -243,7 +277,7 @@
             <p class="mt-6 rounded-[26px] bg-[#061a3a] p-6 text-lg font-black leading-9 text-white">美本申请的核心，不是把孩子包装成另一个人，而是把孩子真正有价值的一面，用招生官能够理解的方式呈现出来。</p>
           </section>
 
-          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+          <section class="yd-copy-section rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
             <h2 class="text-3xl font-black text-[#061a3a]">写给家长的话</h2>
             <div class="mt-5 grid gap-5 text-base leading-8 text-slate-700">
               <p>如果您正在为孩子的美本申请感到焦虑，可能并不是因为您不了解信息，而是因为信息太多、判断太难、路径太乱。</p>
@@ -262,8 +296,8 @@
           </section>
         </article>
 
-        <aside class="lg:sticky lg:top-24">
-          <section class="rounded-[30px] border border-slate-200 bg-white/95 p-5 shadow-[0_24px_80px_rgba(15,23,42,.12)] backdrop-blur">
+        <aside class="min-w-0 lg:sticky lg:top-24">
+          <section class="yd-booking-panel w-full min-w-0 overflow-hidden rounded-[30px] border border-slate-200 bg-white/95 p-4 shadow-[0_24px_80px_rgba(15,23,42,.12)] backdrop-blur md:p-5">
             <div class="mb-5">
               <p class="text-sm font-black uppercase tracking-[0.16em] text-[#d6a84f]">Consultation Booking</p>
               <h2 class="mt-2 text-2xl font-black text-[#061a3a]">选择咨询时段</h2>
@@ -288,7 +322,7 @@
                 </div>
                 <div class="yd-day-strip" role="listbox" aria-label="预约日期">
                   {% for day in available_days %}
-                  <button class="yd-day-chip min-h-[100px] px-3 py-3 text-left {% if selected_date == day.value %}is-active{% endif %} {% if day.is_full %}is-full{% endif %}" type="button" data-day-button data-date="{{ day.value }}" aria-pressed="{% if selected_date == day.value %}true{% else %}false{% endif %}">
+                  <button class="yd-day-chip min-h-[92px] px-2.5 py-3 text-left {% if selected_date == day.value %}is-active{% endif %} {% if day.is_full %}is-full{% endif %}" type="button" data-day-button data-date="{{ day.value }}" aria-pressed="{% if selected_date == day.value %}true{% else %}false{% endif %}">
                     <span class="block text-xs font-black uppercase tracking-[0.12em] opacity-70">{{ day.month_label }}</span>
                     <span class="mt-1 block text-2xl font-black leading-none">{{ day.day_number }}</span>
                     <span class="mt-2 block text-xs font-bold">{{ day.weekday }}{% if day.is_today %} · 今天{% endif %}</span>
