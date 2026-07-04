@@ -11,40 +11,25 @@
 <style>
   .yd-booking-page {
     --yd-navy: #061a3a;
-    --yd-muted: #94a3b8;
     --yd-green: #0f8f68;
     --yd-green-deep: #087454;
-    --yd-mint: #2dd4bf;
     --yd-gold: #d6a84f;
     background:
-      radial-gradient(circle at 12% 0%, rgba(45, 212, 191, .16), transparent 30rem),
-      radial-gradient(circle at 88% 6%, rgba(214, 168, 79, .15), transparent 28rem),
-      linear-gradient(180deg, #f8fbff 0%, #edf6fb 48%, #ffffff 100%);
+      radial-gradient(circle at 12% 0%, rgba(45, 212, 191, .15), transparent 30rem),
+      radial-gradient(circle at 90% 4%, rgba(214, 168, 79, .17), transparent 32rem),
+      linear-gradient(180deg, #f8fbff 0%, #eef6fb 42%, #ffffff 100%);
     color: #0f172a;
     font-family: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
   }
 
-  .yd-booking-page .yd-serif {
+  .yd-serif {
     font-family: "Noto Serif SC", Georgia, "Times New Roman", serif;
-  }
-
-  .yd-calendar-shell {
-    border: 1px solid rgba(148, 163, 184, .28);
-    border-radius: 32px;
-    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96));
-    box-shadow: 0 28px 90px rgba(15, 23, 42, .13);
-  }
-
-  .yd-calendar-shell form,
-  .yd-calendar-shell form > * {
-    min-width: 0;
   }
 
   .yd-day-strip {
     display: flex;
     gap: 10px;
     max-width: 100%;
-    width: 100%;
     overflow-x: auto;
     padding-bottom: 6px;
     scroll-snap-type: x proximity;
@@ -60,19 +45,13 @@
   }
 
   .yd-day-chip {
-    flex: 0 0 92px;
+    flex: 0 0 86px;
     scroll-snap-align: start;
     border: 1px solid #dbe4ef;
-    border-radius: 22px;
+    border-radius: 20px;
     background: #fff;
     color: #334155;
     transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
-  }
-
-  @media (min-width: 768px) {
-    .yd-day-chip {
-      flex-basis: 104px;
-    }
   }
 
   .yd-day-chip:hover {
@@ -144,72 +123,175 @@
 </style>
 
 <main class="yd-booking-page">
-  <section class="px-5 py-14 md:px-10 md:py-24">
+  <section class="px-5 py-14 md:px-10 md:py-20">
     <div class="mx-auto max-w-7xl">
-      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+      <div class="mb-10 overflow-hidden rounded-[34px] bg-[#061a3a] text-white shadow-[0_30px_100px_rgba(6,26,58,.22)]">
+        <div class="grid gap-8 p-7 md:p-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+          <div>
+            <p class="text-sm font-black uppercase tracking-[0.2em] text-[#2dd4bf]">US Undergraduate Application Planning</p>
+            <h1 class="yd-serif mt-5 text-4xl font-semibold leading-tight md:text-6xl">超哥留学 × Grace<br>美本申请规划服务</h1>
+            <p class="mt-6 max-w-3xl text-xl leading-9 text-white/80">让真正懂申请的人，走到家长面前。</p>
+          </div>
+          <div class="rounded-[26px] border border-white/12 bg-white/8 p-6 backdrop-blur">
+            <p class="text-sm font-black text-[#d6a84f]">预约规则</p>
+            <p class="mt-3 text-3xl font-black">每日限定 2 个名额</p>
+            <p class="mt-3 leading-8 text-white/76">上午 10:00-12:00，下午 14:00-16:00。先选择时段，下一页再填写基础预约信息。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-start">
+        <article class="grid gap-7">
+          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+            <p class="text-lg leading-9 text-slate-700">在海外升学申请越来越复杂的今天，很多家庭并不缺信息，真正缺的是判断。</p>
+            <div class="mt-6 grid gap-3 text-base font-bold text-[#061a3a] md:grid-cols-2">
+              <p class="rounded-2xl bg-slate-50 p-4">孩子适合什么路径？</p>
+              <p class="rounded-2xl bg-slate-50 p-4">目标院校是否现实？</p>
+              <p class="rounded-2xl bg-slate-50 p-4">活动、竞赛、科研到底该不该做？</p>
+              <p class="rounded-2xl bg-slate-50 p-4">英美港新如何取舍？</p>
+              <p class="rounded-2xl bg-slate-50 p-4">文书和申请主线如何真正体现孩子的独特性？</p>
+              <p class="rounded-2xl bg-slate-50 p-4">面对大量机构、项目和碎片化建议，家长最需要的不是更多选择，而是一个真正专业、稳定、负责任的申请团队。</p>
+            </div>
+            <p class="mt-6 text-lg leading-9 text-slate-700">基于这样的初衷，超哥留学正式携手Grace老师，共同推出美本申请规划服务，为有美国本科申请需求的家庭提供更加专业、清晰、个性化且可落地的申请支持。</p>
+          </section>
+
+          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+            <h2 class="text-3xl font-black text-[#061a3a]">为什么是超哥留学与Grace老师</h2>
+            <div class="mt-5 grid gap-5 text-base leading-8 text-slate-700">
+              <p>超哥长期深耕海外升学内容与家长咨询领域，持续关注留学行业中的信息差、服务不透明和申请焦虑问题。过去几年，超哥接触了大量准备美本申请的家庭，也深知家长在选择申请服务时最担心的不是“有没有机构”，而是：</p>
+              <div class="grid gap-3 md:grid-cols-2">
+                <p class="rounded-2xl border border-slate-200 bg-slate-50 p-4 font-bold text-[#061a3a]">谁真正懂申请？</p>
+                <p class="rounded-2xl border border-slate-200 bg-slate-50 p-4 font-bold text-[#061a3a]">谁真正负责孩子？</p>
+                <p class="rounded-2xl border border-slate-200 bg-slate-50 p-4 font-bold text-[#061a3a]">谁能把规划落到执行？</p>
+                <p class="rounded-2xl border border-slate-200 bg-slate-50 p-4 font-bold text-[#061a3a]">谁能在关键节点给出专业判断？</p>
+              </div>
+              <p>Grace老师与超哥相识多年，同样长期服务于海外升学一线。她拥有近20年的海外升学规划与申请经验，不是只停留在宏观判断和方向建议上，而是长期亲自参与学生的定位、选校、文书、申请策略和结果复盘。</p>
+              <p>她所坚持的，不是流水线式申请，也不是用模板包装学生，而是基于每个孩子的真实背景、性格特点、学术能力、家庭目标和未来发展，设计一条更适合孩子的申请路径。</p>
+              <div class="rounded-[26px] bg-[#061a3a] p-6 text-white">
+                <p class="text-lg font-black leading-9">这也是超哥邀请Grace老师走到前台、共同推出美本申请规划服务的原因：让真正做过大量申请、真正理解学生差异、真正坚持一线服务的申请顾问，直接面对家长和学生。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+            <h2 class="text-3xl font-black text-[#061a3a]">我们希望解决的问题</h2>
+            <div class="mt-5 grid gap-5 text-base leading-8 text-slate-700">
+              <p>美本申请不是简单地列学校、写文书、递交系统。真正影响申请结果的，往往是更早、更隐蔽、也更关键的问题：</p>
+              <ul class="grid gap-3 md:grid-cols-2">
+                <li class="rounded-2xl bg-slate-50 p-4">孩子的专业方向是否清晰；</li>
+                <li class="rounded-2xl bg-slate-50 p-4">活动是否形成主线；</li>
+                <li class="rounded-2xl bg-slate-50 p-4">课程选择是否支撑目标；</li>
+                <li class="rounded-2xl bg-slate-50 p-4">选校是否合理分层；</li>
+                <li class="rounded-2xl bg-slate-50 p-4">文书是否能呈现真实而有竞争力的学生形象；</li>
+                <li class="rounded-2xl bg-slate-50 p-4">申请时间线是否有人持续管理；</li>
+                <li class="rounded-2xl bg-slate-50 p-4 md:col-span-2">家庭在关键选择前是否有专业判断支持。</li>
+              </ul>
+              <p>很多申请做得不理想，并不是因为孩子不够优秀，而是因为方向错了、节奏乱了、资源堆错了、文书和活动之间没有形成完整逻辑。</p>
+              <p>超哥留学与Grace老师合作推出这项服务，就是希望为家庭提供一个更纯粹、更稳定、更专业的美本申请环境。</p>
+              <div class="grid gap-3 md:grid-cols-4">
+                <p class="rounded-2xl bg-[#ecfdf5] p-4 font-black text-[#087454]">不制造焦虑。</p>
+                <p class="rounded-2xl bg-[#ecfdf5] p-4 font-black text-[#087454]">不盲目堆项目。</p>
+                <p class="rounded-2xl bg-[#ecfdf5] p-4 font-black text-[#087454]">不简单套模板。</p>
+                <p class="rounded-2xl bg-[#ecfdf5] p-4 font-black text-[#087454]">不做无法兑现的承诺。</p>
+              </div>
+              <p class="text-lg font-black text-[#061a3a]">我们更重视的是：判断是否准确，路径是否清晰，执行是否扎实，过程是否有人负责。</p>
+            </div>
+          </section>
+
+          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+            <h2 class="text-3xl font-black text-[#061a3a]">Grace老师负责什么</h2>
+            <p class="mt-5 text-base leading-8 text-slate-700">在本项美本申请服务中，Grace老师将主导学生的整体申请规划与关键申请环节，包括：</p>
+            <div class="mt-5 grid gap-3 md:grid-cols-2">
+              {% for item in ['学生背景诊断与申请定位','申请时间线制定与动态调整','专业方向与个人主线设计','选校研究与申请组合制定','主文书及补充文书策划与修改','活动列表和个人简历优化','推荐信策略与沟通指导','Common App及院校系统填报','申请材料审核与递交管理','补件、邮件和申请状态跟踪','面试准备','Waitlist及后续沟通策略','录取结果分析与最终择校建议'] %}
+              <p class="rounded-2xl border border-slate-200 bg-slate-50 p-4 font-bold text-slate-700">{{ item }}</p>
+              {% endfor %}
+            </div>
+            <p class="mt-6 text-base leading-8 text-slate-700">这不是一次性咨询，也不是单项文书服务，而是一套贯穿申请全过程的系统化申请管理。</p>
+            <p class="mt-3 text-base leading-8 text-slate-700">从第一次诊断开始，到最终录取结果分析和择校建议，每一个关键节点都会有清晰的判断、明确的任务和持续的跟进。</p>
+          </section>
+
+          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+            <h2 class="text-3xl font-black text-[#061a3a]">超哥留学负责什么</h2>
+            <div class="mt-5 grid gap-4 text-base leading-8 text-slate-700">
+              <p>超哥留学作为合作发起方，将继续发挥其在家长信任、行业判断和服务监督方面的优势。</p>
+              <p>在合作过程中，超哥留学负责对合作项目进行整体把关，帮助家庭识别真正具备美本申请需求的服务路径，并推动申请服务更加透明、稳定、规范地进行。</p>
+              <p>我们希望家长知道：这不是一次简单的机构推荐，也不是普通的流量合作。</p>
+              <p>这是超哥基于多年行业观察与家长需求，选择与Grace老师共同打造的一项美本申请服务。其核心目标，是让更多家庭在复杂的申请环境中，获得真正专业、长期、可追溯的申请支持。</p>
+            </div>
+          </section>
+
+          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+            <h2 class="text-3xl font-black text-[#061a3a]">我们适合什么样的家庭</h2>
+            <div class="mt-5 grid gap-3">
+              {% for item in ['计划申请美国本科，希望冲刺Top30、Top50或综合优质大学的学生；','已经进入国际课程体系，需要系统规划申请路径的学生；','英美港新多国混申，但家庭尚未明确主申请策略的学生；','成绩较好，但活动、专业方向和申请主线不清晰的学生；','已经做过一些活动和竞赛，但缺少系统整合的学生；','家长希望有人长期负责申请进度、材料质量和关键节点判断的家庭；','不希望被项目和机构牵着走，而是希望基于孩子自身情况做长期规划的家庭。'] %}
+              <p class="rounded-2xl bg-slate-50 p-4 text-base leading-8 text-slate-700">{{ item }}</p>
+              {% endfor %}
+            </div>
+            <div class="mt-6 rounded-[26px] border border-amber-200 bg-amber-50 p-5 text-base leading-8 text-amber-900">
+              <p>我们不适合希望“保证录取某所学校”的家庭，也不适合只想临时购买模板文书或短期包装的学生。</p>
+              <p class="mt-2 font-black">真正好的申请，需要时间、判断、执行和持续调整。</p>
+            </div>
+          </section>
+
+          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+            <h2 class="text-3xl font-black text-[#061a3a]">我们的服务原则</h2>
+            <div class="mt-5 grid gap-3">
+              {% for item in ['第一，基于孩子真实情况做判断，而不是盲目拔高目标。','第二，基于长期发展设计申请路径，而不是短期堆砌履历。','第三，基于申请逻辑整合材料，而不是机械罗列活动。','第四，基于家庭实际情况制定方案，而不是复制标准模板。','第五，重视过程管理，让每一个关键节点都有依据、有记录、有反馈。'] %}
+              <p class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-base font-bold leading-8 text-slate-700">{{ item }}</p>
+              {% endfor %}
+            </div>
+            <p class="mt-6 rounded-[26px] bg-[#061a3a] p-6 text-lg font-black leading-9 text-white">美本申请的核心，不是把孩子包装成另一个人，而是把孩子真正有价值的一面，用招生官能够理解的方式呈现出来。</p>
+          </section>
+
+          <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+            <h2 class="text-3xl font-black text-[#061a3a]">写给家长的话</h2>
+            <div class="mt-5 grid gap-5 text-base leading-8 text-slate-700">
+              <p>如果您正在为孩子的美本申请感到焦虑，可能并不是因为您不了解信息，而是因为信息太多、判断太难、路径太乱。</p>
+              <p>我们希望这项服务能够帮您解决三个问题：</p>
+              <div class="grid gap-3 md:grid-cols-3">
+                <p class="rounded-2xl bg-[#ecfdf5] p-5 text-lg font-black text-[#087454]">看清孩子现在的位置；</p>
+                <p class="rounded-2xl bg-[#ecfdf5] p-5 text-lg font-black text-[#087454]">明确未来应该走的路径；</p>
+                <p class="rounded-2xl bg-[#ecfdf5] p-5 text-lg font-black text-[#087454]">让专业的人陪孩子把申请完整走完。</p>
+              </div>
+              <p>超哥留学与Grace老师的合作，不是为了制造更多选择，而是希望在复杂的申请市场中，为家长提供一个更值得信任的选择。</p>
+              <div class="rounded-[26px] bg-[#061a3a] p-6 text-white">
+                <p class="text-xl font-black leading-10">让申请回到专业本身。<br>让规划真正落到孩子身上。<br>让每一个重要决定，都有清晰依据。</p>
+                <p class="mt-4 text-base leading-8 text-white/78">这就是我们共同推出本项美本申请规划服务的初衷。</p>
+              </div>
+            </div>
+          </section>
+        </article>
+
         <aside class="lg:sticky lg:top-24">
-          <p class="mb-4 text-sm font-black uppercase tracking-[0.18em] text-[#0f8f68]">Private Consultation</p>
-          <h1 class="yd-serif text-5xl font-semibold leading-tight text-[#061a3a] md:text-7xl">预约留学<br class="hidden md:block">咨询</h1>
-          <p class="mt-6 max-w-xl text-lg leading-9 text-slate-600">为保证咨询质量每日限定2个名额。绿色时段可预约，灰色时段表示已预约或已过期。</p>
-
-          <div class="mt-8 grid gap-4 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-5 shadow-[0_16px_46px_rgba(15,23,42,.07)]">
-              <p class="text-sm font-bold text-slate-500">每日名额</p>
-              <p class="mt-2 text-3xl font-black text-[#061a3a]">2 位</p>
+          <section class="rounded-[30px] border border-slate-200 bg-white/95 p-5 shadow-[0_24px_80px_rgba(15,23,42,.12)] backdrop-blur">
+            <div class="mb-5">
+              <p class="text-sm font-black uppercase tracking-[0.16em] text-[#d6a84f]">Consultation Booking</p>
+              <h2 class="mt-2 text-2xl font-black text-[#061a3a]">选择咨询时段</h2>
+              <p class="mt-2 text-sm font-bold leading-6 text-slate-500">为保证咨询质量每日限定2个名额。</p>
             </div>
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-5 shadow-[0_16px_46px_rgba(15,23,42,.07)]">
-              <p class="text-sm font-bold text-slate-500">方式</p>
-              <p class="mt-2 text-2xl font-black text-[#061a3a]">腾讯会议</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-white/90 p-5 shadow-[0_16px_46px_rgba(15,23,42,.07)]">
-              <p class="text-sm font-bold text-slate-500">开放日</p>
-              <p class="mt-2 text-2xl font-black text-[#061a3a]">周一-周六</p>
-            </div>
-          </div>
 
-          <div class="mt-6 rounded-2xl border border-[#0f8f68]/20 bg-[#ecfdf5] p-5">
-            <p class="text-sm font-black text-[#087454]">预约规则</p>
-            <p class="mt-3 text-base leading-8 text-slate-700">上午 10:00-12:00，下午 14:00-16:00。每个时段仅开放 1 个预约名额，提交基础信息后会暂时锁定该时段。</p>
-          </div>
-        </aside>
-
-        <section class="yd-calendar-shell overflow-hidden">
-          <div class="border-b border-slate-200 bg-white/85 p-5 md:p-7">
-            <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-              <div>
-                <p class="text-sm font-black uppercase tracking-[0.16em] text-[#d6a84f]">Consultation Calendar</p>
-                <h2 class="mt-2 text-3xl font-black text-[#061a3a]">选择你的专属档期</h2>
-              </div>
-              <div class="flex items-center gap-4 text-sm font-bold text-slate-500">
-                <span class="inline-flex items-center gap-2"><i class="h-2.5 w-2.5 rounded-full bg-[#0f8f68]"></i>可预约</span>
-                <span class="inline-flex items-center gap-2"><i class="h-2.5 w-2.5 rounded-full bg-slate-400"></i>已预约</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="p-5 md:p-7">
             {% if errors %}
-            <div class="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">
+            <div class="mb-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">
               {% for error in errors %}
               <p class="mb-1 last:mb-0">{{ error }}</p>
               {% endfor %}
             </div>
             {% endif %}
 
-            <form method="post" class="grid gap-7" id="bookingForm">
+            <form method="get" action="{{ url_for('booking_details') }}" class="grid gap-5" id="bookingForm">
               <input type="hidden" id="booking_date" name="booking_date" value="{{ selected_date }}">
 
               <div>
-                <div class="mb-3 flex items-center justify-between gap-3">
-                  <label class="block text-sm font-black text-slate-700">选择日期</label>
-                  <span class="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">iOS Calendar Style</span>
+                <div class="mb-2 flex items-center justify-between gap-3">
+                  <label class="block text-sm font-black text-slate-700">日期</label>
+                  <span class="text-xs font-bold text-slate-400">周一至周六</span>
                 </div>
                 <div class="yd-day-strip" role="listbox" aria-label="预约日期">
                   {% for day in available_days %}
-                  <button class="yd-day-chip min-h-[112px] px-4 py-3 text-left {% if selected_date == day.value %}is-active{% endif %} {% if day.is_full %}is-full{% endif %}" type="button" data-day-button data-date="{{ day.value }}" aria-pressed="{% if selected_date == day.value %}true{% else %}false{% endif %}">
-                    <span class="block text-xs font-black uppercase tracking-[0.14em] opacity-70">{{ day.month_label }}</span>
-                    <span class="mt-1 block text-3xl font-black leading-none">{{ day.day_number }}</span>
-                    <span class="mt-2 block text-sm font-bold">{{ day.weekday }}{% if day.is_today %} · 今天{% endif %}</span>
+                  <button class="yd-day-chip min-h-[100px] px-3 py-3 text-left {% if selected_date == day.value %}is-active{% endif %} {% if day.is_full %}is-full{% endif %}" type="button" data-day-button data-date="{{ day.value }}" aria-pressed="{% if selected_date == day.value %}true{% else %}false{% endif %}">
+                    <span class="block text-xs font-black uppercase tracking-[0.12em] opacity-70">{{ day.month_label }}</span>
+                    <span class="mt-1 block text-2xl font-black leading-none">{{ day.day_number }}</span>
+                    <span class="mt-2 block text-xs font-bold">{{ day.weekday }}{% if day.is_today %} · 今天{% endif %}</span>
                     <span class="mt-2 block text-xs font-bold opacity-75">{{ day.available_count }} 个可约</span>
                   </button>
                   {% endfor %}
@@ -217,73 +299,31 @@
               </div>
 
               <fieldset>
-                <legend class="mb-4 block text-sm font-black text-slate-700">选择时间段</legend>
-                <div class="grid gap-5">
+                <legend class="mb-3 block text-sm font-black text-slate-700">时段</legend>
+                <div class="grid gap-3">
                   {% for group in slot_groups %}
-                  <section class="rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
-                    <div class="mb-3 flex items-center justify-between">
-                      <h3 class="text-base font-black text-[#061a3a]">{{ group.label }}</h3>
-                      <p class="text-sm font-bold text-slate-500">{{ group.window }}</p>
-                    </div>
-                    <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                      {% for slot in group.slots %}
-                      {% set slot_status = slot_status_map.get(selected_date, {}).get(slot) or {'disabled': False, 'label': '可预约'} %}
-                      {% set is_disabled = slot_status.disabled %}
-                      <label class="yd-time-slot {% if is_disabled %}is-unavailable{% endif %} p-4" data-slot-card data-slot="{{ slot }}">
-                        <input class="sr-only" type="radio" name="time_slot" value="{{ slot }}" {% if selected_slot == slot %}checked{% endif %} {% if is_disabled %}disabled{% endif %} required>
-                        <span class="flex items-center justify-between gap-3">
-                          <span class="text-lg font-black" data-slot-time>{{ slot }}</span>
-                          <span class="yd-status-pill px-3 py-1 text-xs font-black" data-slot-status>{{ slot_status.label }}</span>
-                        </span>
-                      </label>
-                      {% endfor %}
-                    </div>
-                  </section>
+                  {% for slot in group.slots %}
+                  {% set slot_status = slot_status_map.get(selected_date, {}).get(slot) or {'disabled': False, 'label': '可预约'} %}
+                  {% set is_disabled = slot_status.disabled %}
+                  <label class="yd-time-slot {% if is_disabled %}is-unavailable{% endif %} p-4" data-slot-card data-slot="{{ slot }}">
+                    <input class="sr-only" type="radio" name="time_slot" value="{{ slot }}" {% if selected_slot == slot %}checked{% endif %} {% if is_disabled %}disabled{% endif %} required>
+                    <span class="flex items-center justify-between gap-3">
+                      <span>
+                        <span class="block text-xs font-black opacity-70">{{ group.label }}</span>
+                        <span class="mt-1 block text-lg font-black" data-slot-time>{{ slot }}</span>
+                      </span>
+                      <span class="yd-status-pill px-3 py-1 text-xs font-black" data-slot-status>{{ slot_status.label }}</span>
+                    </span>
+                  </label>
+                  {% endfor %}
                   {% endfor %}
                 </div>
               </fieldset>
 
-              <div class="rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
-                <h3 class="mb-5 text-xl font-black text-[#061a3a]">填写咨询信息</h3>
-                <div class="grid gap-5 md:grid-cols-2">
-                  <div>
-                    <label class="mb-2 block text-sm font-bold text-slate-700" for="name">姓名</label>
-                    <input class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#0f8f68] focus:ring-4 focus:ring-[#0f8f68]/10" id="name" name="name" value="{{ form.get('name', '') }}" placeholder="请输入姓名" required>
-                  </div>
-                  <div>
-                    <label class="mb-2 block text-sm font-bold text-slate-700" for="contact">联系方式</label>
-                    <input class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#0f8f68] focus:ring-4 focus:ring-[#0f8f68]/10" id="contact" name="contact" value="{{ form.get('contact', '') }}" placeholder="手机 / 微信 / 邮箱" required>
-                  </div>
-                  <div>
-                    <label class="mb-2 block text-sm font-bold text-slate-700" for="target_country">目标国家</label>
-                    <select class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-[#0f8f68] focus:ring-4 focus:ring-[#0f8f68]/10" id="target_country" name="target_country" required>
-                      <option value="">请选择</option>
-                      {% for country in target_countries %}
-                      <option value="{{ country }}" {% if form.get('target_country') == country %}selected{% endif %}>{{ country }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                  <div>
-                    <label class="mb-2 block text-sm font-bold text-slate-700" for="stage">申请阶段</label>
-                    <select class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-[#0f8f68] focus:ring-4 focus:ring-[#0f8f68]/10" id="stage" name="stage" required>
-                      <option value="">请选择</option>
-                      {% for stage in stages %}
-                      <option value="{{ stage }}" {% if form.get('stage') == stage %}selected{% endif %}>{{ stage }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                </div>
-
-                <div class="mt-5">
-                  <label class="mb-2 block text-sm font-bold text-slate-700" for="question">咨询问题</label>
-                  <textarea class="min-h-[150px] w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#0f8f68] focus:ring-4 focus:ring-[#0f8f68]/10" id="question" name="question" placeholder="请简单描述学生背景、目标和最想解决的问题" required>{{ form.get('question', '') }}</textarea>
-                </div>
-              </div>
-
-              <button class="rounded-full bg-[#061a3a] px-8 py-4 text-base font-black text-white shadow-[0_18px_42px_rgba(6,26,58,.22)] transition hover:-translate-y-0.5 hover:bg-[#0f8f68]" type="submit">提交预约</button>
+              <button class="rounded-full bg-[#061a3a] px-7 py-4 text-base font-black text-white shadow-[0_18px_42px_rgba(6,26,58,.22)] transition hover:-translate-y-0.5 hover:bg-[#0f8f68]" type="submit">下一步填写预约信息</button>
             </form>
-          </div>
-        </section>
+          </section>
+        </aside>
       </div>
     </div>
   </section>
@@ -306,14 +346,12 @@
 
     function syncSlots(selectedDate) {
       var statuses = slotStatusMap[selectedDate] || {};
-
       slotCards.forEach(function (card) {
         var input = card.querySelector('input[name="time_slot"]');
         var status = card.querySelector('[data-slot-status]');
         var slot = card.dataset.slot;
         var slotStatus = statuses[slot] || { state: 'available', label: '可预约', disabled: false };
         var unavailable = Boolean(slotStatus.disabled);
-
         input.disabled = unavailable;
         if (unavailable && input.checked) {
           input.checked = false;

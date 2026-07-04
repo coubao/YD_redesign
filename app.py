@@ -396,12 +396,45 @@ def services():
 def contact_page():
     return render_template('contact.html')
 
-@app.route('/booking', methods=['GET', 'POST'])
+def validate_booking_selection(booking_date, time_slot):
+    available_days = build_booking_days()
+    allowed_dates = {item['value'] for item in available_days}
+    errors = []
+
+    if booking_date not in allowed_dates:
+        errors.append('请选择可预约日期。')
+    if time_slot not in BOOKING_TIME_SLOTS:
+        errors.append('请选择可预约时间段。')
+    elif booking_date in allowed_dates:
+        slot_status = build_slot_status_map([booking_date]).get(booking_date, {}).get(time_slot)
+        if not slot_status or slot_status['state'] != 'available':
+            errors.append('该时间段暂不可预约，请选择绿色可预约时段。')
+    return errors
+
+
+@app.get('/booking')
 def booking():
     context = build_booking_context()
+    return render_template('booking.html', **context)
 
+
+@app.route('/booking/details', methods=['GET', 'POST'])
+def booking_details():
     if request.method == 'GET':
-        return render_template('booking.html', **context)
+        booking_date = request.args.get('booking_date', '').strip()
+        time_slot = request.args.get('time_slot', '').strip()
+        errors = validate_booking_selection(booking_date, time_slot)
+        if errors:
+            context = build_booking_context({'booking_date': booking_date, 'time_slot': time_slot})
+            return render_template('booking.html', errors=errors, **context), 400
+        return render_template(
+            'booking_details.html',
+            booking_date=booking_date,
+            time_slot=time_slot,
+            target_countries=BOOKING_TARGET_COUNTRIES,
+            stages=BOOKING_STAGES,
+            form={},
+        )
 
     form_data = {
         'booking_date': request.form.get('booking_date', '').strip(),
@@ -412,18 +445,7 @@ def booking():
         'stage': request.form.get('stage', '').strip(),
         'question': request.form.get('question', '').strip(),
     }
-    available_days = build_booking_days()
-    allowed_dates = {item['value'] for item in available_days}
-    errors = []
-
-    if form_data['booking_date'] not in allowed_dates:
-        errors.append('请选择可预约日期。')
-    if form_data['time_slot'] not in BOOKING_TIME_SLOTS:
-        errors.append('请选择可预约时间段。')
-    elif form_data['booking_date'] in allowed_dates:
-        slot_status = build_slot_status_map([form_data['booking_date']]).get(form_data['booking_date'], {}).get(form_data['time_slot'])
-        if not slot_status or slot_status['state'] != 'available':
-            errors.append('该时间段暂不可预约，请选择绿色可预约时段。')
+    errors = validate_booking_selection(form_data['booking_date'], form_data['time_slot'])
     for field, label in [
         ('name', '姓名'),
         ('contact', '联系方式'),
@@ -441,8 +463,15 @@ def booking():
         errors.append('该时间段刚刚被预约，请选择其他时间。')
 
     if errors:
-        context = build_booking_context(form_data)
-        return render_template('booking.html', errors=errors, **context), 400
+        return render_template(
+            'booking_details.html',
+            errors=errors,
+            booking_date=form_data['booking_date'],
+            time_slot=form_data['time_slot'],
+            target_countries=BOOKING_TARGET_COUNTRIES,
+            stages=BOOKING_STAGES,
+            form=form_data,
+        ), 400
 
     booking_record = Booking(**form_data, meeting_method='腾讯会议', status=BOOKING_STATUS_PENDING_INTAKE)
     try:
@@ -450,8 +479,15 @@ def booking():
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
-        context = build_booking_context(form_data)
-        return render_template('booking.html', errors=['该时间段刚刚被预约，请选择其他时间。'], **context), 409
+        return render_template(
+            'booking_details.html',
+            errors=['该时间段刚刚被预约，请返回重新选择其他时间。'],
+            booking_date=form_data['booking_date'],
+            time_slot=form_data['time_slot'],
+            target_countries=BOOKING_TARGET_COUNTRIES,
+            stages=BOOKING_STAGES,
+            form=form_data,
+        ), 409
 
     return redirect(url_for('booking_success', booking_id=booking_record.id, token=ensure_booking_token(booking_record)))
 

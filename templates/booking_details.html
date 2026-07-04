@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+<script>
+  window.tailwind = window.tailwind || {};
+  window.tailwind.config = { corePlugins: { preflight: false } };
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<main class="bg-gradient-to-b from-[#f8fbff] via-[#eef6fb] to-white px-5 py-14 md:px-10 md:py-24">
+  <section class="mx-auto max-w-5xl overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_28px_90px_rgba(15,23,42,.12)]">
+    <div class="bg-gradient-to-r from-[#061a3a] via-[#0b4b89] to-[#0f766e] p-8 text-white md:p-10">
+      <p class="text-sm font-black uppercase tracking-[0.18em] text-[#2dd4bf]">Booking Details</p>
+      <h1 class="mt-4 text-4xl font-black leading-tight md:text-6xl">填写预约信息</h1>
+      <p class="mt-4 max-w-3xl text-lg leading-8 text-white/78">你已选择咨询时段。提交基础信息后，该时段会暂时锁定；继续完成咨询前信息采集表后，预约才会正式确认。</p>
+    </div>
+
+    <div class="grid gap-5 p-6 md:grid-cols-2 md:p-10">
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+        <p class="text-sm font-bold text-slate-500">预约日期</p>
+        <p class="mt-2 text-3xl font-black text-[#061a3a]">{{ booking_date }}</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+        <p class="text-sm font-bold text-slate-500">预约时段</p>
+        <p class="mt-2 text-3xl font-black text-[#0f766e]">{{ time_slot }}</p>
+      </div>
+    </div>
+
+    <div class="border-t border-slate-200 p-6 md:p-10">
+      {% if errors %}
+      <div class="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">
+        {% for error in errors %}
+        <p class="mb-1 last:mb-0">{{ error }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <form method="post" action="{{ url_for('booking_details') }}" class="grid gap-6">
+        <input type="hidden" name="booking_date" value="{{ booking_date }}">
+        <input type="hidden" name="time_slot" value="{{ time_slot }}">
+
+        <div class="grid gap-5 md:grid-cols-2">
+          <div>
+            <label class="mb-2 block text-sm font-bold text-slate-700" for="name">姓名</label>
+            <input class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="name" name="name" value="{{ form.get('name', '') }}" placeholder="请输入姓名" required>
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-bold text-slate-700" for="contact">联系方式</label>
+            <input class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="contact" name="contact" value="{{ form.get('contact', '') }}" placeholder="手机 / 微信 / 邮箱" required>
+          </div>
+        </div>
+
+        <div class="grid gap-5 md:grid-cols-2">
+          <div>
+            <label class="mb-2 block text-sm font-bold text-slate-700" for="target_country">目标国家</label>
+            <select class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="target_country" name="target_country" required>
+              <option value="">请选择</option>
+              {% for country in target_countries %}
+              <option value="{{ country }}" {% if form.get('target_country') == country %}selected{% endif %}>{{ country }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-bold text-slate-700" for="stage">申请阶段</label>
+            <select class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="stage" name="stage" required>
+              <option value="">请选择</option>
+              {% for stage in stages %}
+              <option value="{{ stage }}" {% if form.get('stage') == stage %}selected{% endif %}>{{ stage }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-bold text-slate-700" for="question">咨询问题</label>
+          <textarea class="min-h-[150px] w-full rounded-2xl border border-slate-200 px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="question" name="question" placeholder="请简单描述学生背景、目标和最想解决的问题" required>{{ form.get('question', '') }}</textarea>
+        </div>
+
+        <div class="rounded-2xl border border-[#0f766e]/20 bg-[#ecfdf5] p-5 text-base leading-8 text-slate-700">
+          提交后该时段将暂时锁定。下一步请继续填写咨询前信息采集表，完成后预约才会正式确认。
+        </div>
+
+        <div class="flex flex-col gap-3 sm:flex-row">
+          <button class="inline-flex items-center justify-center rounded-full bg-[#061a3a] px-8 py-4 text-base font-black text-white shadow-[0_18px_42px_rgba(6,26,58,.22)] transition hover:-translate-y-0.5 hover:bg-[#0f766e]" type="submit">提交并锁定时段</button>
+          <a class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-8 py-4 text-base font-black text-[#061a3a] no-underline transition hover:border-[#0f766e] hover:text-[#0f766e]" href="{{ url_for('booking') }}">返回重新选择</a>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+{% endblock %}
