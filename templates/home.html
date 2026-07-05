@@ -359,6 +359,9 @@
     <div class="mx-auto w-full max-w-7xl px-6 py-12 md:px-10 lg:py-12">
       <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_21rem] lg:items-end">
         <div class="max-w-5xl text-white">
+          <div class="yd-reveal mb-5 inline-flex max-w-[310px] rounded-2xl border border-white/30 bg-white/95 p-3 shadow-soft backdrop-blur">
+            <img class="h-auto w-full object-contain" src="{{ url_for('static', filename='cg-overseas-logo.png') }}" alt="超哥留学 logo" loading="eager">
+          </div>
           <p class="yd-reveal mb-5 inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90 shadow-soft backdrop-blur">
             <span class="h-2 w-2 rounded-full bg-grace-gold"></span>
             超哥留学 &amp; Grace
@@ -374,8 +377,8 @@
           </p>
 
           <div class="yd-reveal flex flex-col gap-3 sm:flex-row">
-            <a class="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-base font-bold text-grace-navy shadow-glow transition duration-200 hover:-translate-y-0.5 hover:bg-grace-mint hover:text-grace-navy" href="{{ url_for('contact_page') }}">
-              预约30分钟咨询
+            <a class="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-base font-bold text-grace-navy shadow-glow transition duration-200 hover:-translate-y-0.5 hover:bg-grace-mint hover:text-grace-navy" href="{{ url_for('booking') }}">
+              预约1小时咨询
               <span class="ml-2">→</span>
             </a>
             <a class="inline-flex items-center justify-center rounded-full border border-white/26 bg-white/10 px-6 py-3 text-base font-bold text-white backdrop-blur transition duration-200 hover:-translate-y-0.5 hover:border-white/60 hover:bg-white/16" href="#offers-wall">

@@ -33,10 +33,16 @@
     <div class="mx-auto max-w-6xl">
       <div class="mb-8 rounded-[28px] bg-[#061a3a] p-7 text-white shadow-[0_28px_90px_rgba(15,23,42,.16)] md:p-10">
         <p class="text-sm font-black uppercase tracking-[0.18em] text-[#2dd4bf]">Grace Strategy Diagnostic</p>
-        <h1 class="yd-serif mt-4 text-4xl font-semibold leading-tight md:text-6xl">咨询前信息采集表</h1>
-        <p class="mt-4 max-w-3xl text-lg leading-8 text-white/78">学生基本信息为必填，其余部分可先填写已知内容。提供的信息越全面，顾问的判断结果越准确。</p>
+        <h1 class="yd-serif mt-4 text-4xl font-semibold leading-tight md:text-6xl">{% if is_new_booking %}填写咨询资料{% else %}咨询前信息采集表{% endif %}</h1>
+        <p class="mt-4 max-w-3xl text-lg leading-8 text-white/78">
+          {% if is_new_booking %}
+          你已确认咨询时段。请继续填写预约资料，提交后本次腾讯会议咨询将直接完成预约。
+          {% else %}
+          学生基本信息为必填，其余部分可先填写已知内容。提供的信息越全面，顾问的判断结果越准确。
+          {% endif %}
+        </p>
         <div class="mt-6 grid gap-3 text-sm font-bold text-white/86 md:grid-cols-4">
-          <div class="rounded-2xl bg-white/10 p-4">预约编号：#{{ booking.id }}</div>
+          <div class="rounded-2xl bg-white/10 p-4">预约编号：{% if is_new_booking %}提交后生成{% else %}#{{ booking.id }}{% endif %}</div>
           <div class="rounded-2xl bg-white/10 p-4">{{ booking.booking_date }}</div>
           <div class="rounded-2xl bg-white/10 p-4">{{ booking.time_slot }}</div>
           <div class="rounded-2xl bg-white/10 p-4">{{ booking.meeting_method }}</div>
@@ -62,6 +68,51 @@
       </div>
 
       <form method="post" class="grid gap-7">
+        {% if is_new_booking %}
+        <input type="hidden" name="booking_date" value="{{ booking.booking_date }}">
+        <input type="hidden" name="time_slot" value="{{ booking.time_slot }}">
+
+        <section class="rounded-[26px] border border-slate-200 bg-white p-5 shadow-[0_18px_54px_rgba(15,23,42,.08)] md:p-7">
+          <div class="mb-6">
+            <p class="text-sm font-black uppercase tracking-[0.16em] text-[#0f766e]">Booking Contact</p>
+            <h2 class="mt-2 text-2xl font-black text-[#061a3a]">预约联系人与咨询方向</h2>
+            <p class="mt-2 text-base leading-7 text-slate-500">这部分用于生成预约记录；下方学生资料用于顾问提前判断路径。</p>
+          </div>
+          <div class="grid gap-5 md:grid-cols-2">
+            <div>
+              <label class="mb-2 block text-sm font-black text-slate-700" for="name">联系人姓名 <span class="ml-2 rounded-full bg-[#0f766e]/10 px-2 py-0.5 text-xs text-[#0f766e]">必填</span></label>
+              <input class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="name" name="name" value="{{ booking_form.get('name', '') }}" placeholder="请输入联系人姓名" required>
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-black text-slate-700" for="contact">联系方式 <span class="ml-2 rounded-full bg-[#0f766e]/10 px-2 py-0.5 text-xs text-[#0f766e]">必填</span></label>
+              <input class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="contact" name="contact" value="{{ booking_form.get('contact', '') }}" placeholder="手机 / 微信 / 邮箱" required>
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-black text-slate-700" for="target_country">目标国家 <span class="ml-2 rounded-full bg-[#0f766e]/10 px-2 py-0.5 text-xs text-[#0f766e]">必填</span></label>
+              <select class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="target_country" name="target_country" required>
+                <option value="">请选择</option>
+                {% for country in target_countries %}
+                <option value="{{ country }}" {% if booking_form.get('target_country') == country %}selected{% endif %}>{{ country }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-black text-slate-700" for="stage">申请阶段 <span class="ml-2 rounded-full bg-[#0f766e]/10 px-2 py-0.5 text-xs text-[#0f766e]">必填</span></label>
+              <select class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="stage" name="stage" required>
+                <option value="">请选择</option>
+                {% for stage in stages %}
+                <option value="{{ stage }}" {% if booking_form.get('stage') == stage %}selected{% endif %}>{{ stage }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="md:col-span-2">
+              <label class="mb-2 block text-sm font-black text-slate-700" for="question">本次最想解决的问题 <span class="ml-2 rounded-full bg-[#0f766e]/10 px-2 py-0.5 text-xs text-[#0f766e]">必填</span></label>
+              <textarea class="min-h-[120px] w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" id="question" name="question" placeholder="请简单描述学生背景、目标和最想解决的问题" required>{{ booking_form.get('question', '') }}</textarea>
+            </div>
+          </div>
+        </section>
+        {% endif %}
+
         {% for section in intake_sections %}
         <section class="rounded-[26px] border border-slate-200 bg-white p-5 shadow-[0_18px_54px_rgba(15,23,42,.08)] md:p-7">
           <div class="mb-6">
@@ -206,8 +257,8 @@
 
         <div class="sticky bottom-4 z-10 rounded-[26px] border border-slate-200 bg-white/90 p-4 shadow-[0_18px_54px_rgba(15,23,42,.16)] backdrop-blur">
           <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <p class="text-sm font-bold text-slate-500">学生基本信息必填，其余选填；信息越全面，判断结果越准确。提交后预约状态会变为“已确认”。</p>
-            <button class="rounded-full bg-[#061a3a] px-8 py-4 text-base font-black text-white shadow-[0_18px_42px_rgba(6,26,58,.22)] transition hover:-translate-y-0.5 hover:bg-[#0f766e]" type="submit">提交并确认预约</button>
+            <p class="text-sm font-bold text-slate-500">学生基本信息必填，其余选填；信息越全面，判断结果越准确。{% if is_new_booking %}提交后将直接完成预约。{% else %}提交后预约状态会变为“已确认”。{% endif %}</p>
+            <button class="rounded-full bg-[#061a3a] px-8 py-4 text-base font-black text-white shadow-[0_18px_42px_rgba(6,26,58,.22)] transition hover:-translate-y-0.5 hover:bg-[#0f766e]" type="submit">{% if is_new_booking %}提交资料并完成预约{% else %}提交并确认预约{% endif %}</button>
           </div>
         </div>
       </form>

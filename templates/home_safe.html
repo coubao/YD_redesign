@@ -3,10 +3,13 @@
 <section class="hero-onepage" id="about">
   <div class="overlay"></div>
   <div class="hero-content">
+    <div class="mb-3 d-inline-flex rounded-4 bg-white p-3 shadow">
+      <img src="{{ url_for('static', filename='cg-overseas-logo.png') }}" alt="超哥留学 logo" style="width: min(310px, 72vw); height: auto;">
+    </div>
     <p class="hero-kicker">超哥留学 &amp; Grace</p>
     <h1 class="hero-title">20年申请经验</h1>
     <p class="hero-sub">用结果说话，为中国家庭提供美本/美研/低龄留学精品规划</p>
-    <a class="book-btn" href="{{ url_for('contact_page') }}">预约30分钟咨询</a>
+    <a class="book-btn" href="{{ url_for('booking') }}">预约1小时咨询</a>
   </div>
 </section>
 

@@ -102,8 +102,8 @@ BOOKING_STATUS_LABELS = {
     BOOKING_STATUS_PENDING_INTAKE: '待填写资料',
     BOOKING_STATUS_CONFIRMED: '已确认',
 }
-BOOKING_SLOT_DURATION_MINUTES = 120
-BOOKING_SLOT_STEP_MINUTES = 120
+BOOKING_SLOT_DURATION_MINUTES = 60
+BOOKING_SLOT_STEP_MINUTES = 60
 BOOKING_BUFFER_MINUTES = 0
 BOOKING_DAILY_WINDOWS = [
     ('morning', '上午', 10 * 60, 12 * 60),
@@ -270,6 +270,31 @@ def render_intake_form(booking_record, intake_data, saved=False, errors=None):
     )
 
 
+def render_new_booking_form(booking_date, time_slot, form_data=None, intake_data=None, errors=None):
+    return render_template(
+        'booking_intake.html',
+        booking={
+            'id': '待生成',
+            'booking_date': booking_date,
+            'time_slot': time_slot,
+            'meeting_method': '腾讯会议',
+        },
+        booking_form=form_data or {},
+        intake=intake_data or {},
+        intake_sections=INTAKE_SECTIONS,
+        academic_record_fields=ACADEMIC_RECORD_FIELDS,
+        testing_record_fields=TESTING_RECORD_FIELDS,
+        activity_categories=ACTIVITY_CATEGORIES,
+        activity_fields=ACTIVITY_FIELDS,
+        material_options=MATERIAL_OPTIONS,
+        target_countries=BOOKING_TARGET_COUNTRIES,
+        stages=BOOKING_STAGES,
+        saved=False,
+        errors=errors or [],
+        is_new_booking=True,
+    )
+
+
 def save_intake_form(booking_record):
     intake_data = parse_intake_form(request.form)
     errors = validate_intake_data(intake_data)
@@ -427,14 +452,7 @@ def booking_details():
         if errors:
             context = build_booking_context({'booking_date': booking_date, 'time_slot': time_slot})
             return render_template('booking.html', errors=errors, **context), 400
-        return render_template(
-            'booking_details.html',
-            booking_date=booking_date,
-            time_slot=time_slot,
-            target_countries=BOOKING_TARGET_COUNTRIES,
-            stages=BOOKING_STAGES,
-            form={},
-        )
+        return render_new_booking_form(booking_date, time_slot)
 
     form_data = {
         'booking_date': request.form.get('booking_date', '').strip(),
@@ -456,6 +474,9 @@ def booking_details():
         if not form_data[field]:
             errors.append(f'请填写{label}。')
 
+    intake_data = parse_intake_form(request.form)
+    errors.extend(validate_intake_data(intake_data))
+
     if not errors and Booking.query.filter_by(
         booking_date=form_data['booking_date'],
         time_slot=form_data['time_slot'],
@@ -463,33 +484,35 @@ def booking_details():
         errors.append('该时间段刚刚被预约，请选择其他时间。')
 
     if errors:
-        return render_template(
-            'booking_details.html',
+        return render_new_booking_form(
+            form_data['booking_date'],
+            form_data['time_slot'],
+            form_data=form_data,
+            intake_data=intake_data,
             errors=errors,
-            booking_date=form_data['booking_date'],
-            time_slot=form_data['time_slot'],
-            target_countries=BOOKING_TARGET_COUNTRIES,
-            stages=BOOKING_STAGES,
-            form=form_data,
         ), 400
 
-    booking_record = Booking(**form_data, meeting_method='腾讯会议', status=BOOKING_STATUS_PENDING_INTAKE)
+    booking_record = Booking(
+        **form_data,
+        meeting_method='腾讯会议',
+        status=BOOKING_STATUS_CONFIRMED,
+        intake_data=json.dumps(intake_data, ensure_ascii=False),
+        intake_submitted_at=datetime.now().isoformat(timespec='seconds'),
+    )
     try:
         db.session.add(booking_record)
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
-        return render_template(
-            'booking_details.html',
+        return render_new_booking_form(
+            form_data['booking_date'],
+            form_data['time_slot'],
+            form_data=form_data,
+            intake_data=intake_data,
             errors=['该时间段刚刚被预约，请返回重新选择其他时间。'],
-            booking_date=form_data['booking_date'],
-            time_slot=form_data['time_slot'],
-            target_countries=BOOKING_TARGET_COUNTRIES,
-            stages=BOOKING_STAGES,
-            form=form_data,
         ), 409
 
-    return redirect(url_for('booking_success', booking_id=booking_record.id, token=ensure_booking_token(booking_record)))
+    return redirect(url_for('booking_confirmed', booking_id=booking_record.id, token=ensure_booking_token(booking_record)))
 
 
 @app.get('/consultation')
