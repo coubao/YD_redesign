@@ -109,6 +109,28 @@ BOOKING_DAILY_WINDOWS = [
     ('morning', '上午', 10 * 60, 12 * 60),
     ('afternoon', '下午', 14 * 60, 16 * 60),
 ]
+BOOKING_SPECIAL_WINDOW_START = date(2026, 7, 6)
+BOOKING_SPECIAL_WINDOW_END = date(2026, 7, 10)
+BOOKING_PLACEHOLDER_BOOKINGS = {
+    '2026-07-06': {
+        '10:00-11:00': 'AB同学',
+        '11:00-12:00': 'CD同学',
+        '14:00-15:00': 'EF同学',
+        '15:00-16:00': 'GH同学',
+    },
+    '2026-07-07': {
+        '10:00-11:00': 'IJ同学',
+        '11:00-12:00': 'KL同学',
+        '14:00-15:00': 'MN同学',
+        '15:00-16:00': 'OP同学',
+    },
+    '2026-07-08': {
+        '10:00-11:00': 'QR同学',
+        '11:00-12:00': 'ST同学',
+        '14:00-15:00': 'UV同学',
+        '15:00-16:00': 'WX同学',
+    },
+}
 
 BOOKING_TARGET_COUNTRIES = ['美国', '英国', '加拿大', '澳大利亚', '新加坡&香港', '多国联申', '暂未确定']
 BOOKING_STAGES = ['低龄申请', '本科申请', '硕士申请', '博士申请', '转学/转专业', '背景提升规划', '其他']
@@ -152,8 +174,31 @@ def build_booking_slot_groups():
 BOOKING_TIME_SLOTS, BOOKING_SLOT_GROUPS = build_booking_slot_groups()
 
 
+def build_booking_day_item(current):
+    return {
+        'value': current.isoformat(),
+        'label': current.strftime('%m月%d日'),
+        'day_number': current.strftime('%d'),
+        'month_label': current.strftime('%m月'),
+        'weekday': WEEKDAY_LABELS[current.weekday()],
+        'is_today': current == date.today(),
+    }
+
+
+def should_use_special_booking_window(today):
+    return BOOKING_SPECIAL_WINDOW_START <= today <= BOOKING_SPECIAL_WINDOW_END
+
+
 def build_booking_days(days_count=14):
     start = date.today()
+    if should_use_special_booking_window(start):
+        current = BOOKING_SPECIAL_WINDOW_START
+        days = []
+        while current <= BOOKING_SPECIAL_WINDOW_END:
+            days.append(build_booking_day_item(current))
+            current += timedelta(days=1)
+        return days
+
     days = []
     offset = 0
     while len(days) < days_count:
@@ -161,14 +206,7 @@ def build_booking_days(days_count=14):
         offset += 1
         if current.weekday() == 6:
             continue
-        days.append({
-            'value': current.isoformat(),
-            'label': current.strftime('%m月%d日'),
-            'day_number': current.strftime('%d'),
-            'month_label': current.strftime('%m月'),
-            'weekday': WEEKDAY_LABELS[current.weekday()],
-            'is_today': current == date.today(),
-        })
+        days.append(build_booking_day_item(current))
     return days
 
 
@@ -202,10 +240,17 @@ def build_slot_status_map(day_values):
             slot_start, _ = parse_booking_slot(slot)
             state = 'available'
             label = '可预约'
+            placeholder_name = BOOKING_PLACEHOLDER_BOOKINGS.get(day_value, {}).get(slot)
 
-            if slot in booked_slots:
+            if placeholder_name:
+                state = 'booked'
+                label = f'{placeholder_name}已预约'
+            elif slot in booked_slots:
                 state = 'booked'
                 label = '已预约'
+            elif day_value < today_value:
+                state = 'past'
+                label = '已过期'
             elif day_value == today_value and slot_start <= current_minutes:
                 state = 'past'
                 label = '已过期'
@@ -234,7 +279,10 @@ def build_booking_context(form_data=None):
         day_item['available_count'] = available_count
         day_item['is_full'] = available_count == 0
 
-    default_date = next((item['value'] for item in available_days if item['available_count'] > 0), available_days[0]['value'])
+    if should_use_special_booking_window(date.today()):
+        default_date = available_days[0]['value']
+    else:
+        default_date = next((item['value'] for item in available_days if item['available_count'] > 0), available_days[0]['value'])
     return {
         'available_days': available_days,
         'time_slots': BOOKING_TIME_SLOTS,
