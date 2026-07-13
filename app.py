@@ -131,6 +131,14 @@ BOOKING_PLACEHOLDER_BOOKINGS = {
         '14:00-15:00': 'UV同学',
         '15:00-16:00': 'WX同学',
     },
+    '2026-07-15': {
+        '14:00-15:00': 'AY同学',
+        '15:00-16:00': 'BZ同学',
+    },
+    '2026-07-16': {
+        '10:00-11:00': 'CX同学',
+        '11:00-12:00': 'DW同学',
+    },
 }
 
 BOOKING_TARGET_COUNTRIES = ['美国', '英国', '加拿大', '澳大利亚', '新加坡&香港', '多国联申', '暂未确定']
@@ -407,6 +415,39 @@ def save_intake_form(booking_record):
     return True, intake_data, []
 
 
+def migrate_july_15_bookings_to_july_16(booking_cols):
+    if not {'booking_date', 'time_slot'}.issubset(booking_cols):
+        return
+
+    migration_key = 'move_2026_07_15_bookings_to_2026_07_16'
+    db.session.execute(sql_text(
+        "CREATE TABLE IF NOT EXISTS app_migration (migration_key VARCHAR(100) PRIMARY KEY, applied_at VARCHAR(32))"
+    ))
+    existing = db.session.execute(
+        sql_text("SELECT migration_key FROM app_migration WHERE migration_key = :migration_key"),
+        {'migration_key': migration_key},
+    ).first()
+    if existing:
+        return
+
+    db.session.execute(sql_text(
+        """
+        UPDATE booking
+        SET booking_date = '2026-07-16'
+        WHERE booking_date = '2026-07-15'
+          AND NOT EXISTS (
+            SELECT 1
+            FROM booking AS existing
+            WHERE existing.booking_date = '2026-07-16'
+              AND existing.time_slot = booking.time_slot
+          )
+        """
+    ))
+    db.session.execute(
+        sql_text("INSERT INTO app_migration (migration_key, applied_at) VALUES (:migration_key, :applied_at)"),
+        {'migration_key': migration_key, 'applied_at': datetime.now().isoformat(timespec='seconds')},
+    )
+
 
 def ensure_ranking_schema():
     # Lightweight SQLite schema patching for users upgrading from older columns
@@ -463,6 +504,7 @@ def ensure_ranking_schema():
             "UPDATE booking SET status = 'pending_intake' "
             "WHERE status IS NULL OR status = '' OR status = 'pending'"
         ))
+    migrate_july_15_bookings_to_july_16(refreshed_booking_cols)
     db.session.commit()
 
 @app.before_request
