@@ -17,7 +17,7 @@
       <a class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-5 py-3 font-black text-[#061a3a] no-underline transition hover:border-[#0f766e] hover:text-[#0f766e]" href="{{ url_for('admin') }}">返回排名后台</a>
     </div>
 
-    <div class="mb-6 grid gap-4 md:grid-cols-3">
+    <div class="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_16px_46px_rgba(15,23,42,.07)]">
         <p class="text-sm font-bold text-slate-500">预约总数</p>
         <p class="mt-2 text-4xl font-black text-[#061a3a]">{{ total }}</p>
@@ -25,6 +25,10 @@
       <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_16px_46px_rgba(15,23,42,.07)]">
         <p class="text-sm font-bold text-slate-500">已确认预约</p>
         <p class="mt-2 text-4xl font-black text-[#0f766e]">{{ confirmed_count }}</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_16px_46px_rgba(15,23,42,.07)]">
+        <p class="text-sm font-bold text-slate-500">已完成咨询</p>
+        <p class="mt-2 text-4xl font-black text-slate-500">{{ consulted_count }}</p>
       </div>
       <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_16px_46px_rgba(15,23,42,.07)]">
         <p class="text-sm font-bold text-slate-500">待填写资料</p>
@@ -47,7 +51,7 @@
           </thead>
           <tbody>
             {% for booking in bookings %}
-            <tr class="border-b border-slate-100 align-top odd:bg-slate-50/70">
+            <tr class="border-b border-slate-100 align-top transition {% if booking.consulted_at %}bg-slate-200/80 opacity-70{% else %}odd:bg-slate-50/70{% endif %}">
               <td class="px-4 py-4">
                 <p class="font-black text-[#061a3a]">{{ booking.booking_date }}</p>
                 <p class="mt-1 font-bold text-[#0f766e]">{{ booking.time_slot }}</p>
@@ -65,7 +69,11 @@
                 <p class="line-clamp-3">{{ booking.question }}</p>
               </td>
               <td class="px-4 py-4">
-                {% if booking.status == status_confirmed %}
+                {% if booking.consulted_at %}
+                <span class="inline-flex rounded-full bg-slate-700 px-3 py-1 text-xs font-black text-white">已咨询</span>
+                <p class="mt-2 text-xs font-bold text-slate-500">{{ booking.consulted_at }}</p>
+                <p class="mt-1 text-xs text-slate-400">预约流程已完成</p>
+                {% elif booking.status == status_confirmed %}
                 <span class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700">已确认</span>
                 <p class="mt-2 text-xs text-slate-400">{{ booking.intake_submitted_at }}</p>
                 {% else %}
@@ -84,6 +92,15 @@
                 <div class="flex flex-col gap-2">
                   <a class="inline-flex items-center justify-center rounded-full bg-[#061a3a] px-4 py-2 text-xs font-black text-white no-underline transition hover:bg-[#0f766e]" href="{{ url_for('admin_booking_intake', booking_id=booking.id) }}">查看/编辑</a>
                   <a class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-4 py-2 text-xs font-black text-[#061a3a] no-underline transition hover:border-[#0f766e] hover:text-[#0f766e]" href="{{ url_for('download_booking_intake', booking_id=booking.id) }}">下载 Word</a>
+                  <form method="post" action="{{ url_for('toggle_booking_consulted', booking_id=booking.id) }}">
+                    {% if booking.consulted_at %}
+                    <input type="hidden" name="action" value="clear">
+                    <button class="w-full rounded-full border border-slate-400 bg-slate-100 px-4 py-2 text-xs font-black text-slate-600 transition hover:bg-white" type="submit">取消已咨询</button>
+                    {% else %}
+                    <input type="hidden" name="action" value="mark">
+                    <button class="w-full rounded-full border border-[#0f766e]/30 bg-[#ecfdf5] px-4 py-2 text-xs font-black text-[#087454] transition hover:border-[#0f766e] hover:bg-[#d1fae5]" type="submit">标记为已咨询</button>
+                    {% endif %}
+                  </form>
                 </div>
               </td>
             </tr>

@@ -104,6 +104,7 @@ class Booking(db.Model):
     notification_status: Mapped[str] = mapped_column(String(40), default='pending')
     notification_sent_at: Mapped[str] = mapped_column(String(32), default='')
     notification_error: Mapped[str] = mapped_column(Text, default='')
+    consulted_at: Mapped[str] = mapped_column(String(32), default='')
     created_at: Mapped[str] = mapped_column(String(32), default=lambda: datetime.now().isoformat(timespec='seconds'))
 
 
@@ -528,6 +529,8 @@ def ensure_ranking_schema():
         booking_ddl.append("ALTER TABLE booking ADD COLUMN notification_sent_at VARCHAR(32) DEFAULT ''")
     if booking_cols and 'notification_error' not in booking_cols:
         booking_ddl.append("ALTER TABLE booking ADD COLUMN notification_error TEXT DEFAULT ''")
+    if booking_cols and 'consulted_at' not in booking_cols:
+        booking_ddl.append("ALTER TABLE booking ADD COLUMN consulted_at VARCHAR(32) DEFAULT ''")
     for stmt in booking_ddl:
         db.session.execute(sql_text(stmt))
 
@@ -830,6 +833,7 @@ def admin_bookings():
     total = len(bookings)
     confirmed_count = sum(1 for booking_record in bookings if booking_record.status == BOOKING_STATUS_CONFIRMED)
     pending_intake_count = sum(1 for booking_record in bookings if booking_record.status != BOOKING_STATUS_CONFIRMED)
+    consulted_count = sum(1 for booking_record in bookings if booking_record.consulted_at)
     upcoming_count = sum(1 for booking_record in bookings if booking_record.booking_date >= date.today().isoformat())
     return render_template(
         'admin_bookings.html',
@@ -837,10 +841,22 @@ def admin_bookings():
         total=total,
         confirmed_count=confirmed_count,
         pending_intake_count=pending_intake_count,
+        consulted_count=consulted_count,
         upcoming_count=upcoming_count,
         status_labels=BOOKING_STATUS_LABELS,
         status_confirmed=BOOKING_STATUS_CONFIRMED,
     )
+
+
+@app.post('/admin/bookings/<int:booking_id>/consulted')
+def toggle_booking_consulted(booking_id):
+    booking_record = Booking.query.get_or_404(booking_id)
+    if request.form.get('action') == 'clear':
+        booking_record.consulted_at = ''
+    else:
+        booking_record.consulted_at = datetime.now().isoformat(timespec='seconds')
+    db.session.commit()
+    return redirect(url_for('admin_bookings'))
 
 
 @app.get('/admin/bookings/<int:booking_id>/download-intake')
