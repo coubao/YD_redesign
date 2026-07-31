@@ -367,6 +367,19 @@
               <p class="text-sm font-black uppercase tracking-[0.16em] text-[#d6a84f]">Consultation Booking</p>
               <h2 class="mt-2 text-2xl font-black text-[#061a3a]">选择咨询时段</h2>
               <p class="mt-2 text-sm font-bold leading-6 text-slate-500">请选择一个1小时咨询时段，确认后选择本科、硕士或博士并填写资料。</p>
+              <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-4" aria-label="咨询流程">
+                <div class="grid grid-cols-[minmax(0,1fr)_12px_minmax(0,1fr)_12px_minmax(0,1fr)_12px_minmax(0,1fr)] items-start gap-1">
+                  {% for step in ['预约咨询时间', '填写资料', '完成咨询', '获取方案'] %}
+                  <div class="min-w-0 text-center">
+                    <span class="mx-auto flex h-7 w-7 items-center justify-center rounded-full bg-[#061a3a] text-xs font-black text-white shadow-[0_6px_16px_rgba(6,26,58,.18)]">{{ loop.index }}</span>
+                    <span class="mt-2 block text-[11px] font-black leading-4 text-[#061a3a]">{{ step }}</span>
+                  </div>
+                  {% if not loop.last %}
+                  <span class="mt-2.5 text-center text-xs font-black text-[#0f8f68]" aria-hidden="true">›</span>
+                  {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
             </div>
 
             {% if errors %}
@@ -442,9 +455,6 @@
                 </div>
               </fieldset>
 
-              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs font-bold leading-6 text-slate-500">
-                周三下午、周四上午及周日全天固定占用；其余日期按绿色可预约时段开放。
-              </div>
               <button class="rounded-full bg-[#061a3a] px-7 py-4 text-base font-black text-white shadow-[0_18px_42px_rgba(6,26,58,.22)] transition hover:-translate-y-0.5 hover:bg-[#0f8f68]" type="submit">确认时间，选择申请阶段</button>
             </form>
           </section>
