@@ -1,4 +1,4 @@
-from flask import Flask, Response, abort, render_template, request, redirect, url_for, flash, send_file
+from flask import Flask, abort, render_template, request, redirect, url_for, flash, send_file
 
 try:
     from flask_sqlalchemy import SQLAlchemy
@@ -16,7 +16,6 @@ from pathlib import Path
 import re
 import json
 import os
-import hmac
 from secrets import token_urlsafe
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
@@ -39,8 +38,6 @@ app.config['BOOKING_WECHAT_MENTIONED_MOBILES'] = [
     for mobile in os.environ.get('BOOKING_WECHAT_MENTIONED_MOBILES', '').split(',')
     if mobile.strip()
 ]
-app.config['ADMIN_USERNAME'] = os.environ.get('ADMIN_USERNAME', '').strip()
-app.config['ADMIN_PASSWORD'] = os.environ.get('ADMIN_PASSWORD', '')
 
 db = SQLAlchemy(app)
 
@@ -548,34 +545,6 @@ def ensure_ranking_schema():
         ))
     migrate_july_15_bookings_to_july_16(refreshed_booking_cols)
     db.session.commit()
-
-@app.before_request
-def protect_admin_routes():
-    if not request.path.startswith('/admin'):
-        return None
-
-    admin_username = app.config.get('ADMIN_USERNAME', '')
-    admin_password = app.config.get('ADMIN_PASSWORD', '')
-    if not admin_username or not admin_password:
-        return Response(
-            '后台访问凭据尚未配置。请设置 ADMIN_USERNAME 和 ADMIN_PASSWORD。',
-            status=503,
-            content_type='text/plain; charset=utf-8',
-        )
-
-    auth = request.authorization
-    username_matches = bool(auth) and hmac.compare_digest(auth.username or '', admin_username)
-    password_matches = bool(auth) and hmac.compare_digest(auth.password or '', admin_password)
-    if username_matches and password_matches:
-        return None
-
-    return Response(
-        '需要后台登录。',
-        status=401,
-        headers={'WWW-Authenticate': 'Basic realm="YD Education Admin", charset="UTF-8"'},
-        content_type='text/plain; charset=utf-8',
-    )
-
 
 @app.before_request
 def init_db_once():

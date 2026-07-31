@@ -67,21 +67,3 @@ phone number or WeChat ID. Both recipients must be members of the configured
 WeCom group (or later provide an official-account/WeCom application identity).
 When no webhook is configured, the booking is still saved and the admin page
 shows `微信提醒待配置`.
-
-## Admin Access Protection
-
-Booking profiles contain private student information. All `/admin` routes are
-protected with HTTP Basic authentication and are unavailable until credentials
-are configured:
-
-```ini
-Environment="ADMIN_USERNAME=your-admin-name"
-Environment="ADMIN_PASSWORD=use-a-long-random-password"
-```
-
-Add these lines to the same systemd service, then run:
-
-```bash
-sudo systemctl daemon-reload
-sudo systemctl restart vivy
-```
