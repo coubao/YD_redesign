@@ -55,7 +55,7 @@
               </td>
               <td class="px-4 py-4">
                 <p class="font-black text-slate-900">{{ booking.name }}</p>
-                <p class="mt-1 text-slate-500">{{ booking.contact }}</p>
+                <p class="mt-1 text-slate-500">{{ booking.contact or '未填写联系方式' }}</p>
               </td>
               <td class="px-4 py-4">
                 <p class="font-bold text-slate-900">{{ booking.target_country }}</p>
@@ -71,6 +71,13 @@
                 {% else %}
                 <span class="inline-flex rounded-full bg-amber-50 px-3 py-1 text-xs font-black text-amber-700">待填写资料</span>
                 <p class="mt-2 text-xs text-slate-400">时间已锁定，尚未正式确认</p>
+                {% endif %}
+                {% if booking.notification_status == 'sent' %}
+                <p class="mt-2 text-xs font-bold text-emerald-700">微信提醒已发送</p>
+                {% elif booking.notification_status == 'failed' %}
+                <p class="mt-2 text-xs font-bold text-red-600" title="{{ booking.notification_error }}">微信提醒发送失败</p>
+                {% elif booking.notification_status == 'not_configured' %}
+                <p class="mt-2 text-xs font-bold text-slate-400">微信提醒待配置</p>
                 {% endif %}
               </td>
               <td class="px-4 py-4">

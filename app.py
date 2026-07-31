@@ -1,4 +1,4 @@
-from flask import Flask, abort, render_template, request, redirect, url_for, flash, send_file
+from flask import Flask, Response, abort, render_template, request, redirect, url_for, flash, send_file
 
 try:
     from flask_sqlalchemy import SQLAlchemy
@@ -15,14 +15,14 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 import re
 import json
+import os
+import hmac
 from secrets import token_urlsafe
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 from intake_schema import (
-    ACADEMIC_RECORD_FIELDS,
-    ACTIVITY_CATEGORIES,
-    ACTIVITY_FIELDS,
-    INTAKE_SECTIONS,
-    MATERIAL_OPTIONS,
-    TESTING_RECORD_FIELDS,
+    APPLICATION_STAGES,
+    INTAKE_FORM_CONFIGS,
     build_intake_docx,
     load_intake_data,
     parse_intake_form,
@@ -30,9 +30,17 @@ from intake_schema import (
 )
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'change-me-in-production'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rankings.db'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'change-me-in-production')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///rankings.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['BOOKING_WECHAT_WEBHOOK_URL'] = os.environ.get('BOOKING_WECHAT_WEBHOOK_URL', '').strip()
+app.config['BOOKING_WECHAT_MENTIONED_MOBILES'] = [
+    mobile.strip()
+    for mobile in os.environ.get('BOOKING_WECHAT_MENTIONED_MOBILES', '').split(',')
+    if mobile.strip()
+]
+app.config['ADMIN_USERNAME'] = os.environ.get('ADMIN_USERNAME', '').strip()
+app.config['ADMIN_PASSWORD'] = os.environ.get('ADMIN_PASSWORD', '')
 
 db = SQLAlchemy(app)
 
@@ -93,6 +101,9 @@ class Booking(db.Model):
     intake_token: Mapped[str] = mapped_column(String(80), default=lambda: token_urlsafe(24))
     intake_data: Mapped[str] = mapped_column(Text, default='')
     intake_submitted_at: Mapped[str] = mapped_column(String(32), default='')
+    notification_status: Mapped[str] = mapped_column(String(40), default='pending')
+    notification_sent_at: Mapped[str] = mapped_column(String(32), default='')
+    notification_error: Mapped[str] = mapped_column(Text, default='')
     created_at: Mapped[str] = mapped_column(String(32), default=lambda: datetime.now().isoformat(timespec='seconds'))
 
 
@@ -104,45 +115,13 @@ BOOKING_STATUS_LABELS = {
 }
 BOOKING_SLOT_DURATION_MINUTES = 60
 BOOKING_SLOT_STEP_MINUTES = 60
-BOOKING_BUFFER_MINUTES = 0
+BOOKING_BUFFER_MINUTES = 30
 BOOKING_ADVANCE_DAYS = 30
 BOOKING_DAILY_WINDOWS = [
     ('morning', '上午', 10 * 60, 12 * 60),
     ('afternoon', '下午', 14 * 60, 16 * 60),
 ]
-BOOKING_SPECIAL_WINDOW_START = date(2026, 7, 6)
-BOOKING_SPECIAL_WINDOW_END = date(2026, 7, 10)
-BOOKING_PLACEHOLDER_BOOKINGS = {
-    '2026-07-06': {
-        '10:00-11:00': 'AB同学',
-        '11:00-12:00': 'CD同学',
-        '14:00-15:00': 'EF同学',
-        '15:00-16:00': 'GH同学',
-    },
-    '2026-07-07': {
-        '10:00-11:00': 'IJ同学',
-        '11:00-12:00': 'KL同学',
-        '14:00-15:00': 'MN同学',
-        '15:00-16:00': 'OP同学',
-    },
-    '2026-07-08': {
-        '10:00-11:00': 'QR同学',
-        '11:00-12:00': 'ST同学',
-        '14:00-15:00': 'UV同学',
-        '15:00-16:00': 'WX同学',
-    },
-    '2026-07-15': {
-        '14:00-15:00': 'AY同学',
-        '15:00-16:00': 'BZ同学',
-    },
-    '2026-07-16': {
-        '10:00-11:00': 'CX同学',
-        '11:00-12:00': 'DW同学',
-    },
-}
-
-BOOKING_TARGET_COUNTRIES = ['美国', '英国', '加拿大', '澳大利亚', '新加坡&香港', '多国联申', '暂未确定']
-BOOKING_STAGES = ['低龄申请', '本科申请', '硕士申请', '博士申请', '转学/转专业', '背景提升规划', '其他']
+BOOKING_STAGES = APPLICATION_STAGES
 WEEKDAY_LABELS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
 CALENDAR_WEEKDAY_LABELS = ['一', '二', '三', '四', '五', '六', '日']
 
@@ -191,29 +170,32 @@ def build_booking_day_item(current):
         'day_number': current.strftime('%d'),
         'month_label': current.strftime('%m月'),
         'weekday': WEEKDAY_LABELS[current.weekday()],
-        'is_closed': current.weekday() == 6,
+        'is_closed': False,
         'is_today': current == date.today(),
     }
 
 
-def should_use_special_booking_window(today):
-    return BOOKING_SPECIAL_WINDOW_START <= today <= BOOKING_SPECIAL_WINDOW_END
-
-
 def build_booking_days(days_count=BOOKING_ADVANCE_DAYS):
     start = date.today()
-    if should_use_special_booking_window(start):
-        current = BOOKING_SPECIAL_WINDOW_START
-        days = []
-        while current <= BOOKING_SPECIAL_WINDOW_END:
-            days.append(build_booking_day_item(current))
-            current += timedelta(days=1)
-        return days
-
     return [
         build_booking_day_item(start + timedelta(days=offset))
         for offset in range(days_count)
     ]
+
+
+def recurring_placeholder_name(day_date, slot):
+    weekday = day_date.weekday()
+    slot_start, _ = parse_booking_slot(slot)
+    is_morning = slot_start < 12 * 60
+    is_afternoon = slot_start >= 14 * 60
+
+    if weekday == 6:
+        return 'XX同学'
+    if weekday == 2 and is_afternoon:
+        return 'XX同学'
+    if weekday == 3 and is_morning:
+        return 'XX同学'
+    return ''
 
 
 def build_calendar_months(available_days):
@@ -293,15 +275,12 @@ def build_slot_status_map(day_values):
             slot_start, _ = parse_booking_slot(slot)
             state = 'available'
             label = '可预约'
-            placeholder_name = BOOKING_PLACEHOLDER_BOOKINGS.get(day_value, {}).get(slot)
             day_date = date.fromisoformat(day_value)
+            placeholder_name = recurring_placeholder_name(day_date, slot)
 
             if placeholder_name:
                 state = 'booked'
                 label = f'{placeholder_name}已预约'
-            elif day_date.weekday() == 6:
-                state = 'closed'
-                label = '休息'
             elif slot in booked_slots:
                 state = 'booked'
                 label = '已预约'
@@ -313,7 +292,7 @@ def build_slot_status_map(day_values):
                 label = '已过期'
             elif any(booking_slots_conflict(slot, booked_slot) for booked_slot in booked_slots):
                 state = 'booked'
-                label = '已预约'
+                label = 'XX同学已预约'
 
             slot_statuses[slot] = {
                 'state': state,
@@ -336,10 +315,10 @@ def build_booking_context(form_data=None):
         day_item['available_count'] = available_count
         day_item['is_full'] = available_count == 0
 
-    if should_use_special_booking_window(date.today()):
-        default_date = available_days[0]['value']
-    else:
-        default_date = next((item['value'] for item in available_days if item['available_count'] > 0), available_days[0]['value'])
+    default_date = next(
+        (item['value'] for item in available_days if item['available_count'] > 0),
+        available_days[0]['value'],
+    )
     return {
         'available_days': available_days,
         'calendar_months': build_calendar_months(available_days),
@@ -348,7 +327,6 @@ def build_booking_context(form_data=None):
         'slot_groups': BOOKING_SLOT_GROUPS,
         'slot_status_map': slot_status_map,
         'default_date': default_date,
-        'target_countries': BOOKING_TARGET_COUNTRIES,
         'stages': BOOKING_STAGES,
         'form': form_data or {},
     }
@@ -366,12 +344,8 @@ def render_intake_form(booking_record, intake_data, saved=False, errors=None):
         'booking_intake.html',
         booking=booking_record,
         intake=intake_data,
-        intake_sections=INTAKE_SECTIONS,
-        academic_record_fields=ACADEMIC_RECORD_FIELDS,
-        testing_record_fields=TESTING_RECORD_FIELDS,
-        activity_categories=ACTIVITY_CATEGORIES,
-        activity_fields=ACTIVITY_FIELDS,
-        material_options=MATERIAL_OPTIONS,
+        intake_form_configs=INTAKE_FORM_CONFIGS,
+        stages=BOOKING_STAGES,
         saved=saved,
         errors=errors or [],
     )
@@ -388,13 +362,7 @@ def render_new_booking_form(booking_date, time_slot, form_data=None, intake_data
         },
         booking_form=form_data or {},
         intake=intake_data or {},
-        intake_sections=INTAKE_SECTIONS,
-        academic_record_fields=ACADEMIC_RECORD_FIELDS,
-        testing_record_fields=TESTING_RECORD_FIELDS,
-        activity_categories=ACTIVITY_CATEGORIES,
-        activity_fields=ACTIVITY_FIELDS,
-        material_options=MATERIAL_OPTIONS,
-        target_countries=BOOKING_TARGET_COUNTRIES,
+        intake_form_configs=INTAKE_FORM_CONFIGS,
         stages=BOOKING_STAGES,
         saved=False,
         errors=errors or [],
@@ -407,12 +375,77 @@ def save_intake_form(booking_record):
     errors = validate_intake_data(intake_data)
     if errors:
         return False, intake_data, errors
+    booking_record.name = intake_data.get('name', booking_record.name)
+    booking_record.contact = intake_data.get('contact', booking_record.contact)
+    booking_record.target_country = intake_data.get('target_region', '')
+    booking_record.stage = intake_data.get('application_stage', booking_record.stage)
+    booking_record.question = intake_data.get('consultation_questions', '')
     booking_record.intake_data = json.dumps(intake_data, ensure_ascii=False)
     booking_record.intake_submitted_at = datetime.now().isoformat(timespec='seconds')
     booking_record.status = BOOKING_STATUS_CONFIRMED
     db.session.commit()
     flash('咨询前信息采集表已提交，预约已确认。', 'success')
     return True, intake_data, []
+
+
+def build_booking_notification_text(booking_record, intake_data):
+    stage = intake_data.get('application_stage') or booking_record.stage
+    target_region = intake_data.get('target_region') or '未填写'
+    return '\n'.join([
+        '【超哥留学 & Grace 新预约提醒】',
+        f'预约编号：#{booking_record.id}',
+        f'学生姓名：{booking_record.name}',
+        f'申请阶段：{stage}',
+        f'咨询时间：{booking_record.booking_date} {booking_record.time_slot}',
+        f'咨询方式：{booking_record.meeting_method}',
+        f'目标国家/地区：{target_region}',
+        f'客户联系方式：{booking_record.contact}',
+        '请登录预约管理后台查看完整资料。',
+        '提醒对象：超哥留学负责人 / Grace',
+    ])
+
+
+def send_booking_wechat_notification(booking_record, intake_data):
+    webhook_url = app.config.get('BOOKING_WECHAT_WEBHOOK_URL', '')
+    if not webhook_url:
+        booking_record.notification_status = 'not_configured'
+        booking_record.notification_error = 'BOOKING_WECHAT_WEBHOOK_URL 未配置'
+        db.session.commit()
+        app.logger.warning('Booking #%s saved; WeChat webhook is not configured.', booking_record.id)
+        return False
+
+    payload = {
+        'msgtype': 'text',
+        'text': {
+            'content': build_booking_notification_text(booking_record, intake_data),
+            'mentioned_mobile_list': app.config.get('BOOKING_WECHAT_MENTIONED_MOBILES', []),
+        },
+    }
+    request_data = json.dumps(payload, ensure_ascii=False).encode('utf-8')
+    webhook_request = Request(
+        webhook_url,
+        data=request_data,
+        headers={'Content-Type': 'application/json; charset=utf-8'},
+        method='POST',
+    )
+
+    try:
+        with urlopen(webhook_request, timeout=8) as response:
+            response_data = json.loads(response.read().decode('utf-8') or '{}')
+        if response_data.get('errcode', 0) != 0:
+            raise ValueError(response_data.get('errmsg') or f'微信接口错误：{response_data}')
+    except (HTTPError, URLError, TimeoutError, ValueError, json.JSONDecodeError) as exc:
+        booking_record.notification_status = 'failed'
+        booking_record.notification_error = str(exc)[:1000]
+        db.session.commit()
+        app.logger.exception('Booking #%s WeChat notification failed.', booking_record.id)
+        return False
+
+    booking_record.notification_status = 'sent'
+    booking_record.notification_sent_at = datetime.now().isoformat(timespec='seconds')
+    booking_record.notification_error = ''
+    db.session.commit()
+    return True
 
 
 def migrate_july_15_bookings_to_july_16(booking_cols):
@@ -489,6 +522,12 @@ def ensure_ranking_schema():
         booking_ddl.append("ALTER TABLE booking ADD COLUMN intake_data TEXT DEFAULT ''")
     if booking_cols and 'intake_submitted_at' not in booking_cols:
         booking_ddl.append("ALTER TABLE booking ADD COLUMN intake_submitted_at VARCHAR(32) DEFAULT ''")
+    if booking_cols and 'notification_status' not in booking_cols:
+        booking_ddl.append("ALTER TABLE booking ADD COLUMN notification_status VARCHAR(40) DEFAULT 'pending'")
+    if booking_cols and 'notification_sent_at' not in booking_cols:
+        booking_ddl.append("ALTER TABLE booking ADD COLUMN notification_sent_at VARCHAR(32) DEFAULT ''")
+    if booking_cols and 'notification_error' not in booking_cols:
+        booking_ddl.append("ALTER TABLE booking ADD COLUMN notification_error TEXT DEFAULT ''")
     for stmt in booking_ddl:
         db.session.execute(sql_text(stmt))
 
@@ -506,6 +545,34 @@ def ensure_ranking_schema():
         ))
     migrate_july_15_bookings_to_july_16(refreshed_booking_cols)
     db.session.commit()
+
+@app.before_request
+def protect_admin_routes():
+    if not request.path.startswith('/admin'):
+        return None
+
+    admin_username = app.config.get('ADMIN_USERNAME', '')
+    admin_password = app.config.get('ADMIN_PASSWORD', '')
+    if not admin_username or not admin_password:
+        return Response(
+            '后台访问凭据尚未配置。请设置 ADMIN_USERNAME 和 ADMIN_PASSWORD。',
+            status=503,
+            content_type='text/plain; charset=utf-8',
+        )
+
+    auth = request.authorization
+    username_matches = bool(auth) and hmac.compare_digest(auth.username or '', admin_username)
+    password_matches = bool(auth) and hmac.compare_digest(auth.password or '', admin_password)
+    if username_matches and password_matches:
+        return None
+
+    return Response(
+        '需要后台登录。',
+        status=401,
+        headers={'WWW-Authenticate': 'Basic realm="YD Education Admin", charset="UTF-8"'},
+        content_type='text/plain; charset=utf-8',
+    )
+
 
 @app.before_request
 def init_db_once():
@@ -598,23 +665,9 @@ def booking_details():
     form_data = {
         'booking_date': request.form.get('booking_date', '').strip(),
         'time_slot': request.form.get('time_slot', '').strip(),
-        'name': request.form.get('name', '').strip(),
-        'contact': request.form.get('contact', '').strip(),
-        'target_country': request.form.get('target_country', '').strip(),
         'stage': request.form.get('stage', '').strip(),
-        'question': request.form.get('question', '').strip(),
     }
     errors = validate_booking_selection(form_data['booking_date'], form_data['time_slot'])
-    for field, label in [
-        ('name', '姓名'),
-        ('contact', '联系方式'),
-        ('target_country', '目标国家'),
-        ('stage', '申请阶段'),
-        ('question', '咨询问题'),
-    ]:
-        if not form_data[field]:
-            errors.append(f'请填写{label}。')
-
     intake_data = parse_intake_form(request.form)
     errors.extend(validate_intake_data(intake_data))
 
@@ -634,7 +687,13 @@ def booking_details():
         ), 400
 
     booking_record = Booking(
-        **form_data,
+        booking_date=form_data['booking_date'],
+        time_slot=form_data['time_slot'],
+        name=intake_data.get('name', ''),
+        contact=intake_data.get('contact', ''),
+        target_country=intake_data.get('target_region', ''),
+        stage=intake_data.get('application_stage', ''),
+        question=intake_data.get('consultation_questions', ''),
         meeting_method='腾讯会议',
         status=BOOKING_STATUS_CONFIRMED,
         intake_data=json.dumps(intake_data, ensure_ascii=False),
@@ -653,6 +712,7 @@ def booking_details():
             errors=['该时间段刚刚被预约，请返回重新选择其他时间。'],
         ), 409
 
+    send_booking_wechat_notification(booking_record, intake_data)
     return redirect(url_for('booking_confirmed', booking_id=booking_record.id, token=ensure_booking_token(booking_record)))
 
 
@@ -684,9 +744,12 @@ def booking_intake(booking_id, token):
     intake_data = load_intake_data(booking_record.intake_data)
 
     if request.method == 'POST':
+        was_confirmed = booking_record.status == BOOKING_STATUS_CONFIRMED
         is_valid, intake_data, errors = save_intake_form(booking_record)
         if not is_valid:
             return render_intake_form(booking_record, intake_data, errors=errors), 400
+        if not was_confirmed:
+            send_booking_wechat_notification(booking_record, intake_data)
         return redirect(url_for('booking_confirmed', booking_id=booking_record.id, token=booking_record.intake_token))
 
     return render_intake_form(booking_record, intake_data, request.args.get('saved') == '1')
