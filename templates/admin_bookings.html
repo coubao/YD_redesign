@@ -17,7 +17,17 @@
       <a class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-5 py-3 font-black text-[#061a3a] no-underline transition hover:border-[#0f766e] hover:text-[#0f766e]" href="{{ url_for('admin') }}">返回排名后台</a>
     </div>
 
-    <div class="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="mb-6 grid gap-3">
+        {% for category, message in messages %}
+        <div class="rounded-2xl border px-5 py-4 font-bold {% if category == 'danger' %}border-red-200 bg-red-50 text-red-700{% else %}border-emerald-200 bg-emerald-50 text-emerald-800{% endif %}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
       <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_16px_46px_rgba(15,23,42,.07)]">
         <p class="text-sm font-bold text-slate-500">预约总数</p>
         <p class="mt-2 text-4xl font-black text-[#061a3a]">{{ total }}</p>
@@ -34,6 +44,48 @@
         <p class="text-sm font-bold text-slate-500">待填写资料</p>
         <p class="mt-2 text-4xl font-black text-[#d6a84f]">{{ pending_intake_count }}</p>
       </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_16px_46px_rgba(15,23,42,.07)]">
+        <p class="text-sm font-bold text-slate-500">手动占位</p>
+        <p class="mt-2 text-4xl font-black text-slate-600">{{ manual_block_count }}</p>
+      </div>
+    </div>
+
+    <div class="mb-6 grid gap-5 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+      <form class="rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_16px_46px_rgba(15,23,42,.07)]" method="get" action="{{ url_for('admin_bookings') }}">
+        <p class="text-sm font-black uppercase tracking-[0.14em] text-[#0f766e]">预约查询</p>
+        <h2 class="mt-2 text-xl font-black text-[#061a3a]">按手机号或姓名查找</h2>
+        <div class="mt-4 flex flex-col gap-3 sm:flex-row">
+          <input class="min-w-0 flex-1 rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-[#0f766e] focus:ring-4 focus:ring-[#0f766e]/10" name="q" value="{{ search_query }}" placeholder="输入手机号、微信号或姓名">
+          <button class="rounded-xl bg-[#061a3a] px-5 py-3 font-black text-white transition hover:bg-[#0f766e]" type="submit">查询</button>
+          {% if search_query %}
+          <a class="inline-flex items-center justify-center rounded-xl border border-slate-300 px-5 py-3 font-black text-slate-600 no-underline" href="{{ url_for('admin_bookings') }}">清除</a>
+          {% endif %}
+        </div>
+        {% if search_query %}
+        <p class="mt-3 text-sm font-bold text-slate-500">“{{ search_query }}”共找到 {{ bookings|length }} 条记录。</p>
+        {% endif %}
+      </form>
+
+      <form class="rounded-[24px] border border-[#0f766e]/20 bg-[#ecfdf5] p-5 shadow-[0_16px_46px_rgba(15,118,110,.08)]" method="post" action="{{ url_for('create_manual_booking_block') }}">
+        <p class="text-sm font-black uppercase tracking-[0.14em] text-[#0f766e]">Manual Block</p>
+        <h2 class="mt-2 text-xl font-black text-[#061a3a]">手动添加预约占位</h2>
+        <div class="mt-4 grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto] md:items-end">
+          <label class="grid gap-2 text-sm font-black text-slate-700">日期
+            <input class="rounded-xl border border-slate-300 bg-white px-4 py-3 font-semibold outline-none focus:border-[#0f766e]" type="date" name="booking_date" min="{{ booking_min_date }}" max="{{ booking_max_date }}" required>
+          </label>
+          <label class="grid gap-2 text-sm font-black text-slate-700">时段
+            <select class="rounded-xl border border-slate-300 bg-white px-4 py-3 font-semibold outline-none focus:border-[#0f766e]" name="time_slot" required>
+              <option value="">请选择</option>
+              {% for slot in time_slots %}<option value="{{ slot }}">{{ slot }}</option>{% endfor %}
+            </select>
+          </label>
+          <label class="grid gap-2 text-sm font-black text-slate-700">显示名称
+            <input class="rounded-xl border border-slate-300 bg-white px-4 py-3 font-semibold outline-none focus:border-[#0f766e]" name="placeholder_name" value="XX同学" maxlength="100" required>
+          </label>
+          <button class="rounded-xl bg-[#0f766e] px-5 py-3 font-black text-white transition hover:bg-[#061a3a]" type="submit">添加占位</button>
+        </div>
+        <p class="mt-3 text-sm font-semibold text-slate-600">占位后客户页面会显示该时段已预约；可在下方列表中随时释放。</p>
+      </form>
     </div>
 
     <div class="overflow-hidden rounded-[26px] border border-slate-200 bg-white shadow-[0_22px_70px_rgba(15,23,42,.10)]">
@@ -69,7 +121,10 @@
                 <p class="line-clamp-3">{{ booking.question }}</p>
               </td>
               <td class="px-4 py-4">
-                {% if booking.consulted_at %}
+                {% if booking.status == status_manual_block %}
+                <span class="inline-flex rounded-full bg-slate-700 px-3 py-1 text-xs font-black text-white">手动占位</span>
+                <p class="mt-2 text-xs text-slate-400">客户页面显示为已预约</p>
+                {% elif booking.consulted_at %}
                 <span class="inline-flex rounded-full bg-slate-700 px-3 py-1 text-xs font-black text-white">已咨询</span>
                 <p class="mt-2 text-xs font-bold text-slate-500">{{ booking.consulted_at }}</p>
                 <p class="mt-1 text-xs text-slate-400">预约流程已完成</p>
@@ -90,6 +145,11 @@
               </td>
               <td class="px-4 py-4">
                 <div class="flex flex-col gap-2">
+                  {% if booking.status == status_manual_block %}
+                  <form method="post" action="{{ url_for('delete_manual_booking_block', booking_id=booking.id) }}">
+                    <button class="w-full rounded-full border border-red-200 bg-red-50 px-4 py-2 text-xs font-black text-red-700 transition hover:border-red-400 hover:bg-red-100" type="submit">释放占位</button>
+                  </form>
+                  {% else %}
                   <a class="inline-flex items-center justify-center rounded-full bg-[#061a3a] px-4 py-2 text-xs font-black text-white no-underline transition hover:bg-[#0f766e]" href="{{ url_for('admin_booking_intake', booking_id=booking.id) }}">查看/编辑</a>
                   <a class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-4 py-2 text-xs font-black text-[#061a3a] no-underline transition hover:border-[#0f766e] hover:text-[#0f766e]" href="{{ url_for('download_booking_intake', booking_id=booking.id) }}">下载 Word</a>
                   <form method="post" action="{{ url_for('toggle_booking_consulted', booking_id=booking.id) }}">
@@ -101,6 +161,7 @@
                     <button class="w-full rounded-full border border-[#0f766e]/30 bg-[#ecfdf5] px-4 py-2 text-xs font-black text-[#087454] transition hover:border-[#0f766e] hover:bg-[#d1fae5]" type="submit">标记为已咨询</button>
                     {% endif %}
                   </form>
+                  {% endif %}
                 </div>
               </td>
             </tr>

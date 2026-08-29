@@ -11,7 +11,7 @@ except ModuleNotFoundError as exc:
     ) from exc
 import csv
 import io
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 import re
 import json
@@ -107,19 +107,33 @@ class Booking(db.Model):
 
 BOOKING_STATUS_PENDING_INTAKE = 'pending_intake'
 BOOKING_STATUS_CONFIRMED = 'confirmed'
+BOOKING_STATUS_MANUAL_BLOCK = 'manual_block'
 BOOKING_STATUS_LABELS = {
     BOOKING_STATUS_PENDING_INTAKE: '待填写资料',
     BOOKING_STATUS_CONFIRMED: '已确认',
+    BOOKING_STATUS_MANUAL_BLOCK: '手动占位',
 }
 BOOKING_SLOT_DURATION_MINUTES = 60
 BOOKING_SLOT_STEP_MINUTES = 60
 BOOKING_BUFFER_MINUTES = 30
 BOOKING_ADVANCE_DAYS = 30
+BOOKING_MIN_NOTICE_HOURS = 24
+BOOKING_TIMEZONE = timezone(timedelta(hours=8))
 BOOKING_DAILY_WINDOWS = [
     ('morning', '上午', 10 * 60, 12 * 60),
     ('afternoon', '下午', 14 * 60, 16 * 60),
 ]
 BOOKING_STAGES = APPLICATION_STAGES
+
+
+def booking_now():
+    return datetime.now(BOOKING_TIMEZONE)
+
+
+def booking_today():
+    return booking_now().date()
+
+
 WEEKDAY_LABELS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
 CALENDAR_WEEKDAY_LABELS = ['一', '二', '三', '四', '五', '六', '日']
 
@@ -136,6 +150,29 @@ def parse_booking_time(time_text):
 def parse_booking_slot(slot):
     start_text, end_text = slot.split('-', 1)
     return parse_booking_time(start_text), parse_booking_time(end_text)
+
+
+def booking_slot_start_datetime(booking_date, time_slot):
+    slot_start, _ = parse_booking_slot(time_slot)
+    booking_day = date.fromisoformat(booking_date)
+    return datetime.combine(
+        booking_day,
+        datetime.min.time(),
+        tzinfo=BOOKING_TIMEZONE,
+    ) + timedelta(minutes=slot_start)
+
+
+def booking_meets_minimum_notice(booking_date, time_slot, now=None):
+    try:
+        slot_start_at = booking_slot_start_datetime(booking_date, time_slot)
+    except (TypeError, ValueError):
+        return False
+    current_time = now or booking_now()
+    if current_time.tzinfo is None:
+        current_time = current_time.replace(tzinfo=BOOKING_TIMEZONE)
+    else:
+        current_time = current_time.astimezone(BOOKING_TIMEZONE)
+    return slot_start_at >= current_time + timedelta(hours=BOOKING_MIN_NOTICE_HOURS)
 
 
 def build_booking_slot_groups():
@@ -169,12 +206,12 @@ def build_booking_day_item(current):
         'month_label': current.strftime('%m月'),
         'weekday': WEEKDAY_LABELS[current.weekday()],
         'is_closed': False,
-        'is_today': current == date.today(),
+        'is_today': current == booking_today(),
     }
 
 
 def build_booking_days(days_count=BOOKING_ADVANCE_DAYS):
-    start = date.today()
+    start = booking_today() + timedelta(days=1)
     return [
         build_booking_day_item(start + timedelta(days=offset))
         for offset in range(days_count)
@@ -251,6 +288,14 @@ def get_booked_slots_by_date(day_values):
     return booked
 
 
+def get_booking_records_by_date(day_values):
+    bookings = Booking.query.filter(Booking.booking_date.in_(day_values)).all()
+    records = {}
+    for item in bookings:
+        records.setdefault(item.booking_date, {})[item.time_slot] = item
+    return records
+
+
 def booking_slots_conflict(candidate_slot, booked_slot):
     candidate_start, candidate_end = parse_booking_slot(candidate_slot)
     booked_start, booked_end = parse_booking_slot(booked_slot)
@@ -261,33 +306,39 @@ def booking_slots_conflict(candidate_slot, booked_slot):
 
 def build_slot_status_map(day_values):
     booked_map = get_booked_slots_by_date(day_values)
-    today_value = date.today().isoformat()
-    now = datetime.now()
-    current_minutes = now.hour * 60 + now.minute
+    booking_records = get_booking_records_by_date(day_values)
+    today_value = booking_today().isoformat()
+    now = booking_now()
     status_map = {}
 
     for day_value in day_values:
         booked_slots = booked_map.get(day_value, [])
         slot_statuses = {}
         for slot in BOOKING_TIME_SLOTS:
-            slot_start, _ = parse_booking_slot(slot)
             state = 'available'
             label = '可预约'
             day_date = date.fromisoformat(day_value)
             placeholder_name = recurring_placeholder_name(day_date, slot)
+            exact_booking = booking_records.get(day_value, {}).get(slot)
 
             if placeholder_name:
                 state = 'booked'
                 label = f'{placeholder_name}已预约'
-            elif slot in booked_slots:
+            elif exact_booking:
                 state = 'booked'
-                label = '已预约'
+                if exact_booking.status == BOOKING_STATUS_MANUAL_BLOCK:
+                    label = f'{exact_booking.name or "XX同学"}已预约'
+                else:
+                    label = '已预约'
             elif day_value < today_value:
                 state = 'past'
                 label = '已过期'
-            elif day_value == today_value and slot_start <= current_minutes:
+            elif day_value == today_value:
                 state = 'past'
-                label = '已过期'
+                label = '不可预约当天'
+            elif not booking_meets_minimum_notice(day_value, slot, now=now):
+                state = 'notice'
+                label = '需提前24小时预约'
             elif any(booking_slots_conflict(slot, booked_slot) for booked_slot in booked_slots):
                 state = 'booked'
                 label = 'XX同学已预约'
@@ -611,6 +662,9 @@ def validate_booking_selection(booking_date, time_slot):
     if time_slot not in BOOKING_TIME_SLOTS:
         errors.append('请选择可预约时间段。')
     elif booking_date in allowed_dates:
+        if not booking_meets_minimum_notice(booking_date, time_slot):
+            errors.append('预约需至少提前24小时提交，且不能预约当天咨询。')
+            return errors
         slot_status = build_slot_status_map([booking_date]).get(booking_date, {}).get(time_slot)
         if not slot_status or slot_status['state'] != 'available':
             errors.append('该时间段暂不可预约，请选择绿色可预约时段。')
@@ -798,12 +852,45 @@ def admin():
 
 @app.get('/admin/bookings')
 def admin_bookings():
-    bookings = Booking.query.order_by(Booking.booking_date.desc(), Booking.time_slot.desc(), Booking.id.desc()).all()
-    total = len(bookings)
-    confirmed_count = sum(1 for booking_record in bookings if booking_record.status == BOOKING_STATUS_CONFIRMED)
-    pending_intake_count = sum(1 for booking_record in bookings if booking_record.status != BOOKING_STATUS_CONFIRMED)
-    consulted_count = sum(1 for booking_record in bookings if booking_record.consulted_at)
-    upcoming_count = sum(1 for booking_record in bookings if booking_record.booking_date >= date.today().isoformat())
+    all_bookings = Booking.query.order_by(
+        Booking.booking_date.desc(),
+        Booking.time_slot.desc(),
+        Booking.id.desc(),
+    ).all()
+    client_bookings = [
+        booking_record
+        for booking_record in all_bookings
+        if booking_record.status != BOOKING_STATUS_MANUAL_BLOCK
+    ]
+    search_query = request.args.get('q', '').strip()
+    bookings = all_bookings
+    if search_query:
+        search_text = search_query.casefold()
+        search_digits = normalize_contact_lookup(search_query)
+        bookings = [
+            booking_record
+            for booking_record in all_bookings
+            if search_text in booking_record.name.casefold()
+            or search_text in booking_record.contact.casefold()
+            or search_text in (booking_record.intake_data or '').casefold()
+            or (
+                search_digits
+                and search_digits in normalize_contact_lookup(booking_record.contact)
+            )
+        ]
+    total = len(client_bookings)
+    confirmed_count = sum(
+        1 for booking_record in client_bookings
+        if booking_record.status == BOOKING_STATUS_CONFIRMED
+    )
+    pending_intake_count = sum(
+        1 for booking_record in client_bookings
+        if booking_record.status != BOOKING_STATUS_CONFIRMED
+    )
+    consulted_count = sum(1 for booking_record in client_bookings if booking_record.consulted_at)
+    manual_block_count = len(all_bookings) - len(client_bookings)
+    tomorrow = booking_today() + timedelta(days=1)
+    booking_window_end = booking_today() + timedelta(days=BOOKING_ADVANCE_DAYS)
     return render_template(
         'admin_bookings.html',
         bookings=bookings,
@@ -811,10 +898,84 @@ def admin_bookings():
         confirmed_count=confirmed_count,
         pending_intake_count=pending_intake_count,
         consulted_count=consulted_count,
-        upcoming_count=upcoming_count,
+        manual_block_count=manual_block_count,
+        search_query=search_query,
+        booking_min_date=tomorrow.isoformat(),
+        booking_max_date=booking_window_end.isoformat(),
+        time_slots=BOOKING_TIME_SLOTS,
         status_labels=BOOKING_STATUS_LABELS,
         status_confirmed=BOOKING_STATUS_CONFIRMED,
+        status_manual_block=BOOKING_STATUS_MANUAL_BLOCK,
     )
+
+
+def normalize_contact_lookup(value):
+    digits = ''.join(character for character in str(value or '') if character.isdigit())
+    if len(digits) == 13 and digits.startswith('86'):
+        return digits[2:]
+    return digits
+
+
+@app.post('/admin/bookings/manual-block')
+def create_manual_booking_block():
+    booking_date = request.form.get('booking_date', '').strip()
+    time_slot = request.form.get('time_slot', '').strip()
+    placeholder_name = request.form.get('placeholder_name', '').strip() or 'XX同学'
+    allowed_dates = {item['value'] for item in build_booking_days()}
+    errors = []
+
+    if booking_date not in allowed_dates:
+        errors.append('手动占位日期必须在明天起的30天预约范围内。')
+    if time_slot not in BOOKING_TIME_SLOTS:
+        errors.append('请选择有效的咨询时段。')
+    if len(placeholder_name) > 100:
+        errors.append('占位名称不能超过100个字符。')
+    if not errors:
+        slot_status = build_slot_status_map([booking_date]).get(booking_date, {}).get(time_slot)
+        if not slot_status or slot_status['state'] != 'available':
+            errors.append('该时段已被预约、固定占用或不满足开放规则。')
+
+    if errors:
+        for message in errors:
+            flash(message, 'danger')
+        return redirect(url_for('admin_bookings'))
+
+    manual_block = Booking(
+        booking_date=booking_date,
+        time_slot=time_slot,
+        name=placeholder_name,
+        contact='后台手动占位',
+        target_country='',
+        stage='手动占位',
+        question='后台手动添加的预约占位。',
+        meeting_method='后台占位',
+        status=BOOKING_STATUS_MANUAL_BLOCK,
+        intake_token='',
+        intake_data='',
+        intake_submitted_at='',
+        notification_status='not_applicable',
+    )
+    try:
+        db.session.add(manual_block)
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        flash('该时段已被其他预约占用，请刷新后重试。', 'danger')
+        return redirect(url_for('admin_bookings'))
+
+    flash(f'已为 {booking_date} {time_slot} 添加手动占位。', 'success')
+    return redirect(url_for('admin_bookings'))
+
+
+@app.post('/admin/bookings/<int:booking_id>/manual-block/delete')
+def delete_manual_booking_block(booking_id):
+    booking_record = Booking.query.get_or_404(booking_id)
+    if booking_record.status != BOOKING_STATUS_MANUAL_BLOCK:
+        abort(400)
+    db.session.delete(booking_record)
+    db.session.commit()
+    flash('手动占位已释放。', 'success')
+    return redirect(url_for('admin_bookings'))
 
 
 @app.post('/admin/bookings/<int:booking_id>/consulted')
