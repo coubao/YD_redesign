@@ -113,15 +113,13 @@ BOOKING_STATUS_LABELS = {
     BOOKING_STATUS_CONFIRMED: '已确认',
     BOOKING_STATUS_MANUAL_BLOCK: '手动占位',
 }
-BOOKING_SLOT_DURATION_MINUTES = 60
-BOOKING_SLOT_STEP_MINUTES = 60
 BOOKING_BUFFER_MINUTES = 30
 BOOKING_ADVANCE_DAYS = 30
 BOOKING_MIN_NOTICE_HOURS = 24
 BOOKING_TIMEZONE = timezone(timedelta(hours=8))
-BOOKING_DAILY_WINDOWS = [
-    ('morning', '上午', 10 * 60, 12 * 60),
-    ('afternoon', '下午', 14 * 60, 16 * 60),
+BOOKING_SLOT_GROUP_CONFIGS = [
+    ('morning', '上午', ['09:30-10:30', '11:00-12:00']),
+    ('afternoon', '下午', ['14:00-15:00', '15:30-16:30']),
 ]
 BOOKING_STAGES = APPLICATION_STAGES
 
@@ -136,10 +134,6 @@ def booking_today():
 
 WEEKDAY_LABELS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
 CALENDAR_WEEKDAY_LABELS = ['一', '二', '三', '四', '五', '六', '日']
-
-
-def format_booking_minutes(minutes):
-    return f'{minutes // 60:02d}:{minutes % 60:02d}'
 
 
 def parse_booking_time(time_text):
@@ -178,18 +172,13 @@ def booking_meets_minimum_notice(booking_date, time_slot, now=None):
 def build_booking_slot_groups():
     groups = []
     all_slots = []
-    for key, label, start, end in BOOKING_DAILY_WINDOWS:
-        slots = []
-        current = start
-        while current + BOOKING_SLOT_DURATION_MINUTES <= end:
-            slot = f'{format_booking_minutes(current)}-{format_booking_minutes(current + BOOKING_SLOT_DURATION_MINUTES)}'
-            slots.append(slot)
-            all_slots.append(slot)
-            current += BOOKING_SLOT_STEP_MINUTES
+    for key, label, configured_slots in BOOKING_SLOT_GROUP_CONFIGS:
+        slots = list(configured_slots)
+        all_slots.extend(slots)
         groups.append({
             'key': key,
             'label': label,
-            'window': f'{format_booking_minutes(start)}-{format_booking_minutes(end)}',
+            'window': f'{slots[0].split("-", 1)[0]}-{slots[-1].split("-", 1)[1]}',
             'slots': slots,
         })
     return all_slots, groups
@@ -222,13 +211,10 @@ def recurring_placeholder_name(day_date, slot):
     weekday = day_date.weekday()
     slot_start, _ = parse_booking_slot(slot)
     is_morning = slot_start < 12 * 60
-    is_afternoon = slot_start >= 14 * 60
 
     if weekday == 6:
         return 'XX同学'
-    if weekday == 2 and is_afternoon:
-        return 'XX同学'
-    if weekday == 3 and is_morning:
+    if weekday == 0 and is_morning:
         return 'XX同学'
     return ''
 

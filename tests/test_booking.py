@@ -14,6 +14,7 @@ from app import (
     build_slot_status_map,
     booking_today,
     db,
+    recurring_placeholder_name,
 )
 
 
@@ -71,11 +72,40 @@ class BookingTestCase(unittest.TestCase):
         self.assertEqual(days[0]['value'], (booking_today() + timedelta(days=1)).isoformat())
         self.assertEqual(days[-1]['value'], (booking_today() + timedelta(days=30)).isoformat())
 
+    def test_booking_has_four_configured_daily_slots(self):
+        self.assertEqual(
+            BOOKING_TIME_SLOTS,
+            ['09:30-10:30', '11:00-12:00', '14:00-15:00', '15:30-16:30'],
+        )
+
+    def test_booking_and_admin_pages_render_configured_slots(self):
+        booking_response = self.client.get('/booking')
+        admin_response = self.client.get('/admin/bookings')
+
+        self.assertEqual(booking_response.status_code, 200)
+        self.assertEqual(admin_response.status_code, 200)
+        for slot in BOOKING_TIME_SLOTS:
+            self.assertIn(slot.encode(), booking_response.data)
+            self.assertIn(slot.encode(), admin_response.data)
+        self.assertNotIn(b'10:00-11:00', booking_response.data)
+        self.assertNotIn(b'15:00-16:00', booking_response.data)
+
+    def test_monday_morning_and_sunday_are_recurring_placeholders(self):
+        monday = datetime(2026, 9, 7).date()
+        sunday = datetime(2026, 9, 13).date()
+
+        self.assertEqual(recurring_placeholder_name(monday, '09:30-10:30'), 'XX同学')
+        self.assertEqual(recurring_placeholder_name(monday, '11:00-12:00'), 'XX同学')
+        self.assertEqual(recurring_placeholder_name(monday, '14:00-15:00'), '')
+        self.assertEqual(recurring_placeholder_name(monday, '15:30-16:30'), '')
+        for slot in BOOKING_TIME_SLOTS:
+            self.assertEqual(recurring_placeholder_name(sunday, slot), 'XX同学')
+
     def test_minimum_notice_is_calculated_from_slot_start(self):
         now = datetime(2026, 8, 29, 11, 1)
 
-        self.assertFalse(booking_meets_minimum_notice('2026-08-30', '10:00-11:00', now=now))
-        self.assertTrue(booking_meets_minimum_notice('2026-08-30', '12:00-13:00', now=now))
+        self.assertFalse(booking_meets_minimum_notice('2026-08-30', '09:30-10:30', now=now))
+        self.assertTrue(booking_meets_minimum_notice('2026-08-30', '14:00-15:00', now=now))
 
     def test_same_day_booking_is_rejected_server_side(self):
         response = self.client.get(
