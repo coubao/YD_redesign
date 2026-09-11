@@ -21,6 +21,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 from intake_schema import (
     APPLICATION_STAGES,
+    CONSULTATION_DECISION_FIELD,
     INTAKE_FORM_CONFIGS,
     build_intake_docx,
     load_intake_data,
@@ -380,6 +381,7 @@ def render_intake_form(booking_record, intake_data, saved=False, errors=None):
         booking=booking_record,
         intake=intake_data,
         intake_form_configs=INTAKE_FORM_CONFIGS,
+        consultation_decision_field=CONSULTATION_DECISION_FIELD,
         stages=BOOKING_STAGES,
         saved=saved,
         errors=errors or [],
@@ -398,6 +400,7 @@ def render_new_booking_form(booking_date, time_slot, form_data=None, intake_data
         booking_form=form_data or {},
         intake=intake_data or {},
         intake_form_configs=INTAKE_FORM_CONFIGS,
+        consultation_decision_field=CONSULTATION_DECISION_FIELD,
         stages=BOOKING_STAGES,
         saved=False,
         errors=errors or [],

@@ -90,6 +90,18 @@ class BookingTestCase(unittest.TestCase):
         self.assertNotIn(b'10:00-11:00', booking_response.data)
         self.assertNotIn(b'15:00-16:00', booking_response.data)
 
+    def test_booking_details_renders_consultation_decision_radios(self):
+        booking_date, time_slot = self.first_available_slot()
+
+        response = self.client.get(
+            '/booking/details',
+            query_string={'booking_date': booking_date, 'time_slot': time_slot},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('本次咨询后，如果Grace老师的判断符合您的认可'.encode(), response.data)
+        self.assertEqual(response.data.count(b'name="post_consultation_status"'), 5)
+
     def test_monday_morning_and_sunday_are_recurring_placeholders(self):
         monday = datetime(2026, 9, 7).date()
         sunday = datetime(2026, 9, 13).date()
