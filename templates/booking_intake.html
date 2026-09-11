@@ -164,6 +164,27 @@
       </section>
       {% endfor %}
 
+      <section class="rounded-[28px] border border-slate-200 bg-white p-5 shadow-[0_20px_70px_rgba(15,23,42,.08)] md:p-8">
+        <div class="border-b border-slate-200 pb-5">
+          <p class="text-sm font-black uppercase tracking-[0.16em] text-[#0f8f68]">Consultation Intent</p>
+          <h2 class="mt-2 text-2xl font-black leading-9 text-[#061a3a]">咨询后的当前状态</h2>
+        </div>
+
+        <fieldset class="mt-6">
+          <legend class="text-base font-black leading-8 text-slate-800">
+            {{ consultation_decision_field.label }} <span class="text-red-500">*</span>
+          </legend>
+          <div class="mt-4 divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200">
+            {% for option in consultation_decision_field.options %}
+            <label class="flex cursor-pointer items-start gap-3 bg-white px-4 py-4 transition hover:bg-emerald-50/60 has-[:checked]:bg-emerald-50">
+              <input class="mt-1 h-4 w-4 shrink-0 accent-[#0f8f68]" type="radio" name="{{ consultation_decision_field.name }}" value="{{ option }}" {% if intake.get(consultation_decision_field.name) == option %}checked{% endif %} required>
+              <span class="text-sm font-bold leading-6 text-slate-700">{{ option }}</span>
+            </label>
+            {% endfor %}
+          </div>
+        </fieldset>
+      </section>
+
       <section class="rounded-[26px] border border-slate-200 bg-white/92 p-4 shadow-[0_18px_54px_rgba(15,23,42,.14)] backdrop-blur">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>

@@ -6,6 +6,19 @@ from xml.sax.saxutils import escape
 
 APPLICATION_STAGES = ['本科申请', '硕士申请', '博士申请']
 
+CONSULTATION_DECISION_FIELD = {
+    'name': 'post_consultation_status',
+    'label': '本次咨询后，如果Grace老师的判断符合您的认可，您目前更接近以下哪种状态？',
+    'required': True,
+    'options': [
+        'A. 正在选择后续申请/规划团队',
+        'B. 已有机构，希望获得独立的第二意见',
+        'C. 计划DIY，只需要关键节点专业复核',
+        'D. 暂时不准备签约，希望先了解方向',
+        'E. 尚未确定',
+    ],
+}
+
 UNDERGRADUATE_FIELDS = [
     {'name': 'name', 'label': '姓名', 'type': 'text', 'required': True, 'placeholder': '请输入学生姓名'},
     {'name': 'current_school', 'label': '目前就读的学校', 'type': 'text', 'required': True, 'placeholder': '请输入学校全称'},
@@ -102,9 +115,13 @@ def parse_intake_form(form):
     stage = form.get('stage', '').strip()
     config = get_intake_config(stage)
     data = {
-        'schema_version': 2,
+        'schema_version': 3,
         'application_stage': stage,
         'contact': form.get('contact', '').strip(),
+        CONSULTATION_DECISION_FIELD['name']: form.get(
+            CONSULTATION_DECISION_FIELD['name'],
+            '',
+        ).strip(),
     }
     if not config:
         return data
@@ -127,6 +144,11 @@ def validate_intake_data(data):
     for field in config['fields']:
         if field.get('required') and not str(data.get(field['name'], '')).strip():
             errors.append(f'请填写必填项：{field["label"]}。')
+    decision_value = str(data.get(CONSULTATION_DECISION_FIELD['name'], '')).strip()
+    if not decision_value:
+        errors.append('请选择咨询后的当前状态。')
+    elif decision_value not in CONSULTATION_DECISION_FIELD['options']:
+        errors.append('请选择有效的咨询后状态。')
     return errors
 
 
@@ -228,6 +250,14 @@ def build_intake_docx(booking, intake_data):
             ])
         body.append(_paragraph(config['title'], 'Heading1'))
         body.append(_table(rows))
+        body.append(_paragraph('咨询后计划', 'Heading1'))
+        body.append(_table([
+            ['问题', '家长选择'],
+            [
+                CONSULTATION_DECISION_FIELD['label'],
+                format_intake_value(intake_data.get(CONSULTATION_DECISION_FIELD['name'])),
+            ],
+        ]))
     else:
         body.append(_paragraph('历史预约资料', 'Heading1'))
         body.append(_table(_legacy_rows(intake_data)))
