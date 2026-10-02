@@ -1,0 +1,1501 @@
+{
+  "meta": {
+    "title": "美国本科院校互动地图",
+    "updated_at": "2026-10-02",
+    "university_count": 77,
+    "state_count": 28,
+    "states": [
+      "亚利桑那州",
+      "伊利诺伊州",
+      "佐治亚州",
+      "佛罗里达州",
+      "俄亥俄州",
+      "加利福尼亚州",
+      "北卡罗来纳州",
+      "华盛顿州",
+      "华盛顿特区",
+      "南卡罗来纳州",
+      "印第安纳州",
+      "威斯康星州",
+      "宾夕法尼亚州",
+      "密歇根州",
+      "密苏里州",
+      "康涅狄格州",
+      "弗吉尼亚州",
+      "德克萨斯州",
+      "新泽西州",
+      "新罕布什尔州",
+      "明尼苏达州",
+      "田纳西州",
+      "科罗拉多州",
+      "纽约州",
+      "罗德岛州",
+      "阿拉巴马州",
+      "马萨诸塞州",
+      "马里兰州"
+    ],
+    "us_news_label": "US News National（参考）",
+    "qs_label": "QS World（参考）",
+    "data_note": "院校位置、排名与优势方向用于初步筛选。原始资料未标注榜单年份，排名口径可能随年度调整；申请前请以学校官网及榜单发布机构的最新信息为准。"
+  },
+  "universities": [
+    {
+      "id": "us-001",
+      "name_cn": "普林斯顿大学",
+      "name_en": "Princeton University",
+      "state_cn": "新泽西州",
+      "city_cn": "普林斯顿",
+      "location_cn": "新泽西州普林斯顿",
+      "latitude": 40.3431,
+      "longitude": -74.6551,
+      "us_news_national_rank": 1,
+      "qs_world_rank": "17",
+      "is_ivy": true,
+      "strengths": [
+        "数学",
+        "物理",
+        "经济学",
+        "公共政策"
+      ]
+    },
+    {
+      "id": "us-002",
+      "name_cn": "麻省理工学院",
+      "name_en": "Massachusetts Institute of Technology (MIT)",
+      "state_cn": "马萨诸塞州",
+      "city_cn": "剑桥",
+      "location_cn": "马萨诸塞州剑桥",
+      "latitude": 42.3601,
+      "longitude": -71.0942,
+      "us_news_national_rank": 2,
+      "qs_world_rank": "1",
+      "is_ivy": false,
+      "strengths": [
+        "计算机科学",
+        "工程学",
+        "人工智能",
+        "物理"
+      ]
+    },
+    {
+      "id": "us-003",
+      "name_cn": "哈佛大学",
+      "name_en": "Harvard University",
+      "state_cn": "马萨诸塞州",
+      "city_cn": "剑桥",
+      "location_cn": "马萨诸塞州剑桥",
+      "latitude": 42.377,
+      "longitude": -71.1167,
+      "us_news_national_rank": 3,
+      "qs_world_rank": "4",
+      "is_ivy": true,
+      "strengths": [
+        "商科",
+        "法学",
+        "医学",
+        "政府管理与经济"
+      ]
+    },
+    {
+      "id": "us-004",
+      "name_cn": "斯坦福大学",
+      "name_en": "Stanford University",
+      "state_cn": "加利福尼亚州",
+      "city_cn": "斯坦福",
+      "location_cn": "加利福尼亚州斯坦福",
+      "latitude": 37.4275,
+      "longitude": -122.1697,
+      "us_news_national_rank": 4,
+      "qs_world_rank": "6",
+      "is_ivy": false,
+      "strengths": [
+        "计算机",
+        "人工智能",
+        "商科",
+        "生物工程"
+      ]
+    },
+    {
+      "id": "us-005",
+      "name_cn": "耶鲁大学",
+      "name_en": "Yale University",
+      "state_cn": "康涅狄格州",
+      "city_cn": "纽黑文",
+      "location_cn": "康涅狄格州纽黑文",
+      "latitude": 41.3163,
+      "longitude": -72.9223,
+      "us_news_national_rank": 4,
+      "qs_world_rank": "16",
+      "is_ivy": true,
+      "strengths": [
+        "法学",
+        "历史",
+        "戏剧",
+        "政治学",
+        "英文"
+      ]
+    },
+    {
+      "id": "us-006",
+      "name_cn": "芝加哥大学",
+      "name_en": "University of Chicago",
+      "state_cn": "伊利诺伊州",
+      "city_cn": "芝加哥",
+      "location_cn": "伊利诺伊州芝加哥",
+      "latitude": 41.7886,
+      "longitude": -87.5987,
+      "us_news_national_rank": 6,
+      "qs_world_rank": "21",
+      "is_ivy": false,
+      "strengths": [
+        "经济学",
+        "数学",
+        "社会学",
+        "物理学"
+      ]
+    },
+    {
+      "id": "us-007",
+      "name_cn": "杜克大学",
+      "name_en": "Duke University",
+      "state_cn": "北卡罗来纳州",
+      "city_cn": "达勒姆",
+      "location_cn": "北卡罗来纳州达勒姆",
+      "latitude": 36.0014,
+      "longitude": -78.9382,
+      "us_news_national_rank": 7,
+      "qs_world_rank": "57",
+      "is_ivy": false,
+      "strengths": [
+        "商科",
+        "医学预科",
+        "生物医学工程",
+        "公共政策"
+      ]
+    },
+    {
+      "id": "us-008",
+      "name_cn": "约翰斯·霍普金斯大学",
+      "name_en": "Johns Hopkins University",
+      "state_cn": "马里兰州",
+      "city_cn": "巴尔的摩",
+      "location_cn": "马里兰州巴尔的摩",
+      "latitude": 39.3299,
+      "longitude": -76.6205,
+      "us_news_national_rank": 7,
+      "qs_world_rank": "28",
+      "is_ivy": false,
+      "strengths": [
+        "生物医学工程",
+        "医学预科",
+        "国际关系",
+        "公共卫生"
+      ]
+    },
+    {
+      "id": "us-009",
+      "name_cn": "西北大学",
+      "name_en": "Northwestern University",
+      "state_cn": "伊利诺伊州",
+      "city_cn": "埃文斯顿",
+      "location_cn": "伊利诺伊州埃文斯顿",
+      "latitude": 42.0565,
+      "longitude": -87.6753,
+      "us_news_national_rank": 7,
+      "qs_world_rank": "50",
+      "is_ivy": false,
+      "strengths": [
+        "新闻与传媒",
+        "商科经济",
+        "材料科学",
+        "表演艺术"
+      ]
+    },
+    {
+      "id": "us-010",
+      "name_cn": "宾夕法尼亚大学",
+      "name_en": "University of Pennsylvania",
+      "state_cn": "宾夕法尼亚州",
+      "city_cn": "费城",
+      "location_cn": "宾夕法尼亚州费城",
+      "latitude": 39.9522,
+      "longitude": -75.1932,
+      "us_news_national_rank": 7,
+      "qs_world_rank": "11",
+      "is_ivy": true,
+      "strengths": [
+        "金融与商科(沃顿)",
+        "建筑学",
+        "护理",
+        "社科"
+      ]
+    },
+    {
+      "id": "us-011",
+      "name_cn": "加州理工学院",
+      "name_en": "California Institute of Technology (Caltech)",
+      "state_cn": "加利福尼亚州",
+      "city_cn": "帕萨迪纳",
+      "location_cn": "加利福尼亚州帕萨迪纳",
+      "latitude": 34.1377,
+      "longitude": -118.1253,
+      "us_news_national_rank": 11,
+      "qs_world_rank": "10",
+      "is_ivy": false,
+      "strengths": [
+        "物理学",
+        "空间科学",
+        "航空航天",
+        "化学"
+      ]
+    },
+    {
+      "id": "us-012",
+      "name_cn": "康奈尔大学",
+      "name_en": "Cornell University",
+      "state_cn": "纽约州",
+      "city_cn": "伊萨卡",
+      "location_cn": "纽约州伊萨卡",
+      "latitude": 42.443,
+      "longitude": -76.4727,
+      "us_news_national_rank": 12,
+      "qs_world_rank": "13",
+      "is_ivy": true,
+      "strengths": [
+        "酒店管理",
+        "建筑学",
+        "工程学",
+        "农业与生命科学"
+      ]
+    },
+    {
+      "id": "us-013",
+      "name_cn": "布朗大学",
+      "name_en": "Brown University",
+      "state_cn": "罗德岛州",
+      "city_cn": "普罗维登斯",
+      "location_cn": "罗德岛州普罗维登斯",
+      "latitude": 41.8268,
+      "longitude": -71.4025,
+      "us_news_national_rank": 13,
+      "qs_world_rank": "78",
+      "is_ivy": true,
+      "strengths": [
+        "开放式课程体系",
+        "应用数学",
+        "文学与创意写作"
+      ]
+    },
+    {
+      "id": "us-014",
+      "name_cn": "达特茅斯学院",
+      "name_en": "Dartmouth College",
+      "state_cn": "新罕布什尔州",
+      "city_cn": "汉诺威",
+      "location_cn": "新罕布什尔州汉诺威",
+      "latitude": 43.7022,
+      "longitude": -72.2896,
+      "us_news_national_rank": 13,
+      "qs_world_rank": "229",
+      "is_ivy": true,
+      "strengths": [
+        "本科卓越教学",
+        "商科塔克桥梁",
+        "工程与地质"
+      ]
+    },
+    {
+      "id": "us-015",
+      "name_cn": "哥伦比亚大学",
+      "name_en": "Columbia University",
+      "state_cn": "纽约州",
+      "city_cn": "纽约市",
+      "location_cn": "纽约州纽约市",
+      "latitude": 40.8075,
+      "longitude": -73.9626,
+      "us_news_national_rank": 15,
+      "qs_world_rank": "34",
+      "is_ivy": true,
+      "strengths": [
+        "核心人文课程",
+        "新闻学",
+        "金融商科",
+        "建筑学"
+      ]
+    },
+    {
+      "id": "us-016",
+      "name_cn": "加州大学伯克利分校 (UCB)",
+      "name_en": "University of California, Berkeley",
+      "state_cn": "加利福尼亚州",
+      "city_cn": "伯克利",
+      "location_cn": "加利福尼亚州伯克利",
+      "latitude": 37.8719,
+      "longitude": -122.2585,
+      "us_news_national_rank": 15,
+      "qs_world_rank": "12",
+      "is_ivy": false,
+      "strengths": [
+        "计算机科学",
+        "工程学",
+        "化学",
+        "经济学",
+        "环境科学"
+      ]
+    },
+    {
+      "id": "us-017",
+      "name_cn": "莱斯大学",
+      "name_en": "Rice University",
+      "state_cn": "德克萨斯州",
+      "city_cn": "休斯顿",
+      "location_cn": "德克萨斯州休斯顿",
+      "latitude": 29.7174,
+      "longitude": -95.4018,
+      "us_news_national_rank": 17,
+      "qs_world_rank": "145",
+      "is_ivy": false,
+      "strengths": [
+        "空间科学",
+        "材料工程",
+        "建筑学",
+        "商科与音乐"
+      ]
+    },
+    {
+      "id": "us-018",
+      "name_cn": "加州大学洛杉矶分校 (UCLA)",
+      "name_en": "University of California, Los Angeles",
+      "state_cn": "加利福尼亚州",
+      "city_cn": "洛杉矶",
+      "location_cn": "加利福尼亚州洛杉矶",
+      "latitude": 34.0689,
+      "longitude": -118.4452,
+      "us_news_national_rank": 17,
+      "qs_world_rank": "42",
+      "is_ivy": false,
+      "strengths": [
+        "电影电视",
+        "影视表演",
+        "心理学",
+        "生物学",
+        "商科"
+      ]
+    },
+    {
+      "id": "us-019",
+      "name_cn": "范德堡大学",
+      "name_en": "Vanderbilt University",
+      "state_cn": "田纳西州",
+      "city_cn": "纳什维尔",
+      "location_cn": "田纳西州纳什维尔",
+      "latitude": 36.1447,
+      "longitude": -86.8027,
+      "us_news_national_rank": 17,
+      "qs_world_rank": "216",
+      "is_ivy": false,
+      "strengths": [
+        "人类发展与教育学",
+        "音乐产业",
+        "商科",
+        "生物医药"
+      ]
+    },
+    {
+      "id": "us-020",
+      "name_cn": "卡内基梅隆大学",
+      "name_en": "Carnegie Mellon University",
+      "state_cn": "宾夕法尼亚州",
+      "city_cn": "匹兹堡",
+      "location_cn": "宾夕法尼亚州匹兹堡",
+      "latitude": 40.4443,
+      "longitude": -79.9436,
+      "us_news_national_rank": 20,
+      "qs_world_rank": "56",
+      "is_ivy": false,
+      "strengths": [
+        "计算机科学(CS)",
+        "人机交互",
+        "戏剧与机器人工程"
+      ]
+    },
+    {
+      "id": "us-021",
+      "name_cn": "密歇根大学安娜堡分校",
+      "name_en": "University of Michigan, Ann Arbor",
+      "state_cn": "密歇根州",
+      "city_cn": "安娜堡",
+      "location_cn": "密歇根州安娜堡",
+      "latitude": 42.278,
+      "longitude": -83.7382,
+      "us_news_national_rank": 20,
+      "qs_world_rank": "33",
+      "is_ivy": false,
+      "strengths": [
+        "商科",
+        "工程学",
+        "心理学",
+        "音乐与艺术"
+      ]
+    },
+    {
+      "id": "us-022",
+      "name_cn": "圣母大学",
+      "name_en": "University of Notre Dame",
+      "state_cn": "印第安纳州",
+      "city_cn": "圣母镇",
+      "location_cn": "印第安纳州圣母镇",
+      "latitude": 41.7034,
+      "longitude": -86.239,
+      "us_news_national_rank": 20,
+      "qs_world_rank": "305",
+      "is_ivy": false,
+      "strengths": [
+        "商科门徒计划",
+        "建筑学",
+        "哲学与政治科学"
+      ]
+    },
+    {
+      "id": "us-023",
+      "name_cn": "圣路易斯华盛顿大学",
+      "name_en": "Washington University in St. Louis",
+      "state_cn": "密苏里州",
+      "city_cn": "圣路易斯",
+      "location_cn": "密苏里州圣路易斯",
+      "latitude": 38.6488,
+      "longitude": -90.3108,
+      "us_news_national_rank": 20,
+      "qs_world_rank": "163",
+      "is_ivy": false,
+      "strengths": [
+        "生物医学",
+        "建筑学",
+        "商科",
+        "社会工作"
+      ]
+    },
+    {
+      "id": "us-024",
+      "name_cn": "埃默里大学",
+      "name_en": "Emory University",
+      "state_cn": "佐治亚州",
+      "city_cn": "亚特兰大",
+      "location_cn": "佐治亚州亚特兰大",
+      "latitude": 33.789,
+      "longitude": -84.3267,
+      "us_news_national_rank": 24,
+      "qs_world_rank": "195",
+      "is_ivy": false,
+      "strengths": [
+        "商科(戈多华)",
+        "护理学",
+        "生物学",
+        "医学预科"
+      ]
+    },
+    {
+      "id": "us-025",
+      "name_cn": "乔治城大学",
+      "name_en": "Georgetown University",
+      "state_cn": "华盛顿特区",
+      "city_cn": "华盛顿",
+      "location_cn": "华盛顿特区",
+      "latitude": 38.9076,
+      "longitude": -77.0723,
+      "us_news_national_rank": 24,
+      "qs_world_rank": "311",
+      "is_ivy": false,
+      "strengths": [
+        "国际关系与外交",
+        "商科",
+        "政治学",
+        "公共政策"
+      ]
+    },
+    {
+      "id": "us-026",
+      "name_cn": "北卡罗来纳大学教堂山分校",
+      "name_en": "University of North Carolina at Chapel Hill",
+      "state_cn": "北卡罗来纳州",
+      "city_cn": "教堂山",
+      "location_cn": "北卡罗来纳州教堂山",
+      "latitude": 35.9049,
+      "longitude": -79.0469,
+      "us_news_national_rank": 26,
+      "qs_world_rank": "132",
+      "is_ivy": false,
+      "strengths": [
+        "新闻与大众传媒",
+        "公共卫生",
+        "商科",
+        "化学"
+      ]
+    },
+    {
+      "id": "us-027",
+      "name_cn": "弗吉尼亚大学",
+      "name_en": "University of Virginia",
+      "state_cn": "弗吉尼亚州",
+      "city_cn": "夏洛茨维尔",
+      "location_cn": "弗吉尼亚州夏洛茨维尔",
+      "latitude": 38.0336,
+      "longitude": -78.508,
+      "us_news_national_rank": 26,
+      "qs_world_rank": "260",
+      "is_ivy": false,
+      "strengths": [
+        "商科(麦金太尔)",
+        "建筑学",
+        "历史",
+        "政治与法律"
+      ]
+    },
+    {
+      "id": "us-028",
+      "name_cn": "南加州大学 (USC)",
+      "name_en": "University of Southern California",
+      "state_cn": "加利福尼亚州",
+      "city_cn": "洛杉矶",
+      "location_cn": "加利福尼亚州洛杉矶",
+      "latitude": 34.0224,
+      "longitude": -118.2851,
+      "us_news_national_rank": 28,
+      "qs_world_rank": "116",
+      "is_ivy": false,
+      "strengths": [
+        "电影艺术",
+        "商科",
+        "传播学",
+        "房地产与工程"
+      ]
+    },
+    {
+      "id": "us-029",
+      "name_cn": "加州大学圣迭戈分校 (UCSD)",
+      "name_en": "University of California, San Diego",
+      "state_cn": "加利福尼亚州",
+      "city_cn": "拉霍亚",
+      "location_cn": "加利福尼亚州拉霍亚",
+      "latitude": 32.8801,
+      "longitude": -117.234,
+      "us_news_national_rank": 29,
+      "qs_world_rank": "72",
+      "is_ivy": false,
+      "strengths": [
+        "生物工程",
+        "海洋学",
+        "计算机科学",
+        "神经科学"
+      ]
+    },
+    {
+      "id": "us-030",
+      "name_cn": "佛罗里达大学",
+      "name_en": "University of Florida",
+      "state_cn": "佛罗里达州",
+      "city_cn": "盖恩斯维尔",
+      "location_cn": "佛罗里达州盖恩斯维尔",
+      "latitude": 29.6436,
+      "longitude": -82.3549,
+      "us_news_national_rank": 30,
+      "qs_world_rank": "173",
+      "is_ivy": false,
+      "strengths": [
+        "材料科学",
+        "农业",
+        "商科",
+        "体育管理与医学预科"
+      ]
+    },
+    {
+      "id": "us-031",
+      "name_cn": "德克萨斯大学奥斯汀分校 (UT Austin)",
+      "name_en": "University of Texas at Austin",
+      "state_cn": "德克萨斯州",
+      "city_cn": "奥斯汀",
+      "location_cn": "德克萨斯州奥斯汀",
+      "latitude": 30.2849,
+      "longitude": -97.7341,
+      "us_news_national_rank": 30,
+      "qs_world_rank": "74",
+      "is_ivy": false,
+      "strengths": [
+        "石油工程",
+        "计算机科学",
+        "商科(麦库姆斯)",
+        "地质学"
+      ]
+    },
+    {
+      "id": "us-032",
+      "name_cn": "佐治亚理工学院",
+      "name_en": "Georgia Institute of Technology",
+      "state_cn": "佐治亚州",
+      "city_cn": "亚特兰大",
+      "location_cn": "佐治亚州亚特兰大",
+      "latitude": 33.7756,
+      "longitude": -84.3963,
+      "us_news_national_rank": 32,
+      "qs_world_rank": "97",
+      "is_ivy": false,
+      "strengths": [
+        "工业工程",
+        "计算机科学",
+        "航空航天",
+        "机械工程"
+      ]
+    },
+    {
+      "id": "us-033",
+      "name_cn": "纽约大学 (NYU)",
+      "name_en": "New York University",
+      "state_cn": "纽约州",
+      "city_cn": "纽约市",
+      "location_cn": "纽约州纽约市",
+      "latitude": 40.7295,
+      "longitude": -73.9965,
+      "us_news_national_rank": 32,
+      "qs_world_rank": "38",
+      "is_ivy": false,
+      "strengths": [
+        "金融与商科(斯特恩)",
+        "电影制作",
+        "法学",
+        "哲学"
+      ]
+    },
+    {
+      "id": "us-034",
+      "name_cn": "加州大学戴维斯分校 (UCD)",
+      "name_en": "University of California, Davis",
+      "state_cn": "加利福尼亚州",
+      "city_cn": "戴维斯",
+      "location_cn": "加利福尼亚州戴维斯",
+      "latitude": 38.5382,
+      "longitude": -121.7617,
+      "us_news_national_rank": 32,
+      "qs_world_rank": "118",
+      "is_ivy": false,
+      "strengths": [
+        "农学与林业",
+        "兽医学",
+        "葡萄酒酿造",
+        "生物学"
+      ]
+    },
+    {
+      "id": "us-035",
+      "name_cn": "加州大学尔湾分校 (UCI)",
+      "name_en": "University of California, Irvine",
+      "state_cn": "加利福尼亚州",
+      "city_cn": "尔湾",
+      "location_cn": "加利福尼亚州尔湾",
+      "latitude": 33.6405,
+      "longitude": -117.8443,
+      "us_news_national_rank": 32,
+      "qs_world_rank": "235",
+      "is_ivy": false,
+      "strengths": [
+        "犯罪学",
+        "计算机游戏设计",
+        "生物科学",
+        "商科"
+      ]
+    },
+    {
+      "id": "us-036",
+      "name_cn": "波士顿学院",
+      "name_en": "Boston College",
+      "state_cn": "马萨诸塞州",
+      "city_cn": "栗树山",
+      "location_cn": "马萨诸塞州栗树山",
+      "latitude": 42.3355,
+      "longitude": -71.1685,
+      "us_news_national_rank": 36,
+      "qs_world_rank": "501-600",
+      "is_ivy": false,
+      "strengths": [
+        "金融与会计",
+        "心理学",
+        "经济学",
+        "护理学"
+      ]
+    },
+    {
+      "id": "us-037",
+      "name_cn": "塔夫茨大学",
+      "name_en": "Tufts University",
+      "state_cn": "马萨诸塞州",
+      "city_cn": "梅德福",
+      "location_cn": "马萨诸塞州梅德福",
+      "latitude": 42.4084,
+      "longitude": -71.1183,
+      "us_news_national_rank": 36,
+      "qs_world_rank": "349",
+      "is_ivy": false,
+      "strengths": [
+        "国际关系",
+        "生物医学",
+        "儿童发展",
+        "工程学"
+      ]
+    },
+    {
+      "id": "us-038",
+      "name_cn": "伊利诺伊大学厄巴纳-香槟分校 (UIUC)",
+      "name_en": "University of Illinois Urbana-Champaign",
+      "state_cn": "伊利诺伊州",
+      "city_cn": "香槟",
+      "location_cn": "伊利诺伊州香槟",
+      "latitude": 40.102,
+      "longitude": -88.2272,
+      "us_news_national_rank": 36,
+      "qs_world_rank": "64",
+      "is_ivy": false,
+      "strengths": [
+        "计算机科学(CS)",
+        "电气工程",
+        "会计学",
+        "材料科学"
+      ]
+    },
+    {
+      "id": "us-039",
+      "name_cn": "威斯康星大学麦迪逊分校",
+      "name_en": "University of Wisconsin-Madison",
+      "state_cn": "威斯康星州",
+      "city_cn": "麦迪逊",
+      "location_cn": "威斯康星州麦迪逊",
+      "latitude": 43.0766,
+      "longitude": -89.4125,
+      "us_news_national_rank": 36,
+      "qs_world_rank": "101",
+      "is_ivy": false,
+      "strengths": [
+        "化学工程",
+        "教育学",
+        "计算机科学",
+        "核工程"
+      ]
+    },
+    {
+      "id": "us-040",
+      "name_cn": "加州大学圣塔芭芭拉分校 (UCSB)",
+      "name_en": "University of California, Santa Barbara",
+      "state_cn": "加利福尼亚州",
+      "city_cn": "圣塔芭芭拉",
+      "location_cn": "加利福尼亚州圣塔芭芭拉",
+      "latitude": 34.414,
+      "longitude": -119.8489,
+      "us_news_national_rank": 40,
+      "qs_world_rank": "164",
+      "is_ivy": false,
+      "strengths": [
+        "材料科学(顶尖)",
+        "物理学",
+        "化学工程",
+        "环境科学"
+      ]
+    },
+    {
+      "id": "us-041",
+      "name_cn": "俄亥俄州立大学",
+      "name_en": "Ohio State University",
+      "state_cn": "俄亥俄州",
+      "city_cn": "哥伦布",
+      "location_cn": "俄亥俄州哥伦布",
+      "latitude": 40.0,
+      "longitude": -83.0145,
+      "us_news_national_rank": 41,
+      "qs_world_rank": "151",
+      "is_ivy": false,
+      "strengths": [
+        "物流供应链管理",
+        "材料工程",
+        "教育学",
+        "护理"
+      ]
+    },
+    {
+      "id": "us-042",
+      "name_cn": "波士顿大学",
+      "name_en": "Boston University",
+      "state_cn": "马萨诸塞州",
+      "city_cn": "波士顿",
+      "location_cn": "马萨诸塞州波士顿",
+      "latitude": 42.3505,
+      "longitude": -71.1054,
+      "us_news_national_rank": 42,
+      "qs_world_rank": "108",
+      "is_ivy": false,
+      "strengths": [
+        "生物医学工程",
+        "传播学",
+        "商科",
+        "国际关系"
+      ]
+    },
+    {
+      "id": "us-043",
+      "name_cn": "罗格斯大学新布朗斯维克分校",
+      "name_en": "Rutgers University–New Brunswick",
+      "state_cn": "新泽西州",
+      "city_cn": "新布朗斯维克",
+      "location_cn": "新泽西州新布朗斯维克",
+      "latitude": 40.5008,
+      "longitude": -74.4474,
+      "us_news_national_rank": 42,
+      "qs_world_rank": "252",
+      "is_ivy": false,
+      "strengths": [
+        "药学",
+        "计算机",
+        "哲学",
+        "商科",
+        "生物学"
+      ]
+    },
+    {
+      "id": "us-044",
+      "name_cn": "马里兰大学帕克分校",
+      "name_en": "University of Maryland, College Park",
+      "state_cn": "马里兰州",
+      "city_cn": "帕克分校",
+      "location_cn": "马里兰州帕克分校",
+      "latitude": 38.9869,
+      "longitude": -76.9426,
+      "us_news_national_rank": 42,
+      "qs_world_rank": "158",
+      "is_ivy": false,
+      "strengths": [
+        "计算机科学",
+        "网络安全",
+        "量子计算",
+        "航天航空"
+      ]
+    },
+    {
+      "id": "us-045",
+      "name_cn": "华盛顿大学 (西雅图)",
+      "name_en": "University of Washington",
+      "state_cn": "华盛顿州",
+      "city_cn": "西雅图",
+      "location_cn": "华盛顿州西雅图",
+      "latitude": 47.6553,
+      "longitude": -122.3035,
+      "us_news_national_rank": 42,
+      "qs_world_rank": "63",
+      "is_ivy": false,
+      "strengths": [
+        "计算机科学",
+        "软件工程",
+        "护理学",
+        "生物医学",
+        "海洋学"
+      ]
+    },
+    {
+      "id": "us-046",
+      "name_cn": "凯斯西储大学",
+      "name_en": "Case Western Reserve University",
+      "state_cn": "俄亥俄州",
+      "city_cn": "克利夫兰",
+      "location_cn": "俄亥俄州克利夫兰",
+      "latitude": 41.5043,
+      "longitude": -81.6084,
+      "us_news_national_rank": 46,
+      "qs_world_rank": "173",
+      "is_ivy": false,
+      "strengths": [
+        "生物医学工程",
+        "医学预科",
+        "机械工程",
+        "护理学"
+      ]
+    },
+    {
+      "id": "us-047",
+      "name_cn": "理海大学",
+      "name_en": "Lehigh University",
+      "state_cn": "宾夕法尼亚州",
+      "city_cn": "伯利恒",
+      "location_cn": "宾夕法尼亚州伯利恒",
+      "latitude": 40.6075,
+      "longitude": -75.3798,
+      "us_news_national_rank": 46,
+      "qs_world_rank": "601-650",
+      "is_ivy": false,
+      "strengths": [
+        "供应链管理",
+        "材料科学",
+        "土木工程",
+        "金融"
+      ]
+    },
+    {
+      "id": "us-048",
+      "name_cn": "东北大学",
+      "name_en": "Northeastern University",
+      "state_cn": "马萨诸塞州",
+      "city_cn": "波士顿",
+      "location_cn": "马萨诸塞州波士顿",
+      "latitude": 42.3398,
+      "longitude": -71.0892,
+      "us_news_national_rank": 46,
+      "qs_world_rank": "384",
+      "is_ivy": false,
+      "strengths": [
+        "计算机科学",
+        "带薪实习项目(Co-op)",
+        "商科",
+        "药学"
+      ]
+    },
+    {
+      "id": "us-049",
+      "name_cn": "普渡大学西拉法叶分校",
+      "name_en": "Purdue University West Lafayette",
+      "state_cn": "印第安纳州",
+      "city_cn": "西拉法叶",
+      "location_cn": "印第安纳州西拉法叶",
+      "latitude": 40.4237,
+      "longitude": -86.9212,
+      "us_news_national_rank": 46,
+      "qs_world_rank": "103",
+      "is_ivy": false,
+      "strengths": [
+        "航空航天工程",
+        "机械工程",
+        "计算机",
+        "农业科学"
+      ]
+    },
+    {
+      "id": "us-050",
+      "name_cn": "罗切斯特大学",
+      "name_en": "University of Rochester",
+      "state_cn": "纽约州",
+      "city_cn": "罗切斯特",
+      "location_cn": "纽约州罗切斯特",
+      "latitude": 43.1284,
+      "longitude": -77.6289,
+      "us_news_national_rank": 46,
+      "qs_world_rank": "231",
+      "is_ivy": false,
+      "strengths": [
+        "光学与光子学",
+        "音乐(伊斯曼)",
+        "医学预科",
+        "经济学"
+      ]
+    },
+    {
+      "id": "us-051",
+      "name_cn": "佐治亚大学",
+      "name_en": "University of Georgia",
+      "state_cn": "佐治亚州",
+      "city_cn": "雅典",
+      "location_cn": "佐治亚州雅典",
+      "latitude": 33.948,
+      "longitude": -83.3773,
+      "us_news_national_rank": 46,
+      "qs_world_rank": "501-600",
+      "is_ivy": false,
+      "strengths": [
+        "公共管理",
+        "商科",
+        "传播学",
+        "教育学"
+      ]
+    },
+    {
+      "id": "us-052",
+      "name_cn": "德克萨斯农工大学",
+      "name_en": "Texas A&M University",
+      "state_cn": "德克萨斯州",
+      "city_cn": "大学城",
+      "location_cn": "德克萨斯州大学城",
+      "latitude": 30.6185,
+      "longitude": -96.3365,
+      "us_news_national_rank": 53,
+      "qs_world_rank": "188",
+      "is_ivy": false,
+      "strengths": [
+        "石油工程",
+        "机械工程",
+        "农业",
+        "兽医与商科"
+      ]
+    },
+    {
+      "id": "us-053",
+      "name_cn": "维克森林大学",
+      "name_en": "Wake Forest University",
+      "state_cn": "北卡罗来纳州",
+      "city_cn": "温斯顿-塞勒姆",
+      "location_cn": "北卡罗来纳州温斯顿-塞勒姆",
+      "latitude": 36.1342,
+      "longitude": -80.2763,
+      "us_news_national_rank": 53,
+      "qs_world_rank": "601-650",
+      "is_ivy": false,
+      "strengths": [
+        "会计学",
+        "医学预科",
+        "商业分析",
+        "心理学"
+      ]
+    },
+    {
+      "id": "us-054",
+      "name_cn": "伦斯勒理工学院 (RPI)",
+      "name_en": "Rensselaer Polytechnic Institute",
+      "state_cn": "纽约州",
+      "city_cn": "特洛伊",
+      "location_cn": "纽约州特洛伊",
+      "latitude": 42.7299,
+      "longitude": -73.6788,
+      "us_news_national_rank": 53,
+      "qs_world_rank": "471-480",
+      "is_ivy": false,
+      "strengths": [
+        "计算机科学",
+        "航空航天工程",
+        "游戏设计与工程"
+      ]
+    },
+    {
+      "id": "us-055",
+      "name_cn": "加州大学圣克鲁斯分校 (UCSC)",
+      "name_en": "University of California, Santa Cruz",
+      "state_cn": "加利福尼亚州",
+      "city_cn": "圣克鲁斯",
+      "location_cn": "加利福尼亚州圣克鲁斯",
+      "latitude": 36.9916,
+      "longitude": -122.0583,
+      "us_news_national_rank": 53,
+      "qs_world_rank": "316",
+      "is_ivy": false,
+      "strengths": [
+        "天文学与天体物理",
+        "计算机游戏设计",
+        "海洋生物"
+      ]
+    },
+    {
+      "id": "us-056",
+      "name_cn": "宾州州立大学帕克分校",
+      "name_en": "Penn State University Park",
+      "state_cn": "宾夕法尼亚州",
+      "city_cn": "大学城",
+      "location_cn": "宾夕法尼亚州大学城",
+      "latitude": 40.7982,
+      "longitude": -77.8599,
+      "us_news_national_rank": 57,
+      "qs_world_rank": "127",
+      "is_ivy": false,
+      "strengths": [
+        "供应链管理",
+        "材料科学",
+        "气象学",
+        "工程与商科"
+      ]
+    },
+    {
+      "id": "us-057",
+      "name_cn": "明尼苏达大学双城分校",
+      "name_en": "University of Minnesota, Twin Cities",
+      "state_cn": "明尼苏达州",
+      "city_cn": "明尼阿波利斯",
+      "location_cn": "明尼苏达州明尼阿波利斯",
+      "latitude": 44.974,
+      "longitude": -93.2323,
+      "us_news_national_rank": 57,
+      "qs_world_rank": "191",
+      "is_ivy": false,
+      "strengths": [
+        "化学工程",
+        "心理学",
+        "经济学",
+        "机械工程与药学"
+      ]
+    },
+    {
+      "id": "us-058",
+      "name_cn": "弗吉尼亚理工",
+      "name_en": "Virginia Tech",
+      "state_cn": "弗吉尼亚州",
+      "city_cn": "布莱克斯堡",
+      "location_cn": "弗吉尼亚州布莱克斯堡",
+      "latitude": 37.2284,
+      "longitude": -80.4234,
+      "us_news_national_rank": 57,
+      "qs_world_rank": "318",
+      "is_ivy": false,
+      "strengths": [
+        "工程学(全美领先)",
+        "建筑学",
+        "计算机科学"
+      ]
+    },
+    {
+      "id": "us-059",
+      "name_cn": "匹兹堡大学",
+      "name_en": "University of Pittsburgh",
+      "state_cn": "宾夕法尼亚州",
+      "city_cn": "匹兹堡",
+      "location_cn": "宾夕法尼亚州匹兹堡",
+      "latitude": 40.4446,
+      "longitude": -79.9532,
+      "us_news_national_rank": 61,
+      "qs_world_rank": "175",
+      "is_ivy": false,
+      "strengths": [
+        "哲学",
+        "护理学",
+        "医学预科",
+        "物理治疗与公共卫生"
+      ]
+    },
+    {
+      "id": "us-060",
+      "name_cn": "印第安纳大学伯明顿分校",
+      "name_en": "Indiana University Bloomington",
+      "state_cn": "印第安纳州",
+      "city_cn": "布卢明顿",
+      "location_cn": "印第安纳州布卢明顿",
+      "latitude": 39.1653,
+      "longitude": -86.5264,
+      "us_news_national_rank": 61,
+      "qs_world_rank": "211",
+      "is_ivy": false,
+      "strengths": [
+        "商科(凯利)",
+        "音乐学(雅各布)",
+        "信息科学",
+        "传媒"
+      ]
+    },
+    {
+      "id": "us-061",
+      "name_cn": "科罗拉多大学博尔德分校",
+      "name_en": "University of Colorado Boulder",
+      "state_cn": "科罗拉多州",
+      "city_cn": "博尔德",
+      "location_cn": "科罗拉多州博尔德",
+      "latitude": 40.015,
+      "longitude": -105.2705,
+      "us_news_national_rank": 63,
+      "qs_world_rank": "211",
+      "is_ivy": false,
+      "strengths": [
+        "航空航天工程",
+        "物理学",
+        "环境科学",
+        "商科"
+      ]
+    },
+    {
+      "id": "us-062",
+      "name_cn": "康涅狄格大学",
+      "name_en": "University of Connecticut",
+      "state_cn": "康涅狄格州",
+      "city_cn": "斯托尔斯",
+      "location_cn": "康涅狄格州斯托尔斯",
+      "latitude": 41.8075,
+      "longitude": -72.2535,
+      "us_news_national_rank": 63,
+      "qs_world_rank": "451-500",
+      "is_ivy": false,
+      "strengths": [
+        "精算学",
+        "教育学",
+        "护理学",
+        "工程与药学"
+      ]
+    },
+    {
+      "id": "us-063",
+      "name_cn": "马凯特大学",
+      "name_en": "Marquette University",
+      "state_cn": "威斯康星州",
+      "city_cn": "密尔沃基",
+      "location_cn": "威斯康星州密尔沃基",
+      "latitude": 43.0389,
+      "longitude": -87.9288,
+      "us_news_national_rank": 63,
+      "qs_world_rank": "801-1000",
+      "is_ivy": false,
+      "strengths": [
+        "生物医学工程",
+        "供应链",
+        "牙医学",
+        "传播学"
+      ]
+    },
+    {
+      "id": "us-064",
+      "name_cn": "北卡罗来纳州立大学",
+      "name_en": "North Carolina State University",
+      "state_cn": "北卡罗来纳州",
+      "city_cn": "罗利",
+      "location_cn": "北卡罗来纳州罗利",
+      "latitude": 35.7847,
+      "longitude": -78.6821,
+      "us_news_national_rank": 63,
+      "qs_world_rank": "301",
+      "is_ivy": false,
+      "strengths": [
+        "纺织工程",
+        "计算机科学",
+        "农学与生物工程"
+      ]
+    },
+    {
+      "id": "us-065",
+      "name_cn": "雪城大学",
+      "name_en": "Syracuse University",
+      "state_cn": "纽约州",
+      "city_cn": "雪城",
+      "location_cn": "纽约州雪城",
+      "latitude": 43.0382,
+      "longitude": -76.1342,
+      "us_news_national_rank": 67,
+      "qs_world_rank": "651-700",
+      "is_ivy": false,
+      "strengths": [
+        "公共传播与新闻(纽豪斯)",
+        "建筑学",
+        "公共管理"
+      ]
+    },
+    {
+      "id": "us-066",
+      "name_cn": "亚利桑那州立大学",
+      "name_en": "Arizona State University",
+      "state_cn": "亚利桑那州",
+      "city_cn": "坦佩",
+      "location_cn": "亚利桑那州坦佩",
+      "latitude": 33.4242,
+      "longitude": -111.9281,
+      "us_news_national_rank": 67,
+      "qs_world_rank": "179",
+      "is_ivy": false,
+      "strengths": [
+        "创新工程",
+        "供应链管理",
+        "工商管理"
+      ]
+    },
+    {
+      "id": "us-067",
+      "name_cn": "克莱姆森大学",
+      "name_en": "Clemson University",
+      "state_cn": "南卡罗来纳州",
+      "city_cn": "克莱姆森",
+      "location_cn": "南卡罗来纳州克莱姆森",
+      "latitude": 34.6834,
+      "longitude": -82.8374,
+      "us_news_national_rank": 70,
+      "qs_world_rank": "701-750",
+      "is_ivy": false,
+      "strengths": [
+        "工程学",
+        "建筑学",
+        "农学",
+        "商科与包装科学"
+      ]
+    },
+    {
+      "id": "us-068",
+      "name_cn": "密歇根州立大学",
+      "name_en": "Michigan State University",
+      "state_cn": "密歇根州",
+      "city_cn": "东兰辛",
+      "location_cn": "密歇根州东兰辛",
+      "latitude": 42.7018,
+      "longitude": -84.4822,
+      "us_news_national_rank": 70,
+      "qs_world_rank": "160",
+      "is_ivy": false,
+      "strengths": [
+        "供应链管理",
+        "教育学",
+        "包装工程",
+        "酒店管理"
+      ]
+    },
+    {
+      "id": "us-069",
+      "name_cn": "圣地亚哥大学",
+      "name_en": "University of San Diego",
+      "state_cn": "加利福尼亚州",
+      "city_cn": "圣地亚哥",
+      "location_cn": "加利福尼亚州圣地亚哥",
+      "latitude": 32.7719,
+      "longitude": -117.1895,
+      "us_news_national_rank": 72,
+      "qs_world_rank": "801-1000",
+      "is_ivy": false,
+      "strengths": [
+        "商科",
+        "国际商务",
+        "护理学",
+        "应用科学"
+      ]
+    },
+    {
+      "id": "us-070",
+      "name_cn": "贝勒大学",
+      "name_en": "Baylor University",
+      "state_cn": "德克萨斯州",
+      "city_cn": "韦科",
+      "location_cn": "德克萨斯州韦科",
+      "latitude": 31.5493,
+      "longitude": -97.1167,
+      "us_news_national_rank": 73,
+      "qs_world_rank": "801-1000",
+      "is_ivy": false,
+      "strengths": [
+        "商科",
+        "医学预科",
+        "法学预科",
+        "生物科学"
+      ]
+    },
+    {
+      "id": "us-071",
+      "name_cn": "福特汉姆大学",
+      "name_en": "Fordham University",
+      "state_cn": "纽约州",
+      "city_cn": "纽约市",
+      "location_cn": "纽约州纽约市",
+      "latitude": 40.862,
+      "longitude": -73.8856,
+      "us_news_national_rank": 73,
+      "qs_world_rank": "601-650",
+      "is_ivy": false,
+      "strengths": [
+        "金融与商科",
+        "国际贸易",
+        "法律预科",
+        "戏剧"
+      ]
+    },
+    {
+      "id": "us-072",
+      "name_cn": "乔治华盛顿大学",
+      "name_en": "George Washington University",
+      "state_cn": "华盛顿特区",
+      "city_cn": "华盛顿",
+      "location_cn": "华盛顿特区",
+      "latitude": 38.8997,
+      "longitude": -77.0486,
+      "us_news_national_rank": 73,
+      "qs_world_rank": "340",
+      "is_ivy": false,
+      "strengths": [
+        "国际关系",
+        "政治学",
+        "国际商科",
+        "公共卫生"
+      ]
+    },
+    {
+      "id": "us-073",
+      "name_cn": "伍斯特理工学院 (WPI)",
+      "name_en": "Worcester Polytechnic Institute",
+      "state_cn": "马萨诸塞州",
+      "city_cn": "伍斯特",
+      "location_cn": "马萨诸塞州伍斯特",
+      "latitude": 42.2742,
+      "longitude": -71.8083,
+      "us_news_national_rank": 76,
+      "qs_world_rank": "501-600",
+      "is_ivy": false,
+      "strengths": [
+        "机器人工程",
+        "机械工程",
+        "计算机",
+        "生物医学工程"
+      ]
+    },
+    {
+      "id": "us-074",
+      "name_cn": "佩珀代因大学",
+      "name_en": "Pepperdine University",
+      "state_cn": "加利福尼亚州",
+      "city_cn": "马里布",
+      "location_cn": "加利福尼亚州马里布",
+      "latitude": 34.0422,
+      "longitude": -118.7093,
+      "us_news_national_rank": 76,
+      "qs_world_rank": "801-1000",
+      "is_ivy": false,
+      "strengths": [
+        "商科",
+        "传媒",
+        "国际关系",
+        "心理学"
+      ]
+    },
+    {
+      "id": "us-075",
+      "name_cn": "圣地亚哥州立大学",
+      "name_en": "San Diego State University",
+      "state_cn": "加利福尼亚州",
+      "city_cn": "圣地亚哥",
+      "location_cn": "加利福尼亚州圣地亚哥",
+      "latitude": 32.7758,
+      "longitude": -117.0719,
+      "us_news_national_rank": 76,
+      "qs_world_rank": "1001-1200",
+      "is_ivy": false,
+      "strengths": [
+        "国际商务",
+        "酒店管理",
+        "护理",
+        "工程学"
+      ]
+    },
+    {
+      "id": "us-076",
+      "name_cn": "德克萨斯基督教大学 (TCU)",
+      "name_en": "Texas Christian University",
+      "state_cn": "德克萨斯州",
+      "city_cn": "沃思堡",
+      "location_cn": "德克萨斯州沃思堡",
+      "latitude": 32.7107,
+      "longitude": -97.3624,
+      "us_news_national_rank": 76,
+      "qs_world_rank": "801-1000",
+      "is_ivy": false,
+      "strengths": [
+        "商科",
+        "护理学",
+        "传媒",
+        "生物学与畜牧商科"
+      ]
+    },
+    {
+      "id": "us-077",
+      "name_cn": "奥本大学",
+      "name_en": "Auburn University",
+      "state_cn": "阿拉巴马州",
+      "city_cn": "奥本",
+      "location_cn": "阿拉巴马州奥本",
+      "latitude": 32.6099,
+      "longitude": -85.4808,
+      "us_news_national_rank": 80,
+      "qs_world_rank": "701-750",
+      "is_ivy": false,
+      "strengths": [
+        "药学",
+        "建筑学",
+        "工程学",
+        "兽医学与供应链"
+      ]
+    }
+  ]
+}
