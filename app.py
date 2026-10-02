@@ -815,10 +815,33 @@ def load_study_maps():
     return json.loads(data_path.read_text(encoding='utf-8')).get('maps', [])
 
 
+def load_us_undergraduate_universities():
+    data_path = (
+        Path(app.static_folder)
+        / 'data'
+        / 'us-undergraduate-universities.json'
+    )
+    try:
+        data = json.loads(data_path.read_text(encoding='utf-8'))
+    except (OSError, json.JSONDecodeError):
+        app.logger.exception('Unable to load US undergraduate university data')
+        return {'meta': {}, 'universities': []}
+
+    return {
+        'meta': data.get('meta', {}),
+        'universities': data.get('universities', []),
+    }
+
+
 @app.get('/study-maps')
 def study_maps_index():
     maps = load_study_maps()
-    return render_template('maps_index.html', maps=maps)
+    us_map_data = load_us_undergraduate_universities()
+    return render_template(
+        'maps_index.html',
+        maps=maps,
+        us_map_data=us_map_data,
+    )
 
 
 @app.get('/study-map/<slug>')
