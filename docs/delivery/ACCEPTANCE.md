@@ -14,9 +14,11 @@
 | 导入回滚 | PASS | 虚构工作簿导入、原始状态保留与受保护回滚通过 |
 | 本地测试总数 | PASS | 31 项，其中新模块 11 项、原有官网 20 项 |
 | 本地备份恢复演练 | PASS | 虚构 SQLite 数据在线备份到独立测试库；用户 3、学生 1、项目 1、任务 4、迁移版本 1 均与源库一致，`integrity_check=ok` |
-| GitHub Actions | NOT TESTED | 工作流已添加，尚未推送并观察远端运行 |
-| PostgreSQL 空库迁移 | NOT TESTED | 本地无 PostgreSQL，尚无隔离 staging |
-| 手机 / 微信内置浏览器 | NOT TESTED | 需人工实机检查 |
+| GitHub Actions | PASS | 功能分支 run 38541241369：依赖安装、编译、31 项测试、临时 PostgreSQL 迁移及 schema 检查均通过 |
+| PostgreSQL 空库迁移 | PASS | GitHub Actions 的临时 PostgreSQL 16 从空库迁移并通过 Alembic schema 检查 |
+| 独立 staging PostgreSQL | NOT TESTED | 尚未提供隔离 staging 环境；CI 临时库不等同于 staging |
+| 手机浏览器布局 | PASS | 本地 414px 视口下员工、家长页面可浏览且无横向溢出；桌面视口亦无溢出 |
+| 微信内置浏览器 | NOT TESTED | 需人工实机检查 |
 | 正式 HTTPS / Nginx / Gunicorn | NOT TESTED | 本轮未连接或更改 ECS |
 | PostgreSQL 备份恢复 | NOT TESTED | 未建立 staging PostgreSQL；未接触生产数据库 |
 | 真实资料导入 | NOT TESTED | 仅完成只读预览；需人工审核和单独授权 |
