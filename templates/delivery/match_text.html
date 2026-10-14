@@ -1,0 +1,20 @@
+{% extends 'delivery/base.html' %}
+{% block content %}<a class="back" href="{{ url_for('delivery.project_detail', project_id=project.id) }}">← 返回项目</a>
+<div class="page-heading">
+<div>
+<p class="eyebrow">MANUAL CONFIRMATION</p>
+<h1>任务匹配结果</h1>
+<p class="lead">仅识别当前项目的任务编号；这里不会自动更新数据库。</p>
+</div>
+</div>{% for task in matches %}<section class="section-block task">
+<div class="task-code">{{ task.source_code }}</div>
+<h2>{{ task.name }}</h2>
+<p class="muted">当前状态：{{ task.status }}</p>
+<form method="post" action="{{ url_for('delivery.update_task', task_id=task.id) }}" class="form-grid">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<input type="hidden" name="action" value="quick_status">
+<label>确认要写入的状态<select name="status">{% for status in statuses %}<option {% if status == (suggested or task.status) %}selected{% endif %}>{{ status }}</option>{% endfor %}</select>
+</label>
+<button class="btn primary" type="submit">确认更新</button>
+</form>
+</section>{% else %}<div class="empty">未匹配到当前项目的任务编号。请返回并核对编号。</div>{% endfor %}{% endblock %}

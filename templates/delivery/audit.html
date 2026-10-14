@@ -1,0 +1,42 @@
+{% extends 'delivery/base.html' %}
+{% block content %}
+<div class="page-heading">
+<div>
+<p class="eyebrow">AUDIT TRAIL</p>
+<h1>操作记录</h1>
+<p class="lead">最近的账号登录与管理操作。任务的逐项变更显示在项目内。</p>
+</div>
+</div>
+<div class="staff-layout">
+<section class="section-block">
+<h2>管理操作</h2>
+<div class="table-scroll">
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>操作者</th>
+<th>操作</th>
+<th>对象</th>
+</tr>
+</thead>
+<tbody>{% for event in events %}<tr>
+<td>{{ event.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+<td>{{ names.get(event.actor_id, '未知') }}</td>
+<td>{{ event.action }}</td>
+<td>{{ event.entity }} #{{ event.entity_id }}</td>
+</tr>{% else %}<tr>
+<td colspan="4">暂无记录</td>
+</tr>{% endfor %}</tbody>
+</table>
+</div>
+</section>
+<aside>
+<section class="section-block">
+<h2>登录记录</h2>{% for event in auth_events %}<div class="side-item">
+<strong>{{ event.username }} · {{ event.event }}</strong>
+<small>{{ event.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+</div>{% else %}<p class="muted">暂无记录</p>{% endfor %}</section>
+</aside>
+</div>
+{% endblock %}

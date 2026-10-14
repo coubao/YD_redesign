@@ -1,0 +1,25 @@
+{% extends 'delivery/base.html' %}
+{% block content %}<div class="page-heading">
+<div>
+<p class="eyebrow">TASK LIBRARY</p>
+<h1>任务模板审核</h1>
+<p class="lead">原始模板均需先审核。标准任务会在新建对应服务项目时自动生成。</p>
+</div>
+</div>
+<div class="task-list">{% for row in rows %}<article class="task" id="template-{{ row.id }}">
+<div class="task-code">{{ row.service_type }} · {{ row.source_code }} · {{ row.phase }}</div>
+<h3>{{ row.name }}</h3>
+<form method="post" action="{{ url_for('delivery.classify_template', template_id=row.id) }}" class="form-grid">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<label>分类<select name="classification">
+<option value="pending_review" {% if row.classification == 'pending_review' %}selected{% endif %}>待审核</option>
+<option value="standard" {% if row.classification == 'standard' %}selected{% endif %}>标准通用</option>
+<option value="conditional" {% if row.classification == 'conditional' %}selected{% endif %}>条件触发</option>
+<option value="case_specific" {% if row.classification == 'case_specific' %}selected{% endif %}>个案专属</option>
+</select>
+</label>
+<label>触发条件 / 审核说明<input name="condition_note" value="{{ row.condition_note }}" maxlength="1000">
+</label>
+<button class="btn secondary" type="submit">保存分类</button>
+</form>
+</article>{% else %}<p class="muted">暂无模板。请先进行导入预览和审核导入。</p>{% endfor %}</div>{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'delivery/base.html' %}
+{% block title %}登录 · 申请交付{% endblock %}
+{% block content %}
+<section class="login-shell">
+  <p class="eyebrow">PRIVATE PORTAL</p>
+  <h1>申请交付，清晰可见。</h1>
+  <p class="lead">登录后查看已授权项目的真实进度与下一步安排。</p>
+  <form method="post" class="login-form">
+    <input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+    <label>账号<input name="username" autocomplete="username" required autofocus>
+</label>
+    <label>密码<input type="password" name="password" autocomplete="current-password" required>
+</label>
+    <button class="btn primary" type="submit">登录</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'delivery/base.html' %}
+{% block content %}
+<a class="back" href="{{ url_for('delivery.index') }}">← 返回项目</a>
+<div class="page-heading">
+<div>
+<p class="eyebrow">TEAM WORKSPACE</p>
+<h1>{{ project.student.name }}</h1>
+<p class="lead">{{ project.service_type }} · {{ project.intake_year or '入学季待确认' }} · {{ project.current_phase }} · 风险 {{ project.risk_level }}</p>
+</div>
+<a class="btn secondary" href="{{ url_for('delivery.progress_text', project_id=project.id) }}" target="_blank" rel="noopener">家长摘要 ↗</a>
+</div>
+<div class="staff-layout">
+<div>
+  <section class="section-block">
+<form method="post" action="{{ url_for('delivery.update_phase', project_id=project.id) }}" class="form-grid">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<label>当前申请阶段<input name="current_phase" value="{{ project.current_phase }}" maxlength="120" required>
+</label>
+<label>项目风险<select name="risk_level">{% for level in risk_levels %}<option {% if project.risk_level == level %}selected{% endif %}>{{ level }}</option>{% endfor %}</select>
+</label>
+<button class="btn secondary" type="submit">更新项目</button>
+</form>
+</section>
+  {% if g.delivery_user.role == 'admin' %}<section class="section-block">
+<form method="post" action="{{ url_for('delivery.assign_manager', project_id=project.id) }}" class="form-grid">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<label>项目负责人<select name="manager_id">{% for member in staff %}<option value="{{ member.id }}" {% if project.manager_id == member.id %}selected{% endif %}>{{ member.username }}</option>{% endfor %}</select>
+</label>
+<button class="btn secondary" type="submit">更新负责人</button>
+</form>
+</section>{% endif %}
+  <section class="section-block">
+<div class="section-title">
+<h2>项目任务</h2>
+<span>{{ tasks|length }} 项</span>
+</div>
+    {% set review_tasks = tasks|selectattr('review_required')|list %}
+    {% if review_tasks %}<p class="review-warning">来源状态待审核：{% for task in review_tasks %}{{ task.source_code or task.name }}（{{ task.source_status }}）{% if not loop.last %}、{% endif %}{% endfor %}。确认后在对应任务中保存状态。</p>{% endif %}
+    {% if tasks %}<div class="task-list">{% for task in tasks %}<article class="task" id="task-{{ task.id }}">
+<div class="task-top">
+<div>
+<span class="task-code">{{ task.source_code or '自定义' }} · {{ task.phase or '阶段待确认' }}</span>
+<h3>{{ task.name }}</h3>
+<div class="task-meta">
+<span class="status {% if task.status == '已完成' %}complete{% elif task.status == '已阻塞' %}blocked{% endif %}">{{ task.status }}</span>
+<span>截止 {{ task.due_date or '待确认' }}</span>{% if task.due_date and task.due_date < today and task.status not in ['已完成', '已取消'] %}<span class="status blocked">已逾期</span>{% endif %}<span>风险 {{ task.risk_level }}</span>
+<span>{{ '家长可见' if task.parent_visible else '仅内部' }}</span>
+</div>
+</div>{% if task.status != '已完成' %}<form method="post" action="{{ url_for('delivery.update_task', task_id=task.id) }}">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<input type="hidden" name="action" value="complete">
+<button class="btn small primary" type="submit">完成</button>
+</form>{% endif %}</div>
+      <details>
+<summary>调整状态与展示</summary>
+<form method="post" action="{{ url_for('delivery.update_task', task_id=task.id) }}" class="task-form">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<div class="form-grid">
+<label>状态<select name="status">{% for status in statuses %}<option {% if task.status == status %}selected{% endif %}>{{ status }}</option>{% endfor %}</select>
+</label>
+<label>截止日期<input type="date" name="due_date" value="{{ task.due_date or '' }}">
+</label>
+<label>风险<select name="risk_level">{% for level in risk_levels %}<option {% if task.risk_level == level %}selected{% endif %}>{{ level }}</option>{% endfor %}</select>
+</label>
+<label>负责人<select name="assignee_id">
+<option value="">待指定</option>{% for member in staff %}<option value="{{ member.id }}" {% if task.assignee_id == member.id %}selected{% endif %}>{{ member.username }}</option>{% endfor %}</select>
+</label>
+</div>
+<label>家长展示说明<textarea name="public_note" rows="2" maxlength="2000">{{ task.public_note }}</textarea>
+</label>
+<label>阻塞原因（仅内部）<textarea name="blocked_reason" rows="2" maxlength="2000">{{ task.blocked_reason }}</textarea>
+</label>
+<label class="check">
+<input type="checkbox" name="parent_visible" {% if task.parent_visible %}checked{% endif %}> 家长可见</label>
+<button class="btn secondary" type="submit">保存修改</button>
+</form>
+</details>
+</article>{% endfor %}</div>{% else %}<p class="muted">暂无任务。可从已审核的标准模板生成，或在下方添加。</p>{% endif %}
+  </section>
+  <section class="section-block">
+<h2>新增任务</h2>
+<form method="post" action="{{ url_for('delivery.create_task', project_id=project.id) }}" class="form-grid">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<label>任务名称<input name="name" maxlength="250" required>
+</label>
+<label>阶段<input name="phase" maxlength="120">
+</label>
+<button class="btn primary" type="submit">添加</button>
+</form>
+</section>
+  <section class="section-block">
+<h2>微信文字辅助匹配</h2>
+<p class="muted">粘贴带任务编号的文字，确认匹配结果后再修改状态。</p>
+<form method="post" action="{{ url_for('delivery.match_text', project_id=project.id) }}" class="stack-form">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<label>文字内容<textarea name="source_text" rows="4" maxlength="4000" required>
+</textarea>
+</label>
+<button class="btn secondary" type="submit">查看匹配</button>
+</form>
+</section>
+</div>
+<aside>
+  <section class="section-block">
+<h2>关键节点</h2>{% for milestone in milestones %}<div class="side-item">
+<strong>{{ milestone.title }}</strong>
+<small>{{ milestone.due_date or '日期待确认' }} · {{ '已完成' if milestone.completed_at else '未完成' }} · {{ '公开' if milestone.parent_visible else '内部' }}</small>{% if not milestone.completed_at %}<form method="post" action="{{ url_for('delivery.complete_milestone', milestone_id=milestone.id) }}">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<button class="text-button" type="submit">标记完成</button>
+</form>{% endif %}</div>{% else %}<p class="muted">暂无节点</p>{% endfor %}<form method="post" action="{{ url_for('delivery.create_milestone', project_id=project.id) }}" class="stack-form">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<label>节点名称<input name="title" required maxlength="250">
+</label>
+<label>计划日期<input type="date" name="due_date">
+</label>
+<label class="check">
+<input type="checkbox" name="parent_visible"> 家长可见</label>
+<button class="btn secondary" type="submit">添加节点</button>
+</form>
+</section>
+  <section class="section-block">
+<h2>最近更新</h2>{% for change in changes %}<div class="side-item">
+<strong>{{ change.actor.username }}</strong>
+<small>{{ change.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+<code>{{ change.changes_json }}</code>
+</div>{% else %}<p class="muted">尚无更新</p>{% endfor %}</section>
+</aside>
+</div>
+{% endblock %}

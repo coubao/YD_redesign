@@ -67,3 +67,7 @@ phone number or WeChat ID. Both recipients must be members of the configured
 WeCom group (or later provide an official-account/WeCom application identity).
 When no webhook is configured, the booking is still saved and the admin page
 shows `微信提醒待配置`.
+
+# 申请交付管理系统
+
+内部交付模块位于 `/delivery`，代码与官网同仓库，使用独立数据库。架构、账号权限、使用方式、数据导入与部署验收见 [docs/delivery/ARCHITECTURE.md](docs/delivery/ARCHITECTURE.md) 和 [docs/delivery/OPERATOR_GUIDE.md](docs/delivery/OPERATOR_GUIDE.md)。启用时安装 `requirements-delivery.txt`；未配置独立数据库及强密钥时模块返回 503。

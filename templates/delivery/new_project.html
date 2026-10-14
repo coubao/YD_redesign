@@ -1,0 +1,21 @@
+{% extends 'delivery/base.html' %}
+{% block content %}<a class="back" href="{{ url_for('delivery.index') }}">← 返回项目</a>
+<div class="page-heading">
+<div>
+<p class="eyebrow">NEW PROJECT</p>
+<h1>新建申请项目</h1>
+<p class="lead">只有审核为通用的模板任务会自动加入项目。</p>
+</div>
+</div>
+<form method="post" class="form-panel">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<label>学生姓名<input name="student_name" required maxlength="120">
+</label>
+<label>服务类型<select name="service_type" required>{% for item in service_types %}<option>{{ item }}</option>{% endfor %}</select>
+</label>
+<label>申请年度 / 入学季<input name="intake_year" maxlength="32">
+</label>
+<label>项目负责人<select name="manager_id" required>{% for member in staff %}<option value="{{ member.id }}">{{ member.username }}</option>{% endfor %}</select>
+</label>
+<button class="btn primary" type="submit">创建项目</button>
+</form>{% endblock %}

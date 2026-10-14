@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <title>{% block title %}申请交付 · 瀛动教育{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='delivery.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='delivery-responsive.css') }}">
+</head>
+<body>
+  <header class="d-header">
+    <div class="d-wrap d-header-inner">
+      <a class="d-brand" href="{{ url_for('delivery.index') }}">
+<span class="d-brand-mark">YD</span>
+<span>瀛动教育 <small>申请交付</small>
+</span>
+</a>
+      {% if g.delivery_user %}
+      <nav aria-label="交付系统导航">
+        <a href="{{ url_for('delivery.index') }}">项目</a>
+        {% if g.delivery_user.role == 'admin' %}<a href="{{ url_for('delivery.templates') }}">任务模板</a>
+<a href="{{ url_for('delivery.users') }}">账号与授权</a>
+<a href="{{ url_for('delivery.audit_log') }}">操作记录</a>{% endif %}
+        <form method="post" action="{{ url_for('delivery.logout') }}" class="inline-form">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<button type="submit" class="text-button">退出</button>
+</form>
+      </nav>
+      {% endif %}
+    </div>
+  </header>
+  <main class="d-wrap d-main">
+    {% with messages = get_flashed_messages(with_categories=true) %}{% for category, message in messages %}<div class="notice {{ category }}" role="status">{{ message }}</div>{% endfor %}{% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="d-footer">
+<div class="d-wrap">瀛动教育 · 申请交付管理</div>
+</footer>
+</body>
+</html>
