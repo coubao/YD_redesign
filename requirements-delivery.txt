@@ -1,0 +1,4 @@
+-r requirements.txt
+alembic==1.15.2
+openpyxl==3.1.5
+psycopg2-binary==2.9.11

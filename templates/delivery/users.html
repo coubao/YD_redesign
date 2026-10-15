@@ -1,0 +1,86 @@
+{% extends 'delivery/base.html' %}
+{% block content %}<div class="page-heading">
+<div>
+<p class="eyebrow">ACCESS CONTROL</p>
+<h1>账号与授权</h1>
+<p class="lead">家长仅能查看明确授权的学生项目。</p>
+</div>
+</div>
+<div class="staff-layout">
+<section class="section-block">
+<h2>账号</h2>
+<div class="table-scroll">
+<table>
+<thead>
+<tr>
+<th>账号</th>
+<th>角色</th>
+<th>状态</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>{% for person in people %}<tr>
+<td>{{ person.username }}</td>
+<td>{{ person.role }}</td>
+<td>{{ '启用' if person.active else '停用' }}</td>
+<td>{% if person.id != g.delivery_user.id %}<form method="post" action="{{ url_for('delivery.set_user_active', user_id=person.id) }}">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<input type="hidden" name="active" value="{{ 'false' if person.active else 'true' }}">
+<button class="text-button" type="submit">{{ '停用' if person.active else '启用' }}</button>
+</form>{% endif %}</td>
+</tr>{% endfor %}</tbody>
+</table>
+</div>
+<h3>创建账号</h3>
+<form method="post" class="stack-form">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<label>账号<input name="username" required maxlength="120" autocomplete="off">
+</label>
+<label>密码（至少 12 位）<input type="password" name="password" required minlength="12" autocomplete="new-password">
+</label>
+<label>角色<select name="role">
+<option value="staff">员工</option>
+<option value="parent">家长</option>
+<option value="admin">管理员</option>
+</select>
+</label>
+<button class="btn primary" type="submit">创建</button>
+</form>
+<h3>管理现有账号</h3>{% for person in people %}<details class="side-item">
+<summary>{{ person.username }}</summary>
+<form method="post" action="{{ url_for('delivery.reset_password', user_id=person.id) }}" class="stack-form">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<label>新密码<input type="password" name="password" minlength="12" required>
+</label>
+<button class="btn secondary" type="submit">重置密码</button>
+</form>{% if person.id != g.delivery_user.id %}<form method="post" action="{{ url_for('delivery.set_user_role', user_id=person.id) }}" class="stack-form">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<label>角色<select name="role">
+<option value="staff" {% if person.role == 'staff' %}selected{% endif %}>员工</option>
+<option value="parent" {% if person.role == 'parent' %}selected{% endif %}>家长</option>
+<option value="admin" {% if person.role == 'admin' %}selected{% endif %}>管理员</option>
+</select>
+</label>
+<button class="btn secondary" type="submit">更改角色</button>
+</form>{% endif %}</details>{% endfor %}</section>
+<aside>
+<section class="section-block">
+<h2>家长授权</h2>
+<form method="post" action="{{ url_for('delivery.grant_access') }}" class="stack-form">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<label>家长账号<select name="user_id">{% for person in people if person.role == 'parent' and person.active %}<option value="{{ person.id }}">{{ person.username }}</option>{% endfor %}</select>
+</label>
+<label>学生<select name="student_id">{% for student in students %}<option value="{{ student.id }}">{{ student.name }}</option>{% endfor %}</select>
+</label>
+<button class="btn secondary" type="submit">授权查看</button>
+</form>
+<p class="muted">授权仅控制可访问项目；具体任务还需单独设置为家长可见。</p>{% for access in accesses %}<div class="side-item">
+<strong>{{ user_names.get(access.user_id, '未知账号') }} → {{ student_names.get(access.student_id, '未知学生') }}</strong>
+<form method="post" action="{{ url_for('delivery.revoke_access') }}">
+<input type="hidden" name="_csrf" value="{{ delivery_csrf() }}">
+<input type="hidden" name="access_id" value="{{ access.id }}">
+<button class="text-button" type="submit">撤销</button>
+</form>
+</div>{% endfor %}</section>
+</aside>
+</div>{% endblock %}

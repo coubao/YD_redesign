@@ -3,6 +3,8 @@ import unittest
 from datetime import datetime, timedelta
 from pathlib import Path
 
+from sqlalchemy import create_engine
+
 from app import (
     BOOKING_STATUS_CONFIRMED,
     BOOKING_STATUS_MANUAL_BLOCK,
@@ -21,22 +23,25 @@ from app import (
 class BookingTestCase(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp_dir.cleanup)
         database_path = Path(self.temp_dir.name) / 'booking-test.db'
-        app.config.update(
-            TESTING=True,
-            SQLALCHEMY_DATABASE_URI=f'sqlite:///{database_path}',
-        )
+        app.config['TESTING'] = True
         self.app_context = app.app_context()
         self.app_context.push()
-        db.drop_all()
+        self.addCleanup(self.app_context.pop)
+        self.original_engine = db.engines[None]
+        self.test_engine = create_engine(f'sqlite:///{database_path}')
+        self.addCleanup(self.restore_database)
+        # The app was initialized at import time, so changing its config would not switch engines.
+        db.engines[None] = self.test_engine
+        self.assertEqual(db.engine.url.database, str(database_path))
         db.create_all()
         self.client = app.test_client()
 
-    def tearDown(self):
+    def restore_database(self):
         db.session.remove()
-        db.drop_all()
-        self.app_context.pop()
-        self.temp_dir.cleanup()
+        db.engines[None] = self.original_engine
+        self.test_engine.dispose()
 
     def add_booking(self, **overrides):
         values = {

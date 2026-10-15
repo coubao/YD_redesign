@@ -1,0 +1,20 @@
+{% extends 'delivery/base.html' %}
+{% block content %}
+<div class="page-heading">
+<div>
+<p class="eyebrow">APPLICATION DELIVERY</p>
+<h1>{% if g.delivery_user.role == 'parent' %}申请进度{% else %}项目工作台{% endif %}</h1>
+<p class="lead">{% if g.delivery_user.role == 'parent' %}查看当前阶段、最新进展及需要配合的事项。{% else %}关注当前任务和关键节点。{% endif %}</p>
+</div>{% if g.delivery_user.role == 'admin' %}<a class="btn primary" href="{{ url_for('delivery.new_project') }}">新建项目</a>{% endif %}</div>
+{% if projects %}<div class="project-list">{% for project in projects %}<a class="project-row" href="{{ url_for('delivery.project_detail', project_id=project.id) }}">
+<div>
+<span class="project-kind">{{ project.service_type }} · {{ project.intake_year or '入学季待确认' }}</span>
+<h2>{{ project.student.name }}</h2>
+</div>
+<div>
+<span class="muted">当前阶段</span>
+<strong>{{ project.current_phase or '待确认' }}</strong>
+</div>
+<span class="project-arrow" aria-hidden="true">↗</span>
+</a>{% endfor %}</div>{% else %}<div class="empty">当前没有可查看的项目。</div>{% endif %}
+{% endblock %}

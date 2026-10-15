@@ -1,0 +1,69 @@
+{% extends 'delivery/base.html' %}
+{% block title %}申请进度 · 瀛动教育{% endblock %}
+{% block content %}
+<a class="back" href="{{ url_for('delivery.index') }}">← 返回项目</a>
+<div class="page-heading">
+<div>
+<p class="eyebrow">YOUR APPLICATION</p>
+<h1>{{ project.student.name }}的申请进度</h1>
+<p class="lead">{{ project.service_type }}申请 · {{ project.intake_year or '入学季待确认' }}</p>
+</div>
+</div>
+<section class="phase-band">
+<span>当前阶段</span>
+<h2>{{ project.current_phase or '待确认' }}</h2>
+<p>以下内容随团队实际工作记录更新。</p>
+</section>
+<div class="summary-grid">
+  <section>
+<h2>已经完成</h2>{% set items = tasks|selectattr('status', 'equalto', '已完成')|list %}{% if items %}<ul class="plain-list">{% for task in items %}<li>
+<span class="dot done">
+</span>
+<div>
+<strong>{{ task.public_note or task.name }}</strong>
+<small>{{ task.phase or '申请阶段待确认' }}</small>
+</div>
+</li>{% endfor %}</ul>{% else %}<p class="muted">待确认</p>{% endif %}</section>
+  <section>
+<h2>正在推进</h2>{% set items = tasks|selectattr('status', 'in', ['进行中', '内部审核中'])|list %}{% if items %}<ul class="plain-list">{% for task in items %}<li>
+<span class="dot active">
+</span>
+<div>
+<strong>{{ task.public_note or task.name }}</strong>
+<small>{{ task.phase or '申请阶段待确认' }}</small>
+</div>
+</li>{% endfor %}</ul>{% else %}<p class="muted">待确认</p>{% endif %}</section>
+  <section>
+<h2>需要配合</h2>{% set items = tasks|selectattr('status', 'in', ['等待学生', '等待家长'])|list %}{% if items %}<ul class="plain-list">{% for task in items %}<li>
+<span class="dot waiting">
+</span>
+<div>
+<strong>{{ task.public_note or task.name }}</strong>
+<small>{{ task.status }}{% if task.due_date %} · {{ task.due_date }}前{% endif %}</small>
+</div>
+</li>{% endfor %}</ul>{% else %}<p class="muted">目前没有已公开的配合事项。</p>{% endif %}</section>
+  <section>
+<h2>阻塞与说明</h2>{% set items = tasks|selectattr('status', 'equalto', '已阻塞')|list %}{% if items %}<ul class="plain-list">{% for task in items %}<li>
+<span class="dot blocked">
+</span>
+<div>
+<strong>{{ task.public_note or task.name }}</strong>
+</div>
+</li>{% endfor %}</ul>{% else %}<p class="muted">目前没有已公开的阻塞事项。</p>{% endif %}</section>
+  <section>
+<h2>下一步安排</h2>{% set items = tasks|selectattr('status', 'equalto', '未开始')|list %}{% if items %}<ul class="plain-list">{% for task in items[:5] %}<li>
+<span class="dot">
+</span>
+<div>
+<strong>{{ task.public_note or task.name }}</strong>
+<small>{{ task.due_date or '时间待确认' }}</small>
+</div>
+</li>{% endfor %}</ul>{% else %}<p class="muted">待确认</p>{% endif %}</section>
+</div>
+<section class="timeline-section">
+<h2>重要节点</h2>{% if milestones %}<div class="milestones">{% for milestone in milestones %}<div>
+<span class="milestone-state">{{ '已完成' if milestone.completed_at else '待推进' }}</span>
+<strong>{{ milestone.title }}</strong>
+<time>{{ milestone.due_date or '时间待确认' }}</time>
+</div>{% endfor %}</div>{% else %}<p class="muted">待确认</p>{% endif %}</section>
+{% endblock %}

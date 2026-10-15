@@ -1,0 +1,46 @@
+name: Website and delivery checks
+
+on:
+  push:
+    branches: [main, develop, 'feature/**']
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: delivery_test
+          POSTGRES_PASSWORD: delivery_test_only
+          POSTGRES_DB: delivery_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U delivery_test -d delivery_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install -r requirements-delivery.txt
+      - name: Compile Python
+        run: python -m compileall -q app.py delivery tests
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+      - name: Migrate empty PostgreSQL
+        env:
+          DELIVERY_ENV: staging
+          DELIVERY_DATABASE_URL: postgresql+psycopg2://delivery_test:delivery_test_only@127.0.0.1:5432/delivery_test
+          SECRET_KEY: ci-only-secret-0123456789abcdef0123456789abcdef
+        run: python -m flask --app app delivery-db-upgrade
+      - name: Check PostgreSQL schema
+        env:
+          DELIVERY_ENV: staging
+          DELIVERY_DATABASE_URL: postgresql+psycopg2://delivery_test:delivery_test_only@127.0.0.1:5432/delivery_test
+          SECRET_KEY: ci-only-secret-0123456789abcdef0123456789abcdef
+        run: python -m flask --app app delivery-db-check

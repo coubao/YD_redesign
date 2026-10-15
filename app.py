@@ -31,6 +31,9 @@ from intake_schema import (
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'change-me-in-production')
+app.config['SESSION_COOKIE_SECURE'] = os.environ.get('SESSION_COOKIE_SECURE', '').lower() in {'1', 'true', 'yes'}
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///rankings.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['BOOKING_WECHAT_WEBHOOK_URL'] = os.environ.get('BOOKING_WECHAT_WEBHOOK_URL', '').strip()
@@ -588,6 +591,8 @@ def ensure_ranking_schema():
 
 @app.before_request
 def init_db_once():
+    if request.endpoint == 'static' or request.path.startswith('/delivery/') or request.path == '/delivery':
+        return
     ensure_ranking_schema()
 
 @app.get('/')
@@ -1126,6 +1131,10 @@ def download_template():
         as_attachment=True,
         download_name='ranking_template.csv'
     )
+
+from delivery import init_app as init_delivery_app
+
+init_delivery_app(app)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
