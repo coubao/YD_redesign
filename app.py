@@ -1,4 +1,4 @@
-from flask import Flask, abort, render_template, request, redirect, url_for, flash, send_file
+from flask import Flask, Response, abort, render_template, request, redirect, url_for, flash, send_file
 
 try:
     from flask_sqlalchemy import SQLAlchemy
@@ -12,6 +12,7 @@ except ModuleNotFoundError as exc:
 import csv
 import io
 from functools import lru_cache
+from hmac import compare_digest
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 import re
@@ -20,6 +21,7 @@ import os
 from secrets import token_urlsafe
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
+from werkzeug.security import check_password_hash
 from intake_schema import (
     APPLICATION_STAGES,
     CONSULTATION_DECISION_FIELD,
@@ -41,8 +43,37 @@ app.config['BOOKING_WECHAT_MENTIONED_MOBILES'] = [
     for mobile in os.environ.get('BOOKING_WECHAT_MENTIONED_MOBILES', '').split(',')
     if mobile.strip()
 ]
+app.config['ADMIN_USERNAME'] = os.environ.get('ADMIN_USERNAME', '')
+app.config['ADMIN_PASSWORD_HASH'] = os.environ.get('ADMIN_PASSWORD_HASH', '')
 
 db = SQLAlchemy(app)
+
+
+@app.before_request
+def require_admin_auth():
+    if request.path != '/admin' and not request.path.startswith('/admin/'):
+        return None
+    username = app.config['ADMIN_USERNAME']
+    password_hash = app.config['ADMIN_PASSWORD_HASH']
+    if not username or not password_hash:
+        return Response('Admin authentication is not configured.', status=503)
+    auth = request.authorization
+    if (auth and auth.type == 'basic'
+            and compare_digest(auth.username or '', username)
+            and check_password_hash(password_hash, auth.password or '')):
+        return None
+    return Response(
+        'Authentication required.',
+        status=401,
+        headers={'WWW-Authenticate': 'Basic realm="Website administration", charset="UTF-8"'},
+    )
+
+
+@app.after_request
+def prevent_admin_caching(response):
+    if request.path == '/admin' or request.path.startswith('/admin/'):
+        response.headers['Cache-Control'] = 'private, no-store'
+    return response
 
 
 
@@ -939,7 +970,7 @@ def admin():
     return render_template('admin.html', rankings=rankings, total=total, avg_score=avg_score, total_locations=total_locations)
 
 
-@app.get('/admin/bookings')
+@app.get('/admin/bookings', strict_slashes=False)
 def admin_bookings():
     all_bookings = Booking.query.order_by(
         Booking.booking_date.desc(),

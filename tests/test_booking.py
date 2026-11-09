@@ -1,7 +1,9 @@
+import base64
 import tempfile
 import unittest
 from datetime import datetime, timedelta
 from pathlib import Path
+from werkzeug.security import generate_password_hash
 
 from app import (
     BOOKING_STATUS_CONFIRMED,
@@ -22,20 +24,29 @@ class BookingTestCase(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.TemporaryDirectory()
         database_path = Path(self.temp_dir.name) / 'booking-test.db'
+        self.original_admin_config = (
+            app.config['ADMIN_USERNAME'],
+            app.config['ADMIN_PASSWORD_HASH'],
+        )
         app.config.update(
             TESTING=True,
             SQLALCHEMY_DATABASE_URI=f'sqlite:///{database_path}',
+            ADMIN_USERNAME='test-admin',
+            ADMIN_PASSWORD_HASH=generate_password_hash('test-password'),
         )
         self.app_context = app.app_context()
         self.app_context.push()
         db.drop_all()
         db.create_all()
         self.client = app.test_client()
+        credentials = base64.b64encode(b'test-admin:test-password').decode('ascii')
+        self.client.environ_base['HTTP_AUTHORIZATION'] = f'Basic {credentials}'
 
     def tearDown(self):
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
+        app.config['ADMIN_USERNAME'], app.config['ADMIN_PASSWORD_HASH'] = self.original_admin_config
         self.temp_dir.cleanup()
 
     def add_booking(self, **overrides):
@@ -89,6 +100,36 @@ class BookingTestCase(unittest.TestCase):
             self.assertIn(slot.encode(), admin_response.data)
         self.assertNotIn(b'10:00-11:00', booking_response.data)
         self.assertNotIn(b'15:00-16:00', booking_response.data)
+
+    def test_admin_bookings_slash_and_authentication(self):
+        anonymous = app.test_client()
+        for path in ('/admin', '/admin/bookings', '/admin/bookings/'):
+            with self.subTest(path=path):
+                response = anonymous.get(path)
+                self.assertEqual(response.status_code, 401)
+                self.assertIn('Basic', response.headers['WWW-Authenticate'])
+                self.assertEqual(response.headers['Cache-Control'], 'private, no-store')
+
+        bad_credentials = base64.b64encode(b'test-admin:wrong-password').decode('ascii')
+        self.assertEqual(
+            anonymous.get('/admin/bookings/', headers={
+                'Authorization': f'Basic {bad_credentials}',
+            }).status_code,
+            401,
+        )
+        self.assertEqual(self.client.get('/admin/bookings/').status_code, 200)
+        self.assertEqual(self.client.get('/admin/bookings').status_code, 200)
+        self.assertEqual(
+            anonymous.post('/admin/bookings/manual-block', data={}).status_code,
+            401,
+        )
+
+        password_hash = app.config['ADMIN_PASSWORD_HASH']
+        app.config['ADMIN_PASSWORD_HASH'] = ''
+        try:
+            self.assertEqual(self.client.get('/admin/bookings/').status_code, 503)
+        finally:
+            app.config['ADMIN_PASSWORD_HASH'] = password_hash
 
     def test_booking_details_renders_consultation_decision_radios(self):
         booking_date, time_slot = self.first_available_slot()

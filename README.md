@@ -44,6 +44,23 @@ instance/          Runtime SQLite database directory
 
 Runtime database files under `instance/` are intentionally ignored by Git.
 
+## Admin Access
+
+All `/admin` routes require HTTP Basic authentication. Configure
+`ADMIN_USERNAME` and `ADMIN_PASSWORD_HASH` in the production service
+environment before deploying; without both values, admin routes return 503.
+Create the hash with the production virtual environment's Werkzeug:
+
+```bash
+/var/www/vivy/.venv/bin/python -c 'from getpass import getpass; from werkzeug.security import generate_password_hash; print(generate_password_hash(getpass("Admin password: ")))'
+```
+
+Store the generated hash in a root-owned, mode 0600 systemd environment file
+outside the repository. Do not put the plaintext password or hash in Git, shell
+history, or screenshots. Keep HTTPS enabled because Basic authentication sends
+credentials with each request. Both `/admin/bookings` and
+`/admin/bookings/` serve the booking dashboard.
+
 ## Booking WeChat Notifications
 
 New bookings can notify a WeCom group robot. Create a group containing the
