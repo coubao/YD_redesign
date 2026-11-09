@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<main id="main-content" class="site-page">
+  <header class="site-page-header site-container">
+    <p class="site-overline">申请案例</p>
+    <h1>把申请过程看明白。</h1>
+    <p>按申请阶段浏览真实背景、准备经历与录取结果。案例不展示学生姓名，个人结果不代表未来申请结果。</p>
+  </header>
+
+  <section class="site-band site-band-white">
+    <div class="site-container">
+      <form class="site-case-filters" method="get" action="{{ url_for('cases') }}" role="search">
+        <label for="case-stage">申请阶段</label>
+        <select id="case-stage" name="stage">
+          <option value="">全部阶段</option>
+          {% for item in stages %}<option value="{{ item }}" {% if stage == item %}selected{% endif %}>{{ item }}</option>{% endfor %}
+        </select>
+        <label for="case-query">关键词</label>
+        <input id="case-query" name="q" type="search" value="{{ query }}" placeholder="学校、专业或关键词">
+        <button class="site-button site-button-dark" type="submit">筛选</button>
+        {% if stage or query %}<a class="site-clear-link" href="{{ url_for('cases') }}">清除筛选</a>{% endif %}
+      </form>
+      {% if cases %}
+      <p class="site-case-count">找到 {{ cases|length }} 个案例</p>
+      <div class="site-case-grid">
+        {% for case in cases %}
+        <a class="site-case-card" href="{{ url_for('case_detail', slug=case.slug) }}">
+          <span class="site-overline">{{ case.stage }}申请</span>
+          <h2>{{ case.title }}</h2>
+          <p>{{ case.background }}</p>
+          <p class="site-case-result">录取：{{ case.outcomes[0] }}{% if case.outcomes|length > 1 %} 等{% endif %}</p>
+          <span class="site-text-link">查看案例 <span aria-hidden="true">→</span></span>
+        </a>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="site-empty-state">没有符合当前条件的案例，试试其他筛选条件。</p>
+      {% endif %}
+    </div>
+  </section>
+</main>
+{% endblock %}

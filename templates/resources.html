@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<main id="main-content" class="site-page">
+  <header class="site-page-header site-container">
+    <p class="site-overline">留学资源</p>
+    <h1>按问题找到下一步。</h1>
+    <p>从目的地、专业、职业到申请执行，先建立自己的判断框架。政策与项目要求可能变化，请以院校及相关官方渠道为准。</p>
+  </header>
+
+  <section class="site-band site-band-tint">
+    <div class="site-container">
+      <div class="site-heading-row"><div><p class="site-overline">专题阅读</p><h2>四条常见的决策路径</h2></div><p class="site-heading-aside">每篇包含关键判断和可带去咨询的问题。</p></div>
+      <div class="site-resource-grid site-resource-grid-two">
+        {% for guide in guides %}
+        <a href="{{ url_for('resource_detail', slug=guide.slug) }}"><span>{{ guide.eyebrow }}</span><h3>{{ guide.title }}</h3><p>{{ guide.summary }}</p><strong class="site-resource-action">开始阅读 →</strong></a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="site-band site-band-white">
+    <div class="site-container">
+      <p class="site-overline">实用工具</p>
+      <h2>继续查找学校与申请信息</h2>
+      <div class="site-resource-grid">
+        <a href="{{ url_for('study_maps_index') }}"><span>地图</span><h3>留学地图</h3><p>按地区探索学校及周边环境。</p></a>
+        <a href="{{ url_for('index') }}"><span>检索</span><h3>美国院校检索</h3><p>按学校名称、州和学校性质筛选 IPEDS 院校信息。</p></a>
+        <a href="{{ url_for('guide') }}"><span>专题</span><h3>美国留学宝典</h3><p>查看美国申请、签证与行前准备的专题说明。</p></a>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<main id="main-content" class="site-page">
+  <header class="site-page-header site-container">
+    <p class="site-overline">关于我们</p>
+    <h1>把升学规划，做成可讨论、可执行的决定。</h1>
+    <p>瀛动教育围绕学生的实际起点开展规划与申请服务，不以单一排名或模板替代个体判断。</p>
+  </header>
+
+  <section class="site-band site-band-white">
+    <div class="site-container site-about-layout">
+      <div class="site-about-photo"><img src="{{ url_for('static', filename='grace-consultation.png') }}" alt="Grace 顾问在办公桌前与客户沟通" loading="lazy"></div>
+      <div>
+        <p class="site-overline">顾问介绍</p>
+        <h2>Grace</h2>
+        <p class="site-about-intro">Grace 从事国际教育与留学申请工作约二十年，关注从课程选择、背景规划到申请材料与递交的完整过程。</p>
+        <p>她和团队主要服务国际课程学生、本科、硕士及博士申请者。工作中重视核对院校官方要求、梳理学生已有经历，并根据目标项目调整材料表达与申请节奏。</p>
+        <p>不同学生的课程体系、研究兴趣与家庭目标各不相同。规划的重点，是弄清哪些经历真正有助于下一步，而不是简单增加项目数量。</p>
+        <a class="site-text-link" href="{{ url_for('booking') }}">和顾问讨论你的情况 <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-band site-band-tint">
+    <div class="site-container">
+      <p class="site-overline">团队的工作原则</p>
+      <h2>让信息和过程保持清楚</h2>
+      <div class="site-principle-grid">
+        <div><span>01</span><h3>核对要求</h3><p>以目标学校和项目的官方信息为依据，确认先修课程、材料和时间节点。</p></div>
+        <div><span>02</span><h3>尊重差异</h3><p>从学生真实经历出发，形成适合本人而非套用模板的申请表达。</p></div>
+        <div><span>03</span><h3>明确边界</h3><p>把服务范围、第三方费用和需要家庭配合的事项提前说清楚。</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

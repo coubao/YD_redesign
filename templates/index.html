@@ -1,19 +1,42 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="panel p-4 p-md-5 my-4">
-  <h2 class="fw-bold mb-2">留学地图</h2>
-  <p class="text-secondary mb-0">查看英国、加拿大、爱尔兰、荷兰、香港、澳门、澳大利亚、新加坡留学地图；布局与美国地图一致，院校与排名分布在地图两侧。</p>
-</section>
-
-<section class="panel p-4 mb-4">
-  <div class="map-country-grid">
-    {% for item in maps %}
-    <a class="map-country-card" href="{{ url_for('study_map', slug=item.slug) }}">
-      <h4>{{ item.country_name_cn }}</h4>
-      <p>{{ item.universities|length }} 所推荐院校</p>
-    </a>
-    {% endfor %}
-  </div>
-</section>
+<main id="main-content" class="site-page">
+  <header class="site-page-header site-container">
+    <a class="site-back-link" href="{{ url_for('resources') }}">← 返回留学资源</a>
+    <p class="site-overline">院校检索</p>
+    <h1>按地区和学校性质，缩小选择范围。</h1>
+    <p>浏览美国四年制公立及非营利院校的基础信息。本页不是排名，学校顺序按英文名称排列；申请要求、费用和项目设置请以学校官网为准。</p>
+  </header>
+  <section class="site-band site-band-tint">
+    <div class="site-container">
+      <form class="site-college-filters" method="get" action="{{ url_for('index') }}" role="search">
+        <label>学校或城市<input type="search" name="q" value="{{ query }}" placeholder="输入英文学校名或城市"></label>
+        <label>州/地区<select name="state"><option value="">全部地区</option>{% for item in states %}<option value="{{ item }}" {% if state == item %}selected{% endif %}>{{ item }}</option>{% endfor %}</select></label>
+        <label>学校性质<select name="control"><option value="">全部类型</option><option value="public" {% if control == 'public' %}selected{% endif %}>公立</option><option value="private" {% if control == 'private' %}selected{% endif %}>私立非营利</option></select></label>
+        <button class="site-button site-button-dark" type="submit">筛选</button>
+        {% if query or state or control %}<a class="site-clear-link" href="{{ url_for('index') }}">清除</a>{% endif %}
+      </form>
+      <div class="site-college-toolbar"><h2>找到 {{ total }} 所院校</h2><span>IPEDS 2024 · 按英文名称排列</span></div>
+      {% if schools %}
+      <div class="site-college-list">
+        {% for school in schools %}
+        <article class="site-college-row">
+          <div><h3>{{ school.name }}</h3><p>{{ school.city }}{% if school.state %}, {{ school.state }}{% endif %} <span aria-hidden="true">·</span> {{ '公立' if school.control == 'public' else '私立非营利' }}</p></div>
+          {% if school.website %}<a class="site-text-link" href="{{ school.website }}" target="_blank" rel="noopener noreferrer">学校官网 <span aria-hidden="true">↗</span></a>{% endif %}
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}<div class="site-empty-state"><h2>没有找到符合条件的学校</h2><p>试试更短的关键词，或取消部分筛选条件。</p></div>{% endif %}
+      {% if page_count > 1 %}
+      <nav class="site-pagination" aria-label="结果分页">
+        {% if page > 1 %}<a href="{{ url_for('index', q=query, state=state, control=control, page=page-1) }}">上一页</a>{% endif %}
+        <span>第 {{ page }} / {{ page_count }} 页</span>
+        {% if page < page_count %}<a href="{{ url_for('index', q=query, state=state, control=control, page=page+1) }}">下一页</a>{% endif %}
+      </nav>
+      {% endif %}
+      <p class="site-college-source">数据来源：<a href="https://nces.ed.gov/ipeds/use-the-data" target="_blank" rel="noopener noreferrer">美国教育部 IPEDS</a>，2024 年机构目录。当前只展示仍在运营、授予学位的四年制公立与私立非营利院校。数据为历史快照，不代表学校当前的招生情况，也不包含排名名次。</p>
+    </div>
+  </section>
+</main>
 {% endblock %}
 

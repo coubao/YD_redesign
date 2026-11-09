@@ -4,6 +4,7 @@
   <h2 class="fw-bold mb-0">后台管理</h2>
   <a class="btn btn-dark rounded-pill px-4" href="{{ url_for('admin_bookings') }}">预约咨询管理</a>
 </div>
+<p class="text-secondary small">下方是原有手工排名记录，仅供后台留存；公开的<a href="{{ url_for('index') }}">美国院校检索</a>使用独立的 IPEDS 数据，不会随这里的编辑而变化。</p>
 <div class="row g-3 mb-3">
   <div class="col-md-4"><div class="panel p-3"><div class="text-secondary small">学校总数</div><div class="h3 mb-0">{{ total }}</div></div></div>
   <div class="col-md-4"><div class="panel p-3"><div class="text-secondary small">QS平均分</div><div class="h3 mb-0">{{ avg_score }}</div></div></div>

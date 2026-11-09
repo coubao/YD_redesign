@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<main id="main-content" class="site-page">
+  <header class="site-page-header site-container">
+    <a class="site-back-link" href="{{ url_for('resources') }}">← 返回留学资源</a>
+    <p class="site-overline">{{ guide.eyebrow }}</p>
+    <h1>{{ guide.title }}</h1>
+    <p>{{ guide.summary }}</p>
+  </header>
+  <section class="site-band site-band-tint">
+    <div class="site-container site-article-layout">
+      <article class="site-article-body">
+        {% for heading, copy in guide.sections %}
+        <section><span class="site-overline">0{{ loop.index }}</span><h2>{{ heading }}</h2><p>{{ copy }}</p></section>
+        {% endfor %}
+      </article>
+      <aside class="site-article-aside">
+        <h2>带着这些问题继续查</h2>
+        <ol>{% for question in guide.questions %}<li>{{ question }}</li>{% endfor %}</ol>
+        <p>具体政策、申请要求和费用以当年官方信息及实际服务方案为准。</p>
+        <a class="site-button site-button-dark" href="{{ url_for('booking') }}">预约咨询</a>
+      </aside>
+    </div>
+  </section>
+</main>
+{% endblock %}

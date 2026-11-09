@@ -11,6 +11,7 @@ except ModuleNotFoundError as exc:
     ) from exc
 import csv
 import io
+from functools import lru_cache
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 import re
@@ -28,6 +29,7 @@ from intake_schema import (
     parse_intake_form,
     validate_intake_data,
 )
+from website_content import CASES, RESOURCE_GUIDES, SERVICES
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'change-me-in-production')
@@ -46,7 +48,8 @@ db = SQLAlchemy(app)
 
 
 def render_home_with_fallback(offer_slides, offer_count):
-    html = render_template('home.html', offer_slides=offer_slides, offer_count=offer_count)
+    html = render_template('home.html', services=SERVICES, guides=RESOURCE_GUIDES,
+                           offer_slides=offer_slides, offer_count=offer_count)
     if '/* Design System v2 */' in html[:1200]:
         html = render_template('home_safe.html', offer_slides=offer_slides, offer_count=offer_count)
     return html
@@ -430,7 +433,7 @@ def build_booking_notification_text(booking_record, intake_data):
     stage = intake_data.get('application_stage') or booking_record.stage
     target_region = intake_data.get('target_region') or '未填写'
     return '\n'.join([
-        '【超哥留学 & Grace 新预约提醒】',
+        '【瀛动教育新预约提醒】',
         f'预约编号：#{booking_record.id}',
         f'学生姓名：{booking_record.name}',
         f'申请阶段：{stage}',
@@ -439,7 +442,7 @@ def build_booking_notification_text(booking_record, intake_data):
         f'目标国家/地区：{target_region}',
         f'客户联系方式：{booking_record.contact}',
         '请登录预约管理后台查看完整资料。',
-        '提醒对象：超哥留学负责人 / Grace',
+        '提醒对象：瀛动教育负责人 / Grace',
     ])
 
 
@@ -592,9 +595,8 @@ def init_db_once():
 
 @app.get('/')
 def home():
-    offer_images = get_offer_images()
-    slides = [offer_images[i:i + 6] for i in range(0, len(offer_images), 6)]
-    return render_home_with_fallback(slides, len(offer_images))
+    return render_template('home.html', services=SERVICES, guides=RESOURCE_GUIDES,
+                           title='瀛动教育 | 国际升学规划与申请')
 
 
 @app.get('/debug/render-home')
@@ -613,20 +615,35 @@ def debug_render_home():
 
 @app.get('/ranking')
 def index():
-    school_name = request.args.get('school_name', '').strip()
-    english_name = request.args.get('english_name', '').strip()
-    region = request.args.get('region', '').strip()
+    schools = load_ipeds_directory()
+    query = request.args.get('q', '').strip()[:80]
+    state = request.args.get('state', '').strip().upper()
+    control = request.args.get('control', '').strip()
+    states = sorted({school['state'] for school in schools if school['state']})
+    if state not in states:
+        state = ''
+    if control not in ('public', 'private'):
+        control = ''
+    filtered = [school for school in schools
+                if (not query or query.casefold() in
+                    (school['name'] + ' ' + school['city']).casefold())
+                and (not state or school['state'] == state)
+                and (not control or school['control'] == control)]
+    page_size = 24
+    page_count = max(1, (len(filtered) + page_size - 1) // page_size)
+    page = min(max(to_int(request.args.get('page'), 1), 1), page_count)
+    results = filtered[(page - 1) * page_size:page * page_size]
+    return render_template('index.html', schools=results, total=len(filtered),
+                           query=query, state=state, control=control,
+                           states=states, page=page, page_count=page_count,
+                           title='院校检索 | 瀛动教育')
 
-    query = Ranking.query
-    if school_name:
-        query = query.filter(Ranking.school_name.ilike(f'%{school_name}%'))
-    if english_name:
-        query = query.filter(Ranking.english_name.ilike(f'%{english_name}%'))
-    if region:
-        query = query.filter(Ranking.region.ilike(f'%{region}%'))
 
-    rankings = query.order_by(Ranking.rank.asc()).all()
-    return render_template('index.html', rankings=rankings, school_name=school_name, english_name=english_name, region=region)
+@lru_cache(maxsize=1)
+def load_ipeds_directory():
+    directory = Path(__file__).resolve().parent / 'data' / 'ipeds_2024_directory.csv'
+    with directory.open(newline='', encoding='utf-8') as source:
+        return tuple(csv.DictReader(source))
 
 
 @app.get('/guide')
@@ -635,7 +652,67 @@ def guide():
 
 @app.get('/services')
 def services():
-    return render_template('services.html')
+    return render_template('services.html', services=SERVICES,
+                           title='服务项目 | 瀛动教育')
+
+
+@app.get('/services/<slug>')
+def service_detail(slug):
+    service = next((item for item in SERVICES if item['slug'] == slug), None)
+    if service is None:
+        abort(404)
+    return render_template('service_detail.html', service=service,
+                           services=SERVICES, title=f"{service['title']} | 瀛动教育")
+
+
+@app.get('/about')
+def about():
+    return render_template('about.html', title='关于我们 | 瀛动教育')
+
+
+@app.get('/resources')
+def resources():
+    return render_template('resources.html', guides=RESOURCE_GUIDES,
+                           title='留学资源 | 瀛动教育')
+
+
+@app.get('/resources/<slug>')
+def resource_detail(slug):
+    guide = next((item for item in RESOURCE_GUIDES if item['slug'] == slug), None)
+    if guide is None:
+        abort(404)
+    return render_template('resource_detail.html', guide=guide,
+                           guides=RESOURCE_GUIDES,
+                           title=f"{guide['title']} | 瀛动教育")
+
+
+@app.get('/cases')
+def cases():
+    stage = request.args.get('stage', '').strip()
+    query = request.args.get('q', '').strip()[:80]
+    stages = ('本科', '硕士', '博士')
+    if stage not in stages:
+        stage = ''
+    results = CASES
+    if stage:
+        results = tuple(item for item in results if item['stage'] == stage)
+    if query:
+        results = tuple(item for item in results if query.casefold() in
+                        ' '.join((item['title'], item['background'],
+                                  item['academics'], item['experience'],
+                                  item['insight'], *item['outcomes'])).casefold())
+    return render_template('cases.html', cases=results, stage=stage, query=query,
+                           stages=stages,
+                           title='申请案例 | 瀛动教育')
+
+
+@app.get('/cases/<slug>')
+def case_detail(slug):
+    case = next((item for item in CASES if item['slug'] == slug), None)
+    if case is None:
+        abort(404)
+    return render_template('case_detail.html', case=case,
+                           title=f"{case['title']} | 瀛动教育")
 
 @app.get('/contact')
 def contact_page():
@@ -796,7 +873,7 @@ def admin_booking_intake(booking_id):
 
 @app.get('/offers')
 def offers():
-    return redirect(url_for('home') + '#offers-wall')
+    return redirect(url_for('cases'), code=301)
 
 
 @app.get('/us-map')

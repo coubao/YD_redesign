@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<main id="main-content" class="site-page">
+  <header class="site-page-header site-container">
+    <a class="site-back-link" href="{{ url_for('services') }}">← 全部服务</a>
+    <p class="site-overline">{{ service.eyebrow }}</p>
+    <h1>{{ service.title }}</h1>
+    <p>{{ service.summary }}</p>
+    <a class="site-button site-button-dark" href="{{ url_for('booking') }}">预约讨论这项服务</a>
+  </header>
+
+  <section class="site-band site-band-white">
+    <div class="site-container site-detail-layout">
+      <div>
+        <p class="site-overline">适合谁</p>
+        <h2>{{ service.audience }}</h2>
+        <p class="site-section-copy">具体服务内容应根据学生背景、目标与签订的服务方案确认。我们会先评估当前情况，再建议合适的合作范围。</p>
+      </div>
+      <div>
+        <p class="site-overline">主要工作</p>
+        <ul class="site-check-list">
+          {% for item in service.deliverables %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-band site-band-tint">
+    <div class="site-container">
+      <p class="site-overline">服务流程</p>
+      <h2>每一步都有清楚的任务</h2>
+      <ol class="site-process-list">
+        {% for item in service.process %}
+        <li><span>0{{ loop.index }}</span><strong>{{ item }}</strong></li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+
+  <section class="site-band site-band-white">
+    <div class="site-container site-detail-layout">
+      <div>
+        <p class="site-overline">服务边界</p>
+        <h2>范围明确，合作更顺畅。</h2>
+      </div>
+      <div>
+        <p class="site-section-copy">{{ service.boundary }}</p>
+        <p class="site-note">实际交付项目、服务周期和第三方费用以双方确认的服务方案及协议为准；院校录取结果无法保证。</p>
+        <a class="site-text-link" href="{{ url_for('booking') }}">有具体问题？预约咨询 <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

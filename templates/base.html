@@ -1,53 +1,71 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ title or '超哥留学 & Grace | 留学规划与申请' }}</title>
-  <meta name='description' content='超哥留学 &amp; Grace，专注美本/美研/低龄留学规划，提供申请服务、留学地图、案例库与一对一咨询。'>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title or '瀛动教育 | 国际升学规划与申请' }}</title>
+  <meta name="description" content="{{ description or '瀛动教育提供国际升学规划及全球本科、硕士、博士申请服务。了解服务路径、申请方法与预约咨询方式。' }}">
   <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link href="{{ url_for('static', filename='styles.css') }}?v=20260611-2" rel="stylesheet">
+  <link href="{{ url_for('static', filename='styles.css') }}?v=20261108" rel="stylesheet">
+  <link href="{{ url_for('static', filename='website.css') }}?v=20261109a" rel="stylesheet">
 </head>
 <body>
-<nav class="site-navbar sticky-top">
-  <div class="container nav-wrap">
-    <a class="brand" href="{{ url_for('home') }}">
-      <span class="brand-title">超哥留学 &amp; Grace</span>
+<a class="site-skip" href="#page-content">跳至正文</a>
+<nav class="site-navbar sticky-top" aria-label="主导航">
+  <div class="site-nav-inner">
+    <a class="site-brand" href="{{ url_for('home') }}" aria-label="瀛动教育 首页">
+      <span class="site-brand-mark" aria-hidden="true">YD</span>
+      <span class="site-brand-copy"><strong>瀛动教育</strong><small>国际升学与申请</small></span>
     </a>
-
-    <button class="menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu">☰</button>
-    <div class="collapse navbar-collapse" id="mainMenu">
-      <ul class="menu-list ms-auto">
-        <li><a href="{{ url_for('home') }}">首页</a></li>
-        <li><a href="{{ url_for('services') }}">申请服务</a></li>
-        <li><a href="{{ url_for('offers') }}">Offer</a></li>
-        <li><a href="{{ url_for('study_maps_index') }}">留学地图</a></li>
-        <li><a href="{{ url_for('guide') }}">留学知道</a></li>
-        <li><a href="{{ url_for('booking') }}">预约咨询</a></li>
-        <li><a href="{{ url_for('contact_page') }}">联系咨询</a></li>
+    <button class="site-menu-button" type="button" aria-controls="mainMenu" aria-expanded="false">菜单</button>
+    <div class="collapse navbar-collapse site-menu" id="mainMenu">
+      <ul class="site-nav-list">
+        <li><a href="{{ url_for('home') }}" {% if request.endpoint == 'home' %}aria-current="page"{% endif %}>首页</a></li>
+        <li><a href="{{ url_for('services') }}" {% if request.endpoint in ('services', 'service_detail') %}aria-current="page"{% endif %}>服务项目</a></li>
+        <li><a href="{{ url_for('cases') }}" {% if request.endpoint in ('cases', 'case_detail') %}aria-current="page"{% endif %}>申请案例</a></li>
+        <li><a href="{{ url_for('resources') }}" {% if request.endpoint in ('resources', 'resource_detail', 'guide', 'index', 'study_maps_index', 'study_map', 'us_map') %}aria-current="page"{% endif %}>留学资源</a></li>
+        <li><a href="{{ url_for('about') }}" {% if request.endpoint == 'about' %}aria-current="page"{% endif %}>关于我们</a></li>
       </ul>
-    </div>
-
-    <div class="nav-actions">
-      <span class="bell">🔔</span>
-      <span class="avatar"></span>
-      <span class="arrow">▾</span>
+      <a class="site-nav-cta" href="{{ url_for('booking') }}" {% if request.endpoint in ('booking', 'booking_details') %}aria-current="page"{% endif %}>预约咨询</a>
     </div>
   </div>
 </nav>
 
-{% block content %}{% endblock %}
-<footer class="site-beian" aria-label="公安备案信息">
-  <a href="https://beian.mps.gov.cn/#/query/webSearch?code=11010802048880" rel="noreferrer" target="_blank">
-    <img src="{{ url_for('static', filename='beian-icon.png') }}?v=20260611-2" alt="公安备案图标" width="18" height="20">
-    <span>京公网安备11010802048880号</span>
-  </a>
+<div id="page-content" tabindex="-1">{% block content %}{% endblock %}</div>
+
+<footer class="site-footer">
+  <div class="site-container site-footer-main">
+    <div>
+      <div class="site-footer-brand">瀛动教育</div>
+      <p>国际升学规划与申请服务。根据真实背景，讨论适合的下一步。</p>
+    </div>
+    <div class="site-footer-links" aria-label="页脚导航">
+      <a href="{{ url_for('services') }}">服务项目</a>
+      <a href="{{ url_for('cases') }}">申请案例</a>
+      <a href="{{ url_for('resources') }}">留学资源</a>
+      <a href="{{ url_for('contact_page') }}">联系方式</a>
+      <a href="{{ url_for('booking') }}">预约咨询</a>
+      <a href="{{ url_for('contact_page') }}#partner">机构合作</a>
+    </div>
+  </div>
+  <div class="site-footer-bottom site-container">
+    <span>案例仅展示经核验且获许可的内容，个人经历不代表录取保证。</span>
+    <a href="https://beian.mps.gov.cn/#/query/webSearch?code=11010802048880" rel="noreferrer" target="_blank">
+      <img src="{{ url_for('static', filename='beian-icon.png') }}" alt="" width="18" height="20">
+      京公网安备11010802048880号
+    </a>
+  </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<a class='floating-cta' href='{{ url_for('booking') }}'>立即咨询</a>
-
-
+<script>
+  const menuButton = document.querySelector('.site-menu-button');
+  const menu = document.querySelector('#mainMenu');
+  menuButton.addEventListener('click', () => {
+    const expanded = menuButton.getAttribute('aria-expanded') === 'true';
+    menuButton.setAttribute('aria-expanded', String(!expanded));
+    menu.classList.toggle('show', !expanded);
+  });
+</script>
 </body>
 </html>
