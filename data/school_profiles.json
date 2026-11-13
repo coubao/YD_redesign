@@ -1,0 +1,2352 @@
+[
+  {
+    "unitid": "164924",
+    "name_zh": "波士顿学院",
+    "name_en": "Boston College",
+    "city": "Chestnut Hill",
+    "state": "MA",
+    "control": "private",
+    "website": "https://www.bc.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 16.4,
+    "undergraduates_2025": 10314,
+    "four_year_graduation_rate_2025": 87.7,
+    "annual_cost_2025": 89618,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 70702,
+      "住宿生活费": 18916,
+      "研究生学费": 37520
+    },
+    "international_share_2025": {
+      "undergraduate": 6.4,
+      "graduate": 18.9
+    },
+    "historical_test_score_range": {
+      "sat": "1440–1540",
+      "act": "33–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 338
+      },
+      {
+        "name": "生物学/生物科学（普通）",
+        "graduates": 229
+      },
+      {
+        "name": "金融（普通）",
+        "graduates": 212
+      }
+    ]
+  },
+  {
+    "unitid": "164988",
+    "name_zh": "波士顿大学",
+    "name_en": "Boston University",
+    "city": "Boston",
+    "state": "MA",
+    "control": "private",
+    "website": "https://www.bu.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 11.1,
+    "undergraduates_2025": 18805,
+    "four_year_graduation_rate_2025": 83.3,
+    "annual_cost_2025": 87122,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 68102,
+      "住宿生活费": 19020,
+      "研究生学费": 67626
+    },
+    "international_share_2025": {
+      "undergraduate": 20.9,
+      "graduate": 31.6
+    },
+    "historical_test_score_range": {
+      "sat": "1420–1530",
+      "act": "32–34"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "工商管理（普通）",
+        "graduates": 812
+      },
+      {
+        "name": "计算机科学",
+        "graduates": 440
+      },
+      {
+        "name": "心理学（普通）",
+        "graduates": 269
+      }
+    ]
+  },
+  {
+    "unitid": "217156",
+    "name_zh": "布朗大学",
+    "name_en": "Brown University",
+    "city": "Providence",
+    "state": "RI",
+    "control": "private",
+    "website": "https://www.brown.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 5.4,
+    "undergraduates_2025": 7910,
+    "four_year_graduation_rate_2025": 85.2,
+    "annual_cost_2025": 88756,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 71312,
+      "住宿生活费": 17444,
+      "研究生学费": 69948
+    },
+    "international_share_2025": {
+      "undergraduate": 13.5,
+      "graduate": 34.6
+    },
+    "historical_test_score_range": {
+      "sat": "1510–1580",
+      "act": "34–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 243
+      },
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 222
+      },
+      {
+        "name": "应用数学（普通）",
+        "graduates": 182
+      }
+    ]
+  },
+  {
+    "unitid": "110404",
+    "name_zh": "加州理工学院",
+    "name_en": "California Institute of Technology",
+    "city": "Pasadena",
+    "state": "CA",
+    "control": "private",
+    "website": "https://www.caltech.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 2.6,
+    "undergraduates_2025": 987,
+    "four_year_graduation_rate_2025": 81.3,
+    "annual_cost_2025": 86181,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 65898,
+      "住宿生活费": 20283,
+      "研究生学费": 65706
+    },
+    "international_share_2025": {
+      "undergraduate": 14.1,
+      "graduate": 46.5
+    },
+    "historical_test_score_range": {},
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 88
+      },
+      {
+        "name": "机械工程",
+        "graduates": 39
+      },
+      {
+        "name": "物理学（普通）",
+        "graduates": 22
+      }
+    ]
+  },
+  {
+    "unitid": "211440",
+    "name_zh": "卡内基梅隆大学",
+    "name_en": "Carnegie Mellon University",
+    "city": "Pittsburgh",
+    "state": "PA",
+    "control": "private",
+    "website": "https://www.cmu.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 11.7,
+    "undergraduates_2025": 7377,
+    "four_year_graduation_rate_2025": 76.3,
+    "annual_cost_2025": 83802,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 65636,
+      "住宿生活费": 18166,
+      "研究生学费": 50975
+    },
+    "international_share_2025": {
+      "undergraduate": 19.0,
+      "graduate": 61.9
+    },
+    "historical_test_score_range": {
+      "sat": "1500–1570",
+      "act": "34–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 280
+      },
+      {
+        "name": "电气和电子工程",
+        "graduates": 247
+      },
+      {
+        "name": "工商管理（普通）",
+        "graduates": 191
+      }
+    ]
+  },
+  {
+    "unitid": "201645",
+    "name_zh": "凯斯西储大学",
+    "name_en": "Case Western Reserve University",
+    "city": "Cleveland",
+    "state": "OH",
+    "control": "private",
+    "website": "https://www.case.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 36.5,
+    "undergraduates_2025": 6528,
+    "four_year_graduation_rate_2025": 68.4,
+    "annual_cost_2025": 85370,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 66608,
+      "住宿生活费": 18762,
+      "研究生学费": 53980
+    },
+    "international_share_2025": {
+      "undergraduate": 11.5,
+      "graduate": 21.7
+    },
+    "historical_test_score_range": {
+      "sat": "1430–1540",
+      "act": "32–34"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 183
+      },
+      {
+        "name": "生物学/生物科学（普通）",
+        "graduates": 118
+      },
+      {
+        "name": "注册护理/注册护士",
+        "graduates": 116
+      }
+    ]
+  },
+  {
+    "unitid": "231624",
+    "name_zh": "威廉玛丽学院",
+    "name_en": "College of William and Mary",
+    "city": "Williamsburg",
+    "state": "VA",
+    "control": "public",
+    "website": "https://www.wm.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 34.1,
+    "undergraduates_2025": 7063,
+    "four_year_graduation_rate_2025": 85.8,
+    "annual_cost_2025": 67220,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 51038,
+      "本科学费（州内）": 25734,
+      "住宿生活费": 16182,
+      "研究生学费": 36684
+    },
+    "international_share_2025": {
+      "undergraduate": 3.4,
+      "graduate": 10.5
+    },
+    "historical_test_score_range": {
+      "sat": "1400–1530",
+      "act": "32–34"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "工商管理（普通）",
+        "graduates": 243
+      },
+      {
+        "name": "心理学（普通）",
+        "graduates": 174
+      },
+      {
+        "name": "生物学/生物科学（普通）",
+        "graduates": 146
+      }
+    ]
+  },
+  {
+    "unitid": "190150",
+    "name_zh": "哥伦比亚大学",
+    "name_en": "Columbia University in the City of New York",
+    "city": "New York",
+    "state": "NY",
+    "control": "private",
+    "website": "https://www.columbia.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 4.0,
+    "undergraduates_2025": 9164,
+    "four_year_graduation_rate_2025": 88.3,
+    "annual_cost_2025": 88097,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 70517,
+      "住宿生活费": 17580,
+      "研究生学费": 57973
+    },
+    "international_share_2025": {
+      "undergraduate": 20.5,
+      "graduate": 45.9
+    },
+    "historical_test_score_range": {
+      "sat": "1510–1580",
+      "act": "34–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 377
+      },
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 307
+      },
+      {
+        "name": "政治学和政府（普通）",
+        "graduates": 209
+      }
+    ]
+  },
+  {
+    "unitid": "190415",
+    "name_zh": "康奈尔大学",
+    "name_en": "Cornell University",
+    "city": "Ithaca",
+    "state": "NY",
+    "control": "private",
+    "website": "https://www.cornell.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 8.8,
+    "undergraduates_2025": 16128,
+    "four_year_graduation_rate_2025": 89.4,
+    "annual_cost_2025": 88742,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 69314,
+      "住宿生活费": 19428,
+      "研究生学费": 30160
+    },
+    "international_share_2025": {
+      "undergraduate": 10.3,
+      "graduate": 49.6
+    },
+    "historical_test_score_range": {
+      "sat": "1500–1570",
+      "act": "33–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 516
+      },
+      {
+        "name": "生物学/生物科学（普通）",
+        "graduates": 290
+      },
+      {
+        "name": "农业经济学",
+        "graduates": 257
+      }
+    ]
+  },
+  {
+    "unitid": "182670",
+    "name_zh": "达特茅斯学院",
+    "name_en": "Dartmouth College",
+    "city": "Hanover",
+    "state": "NH",
+    "control": "private",
+    "website": "https://dartmouth.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 5.4,
+    "undergraduates_2025": 4637,
+    "four_year_graduation_rate_2025": 84.5,
+    "annual_cost_2025": 88018,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 68019,
+      "住宿生活费": 19999,
+      "研究生学费": 66617
+    },
+    "international_share_2025": {
+      "undergraduate": 15.7,
+      "graduate": 32.3
+    },
+    "historical_test_score_range": {
+      "sat": "1500–1570",
+      "act": "33–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 136
+      },
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 128
+      },
+      {
+        "name": "工程（普通）",
+        "graduates": 127
+      }
+    ]
+  },
+  {
+    "unitid": "198419",
+    "name_zh": "杜克大学",
+    "name_en": "Duke University",
+    "city": "Durham",
+    "state": "NC",
+    "control": "private",
+    "website": "https://www.duke.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 5.7,
+    "undergraduates_2025": 6523,
+    "four_year_graduation_rate_2025": 90.8,
+    "annual_cost_2025": 86886,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 68758,
+      "住宿生活费": 18128,
+      "研究生学费": 66523
+    },
+    "international_share_2025": {
+      "undergraduate": 10.6,
+      "graduate": 34.8
+    },
+    "historical_test_score_range": {
+      "sat": "1500–1570",
+      "act": "34–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "多/跨学科研究（其他）",
+        "graduates": 339
+      },
+      {
+        "name": "计算机科学",
+        "graduates": 238
+      },
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 190
+      }
+    ]
+  },
+  {
+    "unitid": "139658",
+    "name_zh": "埃默里大学",
+    "name_en": "Emory University",
+    "city": "Atlanta",
+    "state": "GA",
+    "control": "private",
+    "website": "https://www.emory.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 10.6,
+    "undergraduates_2025": 7407,
+    "four_year_graduation_rate_2025": 82.8,
+    "annual_cost_2025": 84500,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 64280,
+      "住宿生活费": 20220,
+      "研究生学费": 48750
+    },
+    "international_share_2025": {
+      "undergraduate": 16.7,
+      "graduate": 20.0
+    },
+    "historical_test_score_range": {
+      "sat": "1470–1550",
+      "act": "32–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "管理科学",
+        "graduates": 529
+      },
+      {
+        "name": "神经科学",
+        "graduates": 203
+      },
+      {
+        "name": "生物学/生物科学（普通）",
+        "graduates": 202
+      }
+    ]
+  },
+  {
+    "unitid": "131496",
+    "name_zh": "乔治敦大学",
+    "name_en": "Georgetown University",
+    "city": "Washington",
+    "state": "DC",
+    "control": "private",
+    "website": "https://www.georgetown.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 12.9,
+    "undergraduates_2025": 7833,
+    "four_year_graduation_rate_2025": 91.0,
+    "annual_cost_2025": 88685,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 68089,
+      "住宿生活费": 20596,
+      "研究生学费": 61670
+    },
+    "international_share_2025": {
+      "undergraduate": 14.3,
+      "graduate": 17.9
+    },
+    "historical_test_score_range": {
+      "sat": "1390–1550",
+      "act": "31–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "国际关系和事务",
+        "graduates": 285
+      },
+      {
+        "name": "金融（普通）",
+        "graduates": 223
+      },
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 185
+      }
+    ]
+  },
+  {
+    "unitid": "139755",
+    "name_zh": "佐治亚理工学院",
+    "name_en": "Georgia Institute of Technology-Main Campus",
+    "city": "Atlanta",
+    "state": "GA",
+    "control": "public",
+    "website": "https://www.gatech.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 14.1,
+    "undergraduates_2025": 20591,
+    "four_year_graduation_rate_2025": 55.9,
+    "annual_cost_2025": 48092,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 34484,
+      "本科学费（州内）": 12058,
+      "住宿生活费": 13608,
+      "研究生学费": 32144
+    },
+    "international_share_2025": {
+      "undergraduate": 7.9,
+      "graduate": 36.2
+    },
+    "historical_test_score_range": {
+      "sat": "1370–1540",
+      "act": "30–34"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机和信息科学（普通）",
+        "graduates": 1401
+      },
+      {
+        "name": "机械工程",
+        "graduates": 458
+      },
+      {
+        "name": "工商管理（普通）",
+        "graduates": 416
+      }
+    ]
+  },
+  {
+    "unitid": "166027",
+    "name_zh": "哈佛大学",
+    "name_en": "Harvard University",
+    "city": "Cambridge",
+    "state": "MA",
+    "control": "private",
+    "website": "https://www.harvard.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 3.6,
+    "undergraduates_2025": 8844,
+    "four_year_graduation_rate_2025": 86.8,
+    "annual_cost_2025": 82866,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 61676,
+      "住宿生活费": 21190,
+      "研究生学费": 57248
+    },
+    "international_share_2025": {
+      "undergraduate": 15.2,
+      "graduate": 31.1
+    },
+    "historical_test_score_range": {
+      "sat": "1510–1580",
+      "act": "34–36"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 278
+      },
+      {
+        "name": "计算机科学",
+        "graduates": 224
+      },
+      {
+        "name": "社会科学（普通）",
+        "graduates": 157
+      }
+    ]
+  },
+  {
+    "unitid": "162928",
+    "name_zh": "约翰霍普金斯大学",
+    "name_en": "Johns Hopkins University",
+    "city": "Baltimore",
+    "state": "MD",
+    "control": "private",
+    "website": "https://www.jhu.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 6.4,
+    "undergraduates_2025": 6356,
+    "four_year_graduation_rate_2025": 89.2,
+    "annual_cost_2025": 84880,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 64730,
+      "住宿生活费": 20150,
+      "研究生学费": 64730
+    },
+    "international_share_2025": {
+      "undergraduate": 14.7,
+      "graduate": 30.3
+    },
+    "historical_test_score_range": {
+      "sat": "1520–1570",
+      "act": "34–36"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "细胞/细胞与分子生物学",
+        "graduates": 169
+      },
+      {
+        "name": "计算机和信息科学（普通）",
+        "graduates": 146
+      },
+      {
+        "name": "公共卫生（普通）",
+        "graduates": 136
+      }
+    ]
+  },
+  {
+    "unitid": "213543",
+    "name_zh": "里海大学",
+    "name_en": "Lehigh University",
+    "city": "Bethlehem",
+    "state": "PA",
+    "control": "private",
+    "website": "https://www.lehigh.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 25.9,
+    "undergraduates_2025": 5911,
+    "four_year_graduation_rate_2025": 83.3,
+    "annual_cost_2025": 82200,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 64980,
+      "住宿生活费": 17220,
+      "研究生学费": 28840
+    },
+    "international_share_2025": {
+      "undergraduate": 6.7,
+      "graduate": 33.7
+    },
+    "historical_test_score_range": {
+      "sat": "1370–1500",
+      "act": "31–34"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 163
+      },
+      {
+        "name": "金融（普通）",
+        "graduates": 157
+      },
+      {
+        "name": "机械工程",
+        "graduates": 103
+      }
+    ]
+  },
+  {
+    "unitid": "166683",
+    "name_zh": "麻省理工学院",
+    "name_en": "Massachusetts Institute of Technology",
+    "city": "Cambridge",
+    "state": "MA",
+    "control": "private",
+    "website": "https://web.mit.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 4.5,
+    "undergraduates_2025": 4535,
+    "four_year_graduation_rate_2025": 88.7,
+    "annual_cost_2025": 82676,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 62396,
+      "住宿生活费": 20280,
+      "研究生学费": 62396
+    },
+    "international_share_2025": {
+      "undergraduate": 11.7,
+      "graduate": 39.8
+    },
+    "historical_test_score_range": {
+      "sat": "1520–1580",
+      "act": "34–36"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 323
+      },
+      {
+        "name": "机械工程",
+        "graduates": 113
+      },
+      {
+        "name": "数学（普通）",
+        "graduates": 97
+      }
+    ]
+  },
+  {
+    "unitid": "193900",
+    "name_zh": "纽约大学",
+    "name_en": "New York University",
+    "city": "New York",
+    "state": "NY",
+    "control": "private",
+    "website": "https://www.nyu.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 9.2,
+    "undergraduates_2025": 29060,
+    "four_year_graduation_rate_2025": 78.5,
+    "annual_cost_2025": 86326,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 62796,
+      "住宿生活费": 23530,
+      "研究生学费": 42726
+    },
+    "international_share_2025": {
+      "undergraduate": 26.2,
+      "graduate": 41.7
+    },
+    "historical_test_score_range": {
+      "sat": "1480–1560",
+      "act": "34–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "管理科学",
+        "graduates": 678
+      },
+      {
+        "name": "文理学/通识教育",
+        "graduates": 600
+      },
+      {
+        "name": "研究和实验心理学（其他）",
+        "graduates": 507
+      }
+    ]
+  },
+  {
+    "unitid": "167358",
+    "name_zh": "东北大学",
+    "name_en": "Northeastern University",
+    "city": "Boston",
+    "state": "MA",
+    "control": "private",
+    "website": "https://www.northeastern.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 5.2,
+    "undergraduates_2025": 17432,
+    "four_year_graduation_rate_2025": null,
+    "annual_cost_2025": 85742,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 66162,
+      "住宿生活费": 19580,
+      "研究生学费": 29174
+    },
+    "international_share_2025": {
+      "undergraduate": 13.9,
+      "graduate": 60.2
+    },
+    "historical_test_score_range": {
+      "sat": "1440–1540",
+      "act": "33–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "商务/商业（普通）",
+        "graduates": 1106
+      },
+      {
+        "name": "计算机和信息科学（普通）",
+        "graduates": 745
+      },
+      {
+        "name": "其他健康和医疗行政服务",
+        "graduates": 333
+      }
+    ]
+  },
+  {
+    "unitid": "147767",
+    "name_zh": "西北大学",
+    "name_en": "Northwestern University",
+    "city": "Evanston",
+    "state": "IL",
+    "control": "private",
+    "website": "https://www.northwestern.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 7.7,
+    "undergraduates_2025": 9399,
+    "four_year_graduation_rate_2025": 87.0,
+    "annual_cost_2025": 89448,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 68322,
+      "住宿生活费": 21126,
+      "研究生学费": 54655
+    },
+    "international_share_2025": {
+      "undergraduate": 11.4,
+      "graduate": 28.8
+    },
+    "historical_test_score_range": {
+      "sat": "1510–1570",
+      "act": "33–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 277
+      },
+      {
+        "name": "数字通信和媒体/多媒体",
+        "graduates": 189
+      },
+      {
+        "name": "计算机科学",
+        "graduates": 137
+      }
+    ]
+  },
+  {
+    "unitid": "204796",
+    "name_zh": "俄亥俄州立大学",
+    "name_en": "Ohio State University-Main Campus",
+    "city": "Columbus",
+    "state": "OH",
+    "control": "public",
+    "website": "https://www.osu.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 60.6,
+    "undergraduates_2025": 46815,
+    "four_year_graduation_rate_2025": 68.7,
+    "annual_cost_2025": 54760,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 40022,
+      "本科学费（州内）": 13244,
+      "住宿生活费": 14738,
+      "研究生学费": 42740
+    },
+    "international_share_2025": {
+      "undergraduate": 7.6,
+      "graduate": 18.6
+    },
+    "historical_test_score_range": {
+      "sat": "1310–1480",
+      "act": "28–32"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "金融（普通）",
+        "graduates": 857
+      },
+      {
+        "name": "实验心理学",
+        "graduates": 605
+      },
+      {
+        "name": "其他医疗和医疗辅助服务",
+        "graduates": 492
+      }
+    ]
+  },
+  {
+    "unitid": "186131",
+    "name_zh": "普林斯顿大学",
+    "name_en": "Princeton University",
+    "city": "Princeton",
+    "state": "NJ",
+    "control": "private",
+    "website": "https://www.princeton.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 4.6,
+    "undergraduates_2025": 5813,
+    "four_year_graduation_rate_2025": 88.1,
+    "annual_cost_2025": 82938,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 62688,
+      "住宿生活费": 20250,
+      "研究生学费": 65936
+    },
+    "international_share_2025": {
+      "undergraduate": 12.9,
+      "graduate": 44.7
+    },
+    "historical_test_score_range": {
+      "sat": "1510–1580",
+      "act": "34–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 194
+      },
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 122
+      },
+      {
+        "name": "公共政策分析总论",
+        "graduates": 121
+      }
+    ]
+  },
+  {
+    "unitid": "243780",
+    "name_zh": "普渡大学",
+    "name_en": "Purdue University-Main Campus",
+    "city": "West Lafayette",
+    "state": "IN",
+    "control": "public",
+    "website": "https://www.purdue.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 49.9,
+    "undergraduates_2025": 44819,
+    "four_year_graduation_rate_2025": 62.2,
+    "annual_cost_2025": 41614,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 28794,
+      "本科学费（州内）": 9992,
+      "住宿生活费": 12820,
+      "研究生学费": 28794
+    },
+    "international_share_2025": {
+      "undergraduate": 9.9,
+      "graduate": 40.0
+    },
+    "historical_test_score_range": {
+      "sat": "1200–1480",
+      "act": "27–34"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "机械工程",
+        "graduates": 792
+      },
+      {
+        "name": "计算机科学",
+        "graduates": 730
+      },
+      {
+        "name": "计算机工程（普通）",
+        "graduates": 455
+      }
+    ]
+  },
+  {
+    "unitid": "227757",
+    "name_zh": "莱斯大学",
+    "name_en": "Rice University",
+    "city": "Houston",
+    "state": "TX",
+    "control": "private",
+    "website": "https://www.rice.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 8.0,
+    "undergraduates_2025": 4789,
+    "four_year_graduation_rate_2025": 87.6,
+    "annual_cost_2025": 79347,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 61247,
+      "住宿生活费": 18100,
+      "研究生学费": 57030
+    },
+    "international_share_2025": {
+      "undergraduate": 13.0,
+      "graduate": 40.5
+    },
+    "historical_test_score_range": {
+      "sat": "1510–1570",
+      "act": "34–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机和信息科学（普通）",
+        "graduates": 197
+      },
+      {
+        "name": "生物学/生物科学（普通）",
+        "graduates": 129
+      },
+      {
+        "name": "管理科学和量化方法（其他）",
+        "graduates": 89
+      }
+    ]
+  },
+  {
+    "unitid": "186380",
+    "name_zh": "罗格斯大学",
+    "name_en": "Rutgers University-New Brunswick",
+    "city": "New Brunswick",
+    "state": "NJ",
+    "control": "public",
+    "website": "https://newbrunswick.rutgers.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 58.1,
+    "undergraduates_2025": 37985,
+    "four_year_graduation_rate_2025": 70.1,
+    "annual_cost_2025": 53155,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 37441,
+      "本科学费（州内）": 17929,
+      "住宿生活费": 15714,
+      "研究生学费": 37689
+    },
+    "international_share_2025": {
+      "undergraduate": 7.3,
+      "graduate": 17.5
+    },
+    "historical_test_score_range": {
+      "sat": "1310–1500",
+      "act": "28–33"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机和信息科学（普通）",
+        "graduates": 924
+      },
+      {
+        "name": "心理学（普通）",
+        "graduates": 609
+      },
+      {
+        "name": "金融（普通）",
+        "graduates": 502
+      }
+    ]
+  },
+  {
+    "unitid": "122931",
+    "name_zh": "圣克拉拉大学",
+    "name_en": "Santa Clara University",
+    "city": "Santa Clara",
+    "state": "CA",
+    "control": "private",
+    "website": "https://www.scu.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 48.0,
+    "undergraduates_2025": 6577,
+    "four_year_graduation_rate_2025": 84.6,
+    "annual_cost_2025": 81186,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 61293,
+      "住宿生活费": 19893,
+      "研究生学费": 31694
+    },
+    "international_share_2025": {
+      "undergraduate": 7.6,
+      "graduate": 26.1
+    },
+    "historical_test_score_range": {
+      "sat": "1350–1490",
+      "act": "31–33"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "金融（普通）",
+        "graduates": 226
+      },
+      {
+        "name": "数学和计算机科学",
+        "graduates": 119
+      },
+      {
+        "name": "言语交际与修辞",
+        "graduates": 103
+      }
+    ]
+  },
+  {
+    "unitid": "243744",
+    "name_zh": "斯坦福大学",
+    "name_en": "Stanford University",
+    "city": "Stanford",
+    "state": "CA",
+    "control": "private",
+    "website": "https://www.stanford.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 3.6,
+    "undergraduates_2025": 7904,
+    "four_year_graduation_rate_2025": 72.8,
+    "annual_cost_2025": 87225,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 65910,
+      "住宿生活费": 21315,
+      "研究生学费": 61878
+    },
+    "international_share_2025": {
+      "undergraduate": 12.2,
+      "graduate": 35.7
+    },
+    "historical_test_score_range": {
+      "sat": "1510–1580",
+      "act": "34–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 446
+      },
+      {
+        "name": "人类生物学",
+        "graduates": 141
+      },
+      {
+        "name": "认知科学",
+        "graduates": 113
+      }
+    ]
+  },
+  {
+    "unitid": "228778",
+    "name_zh": "德克萨斯大学奥斯汀分校",
+    "name_en": "The University of Texas at Austin",
+    "city": "Austin",
+    "state": "TX",
+    "control": "public",
+    "website": "https://www.utexas.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 26.6,
+    "undergraduates_2025": 43165,
+    "four_year_graduation_rate_2025": 72.2,
+    "annual_cost_2025": 59736,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 44908,
+      "本科学费（州内）": 11688,
+      "住宿生活费": 14828,
+      "研究生学费": 22954
+    },
+    "international_share_2025": {
+      "undergraduate": 4.5,
+      "graduate": 30.7
+    },
+    "historical_test_score_range": {
+      "sat": "1250–1510",
+      "act": "27–33"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "生物学/生物科学（普通）",
+        "graduates": 761
+      },
+      {
+        "name": "计算机和信息科学（普通）",
+        "graduates": 483
+      },
+      {
+        "name": "心理学（普通）",
+        "graduates": 443
+      }
+    ]
+  },
+  {
+    "unitid": "168148",
+    "name_zh": "塔夫茨大学",
+    "name_en": "Tufts University",
+    "city": "Medford",
+    "state": "MA",
+    "control": "private",
+    "website": "https://www.tufts.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 11.5,
+    "undergraduates_2025": 7126,
+    "four_year_graduation_rate_2025": 89.8,
+    "annual_cost_2025": 89292,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 70704,
+      "住宿生活费": 18588,
+      "研究生学费": 50798
+    },
+    "international_share_2025": {
+      "undergraduate": 12.5,
+      "graduate": 17.2
+    },
+    "historical_test_score_range": {
+      "sat": "1470–1560",
+      "act": "33–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 222
+      },
+      {
+        "name": "生物学/生物科学（普通）",
+        "graduates": 165
+      },
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 163
+      }
+    ]
+  },
+  {
+    "unitid": "110635",
+    "name_zh": "加州大学伯克利分校",
+    "name_en": "University of California-Berkeley",
+    "city": "Berkeley",
+    "state": "CA",
+    "control": "public",
+    "website": "https://www.berkeley.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 11.0,
+    "undergraduates_2025": 33070,
+    "four_year_graduation_rate_2025": 81.7,
+    "annual_cost_2025": 71015,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 47265,
+      "本科学费（州内）": 15377,
+      "住宿生活费": 23750,
+      "研究生学费": 30968
+    },
+    "international_share_2025": {
+      "undergraduate": 9.8,
+      "graduate": 31.3
+    },
+    "historical_test_score_range": {},
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机与信息科学（其他）",
+        "graduates": 1060
+      },
+      {
+        "name": "计算机科学",
+        "graduates": 915
+      },
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 741
+      }
+    ]
+  },
+  {
+    "unitid": "110644",
+    "name_zh": "加州大学戴维斯分校",
+    "name_en": "University of California-Davis",
+    "city": "Davis",
+    "state": "CA",
+    "control": "public",
+    "website": "https://ucdavis.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 41.8,
+    "undergraduates_2025": 32273,
+    "four_year_graduation_rate_2025": 66.1,
+    "annual_cost_2025": 67118,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 47692,
+      "本科学费（州内）": 15804,
+      "住宿生活费": 19426,
+      "研究生学费": 30243
+    },
+    "international_share_2025": {
+      "undergraduate": 12.8,
+      "graduate": 23.6
+    },
+    "historical_test_score_range": {},
+    "top_bachelor_majors_2025": [
+      {
+        "name": "研究和实验心理学（其他）",
+        "graduates": 903
+      },
+      {
+        "name": "管理科学和量化方法（其他）",
+        "graduates": 556
+      },
+      {
+        "name": "神经生物学和解剖学",
+        "graduates": 420
+      }
+    ]
+  },
+  {
+    "unitid": "110653",
+    "name_zh": "加州大学尔湾分校",
+    "name_en": "University of California-Irvine",
+    "city": "Irvine",
+    "state": "CA",
+    "control": "public",
+    "website": "https://www.uci.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 28.6,
+    "undergraduates_2025": 30204,
+    "four_year_graduation_rate_2025": 72.4,
+    "annual_cost_2025": 65631,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 46640,
+      "本科学费（州内）": 14752,
+      "住宿生活费": 18991,
+      "研究生学费": 29929
+    },
+    "international_share_2025": {
+      "undergraduate": 12.3,
+      "graduate": 30.1
+    },
+    "historical_test_score_range": {},
+    "top_bachelor_majors_2025": [
+      {
+        "name": "生物学/生物科学（普通）",
+        "graduates": 841
+      },
+      {
+        "name": "研究和实验心理学（其他）",
+        "graduates": 679
+      },
+      {
+        "name": "计算机科学",
+        "graduates": 665
+      }
+    ]
+  },
+  {
+    "unitid": "110662",
+    "name_zh": "加州大学洛杉矶分校",
+    "name_en": "University of California-Los Angeles",
+    "city": "Los Angeles",
+    "state": "CA",
+    "control": "public",
+    "website": "https://www.ucla.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 9.0,
+    "undergraduates_2025": 33475,
+    "four_year_graduation_rate_2025": 84.4,
+    "annual_cost_2025": 64490,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 46121,
+      "本科学费（州内）": 14233,
+      "住宿生活费": 18369,
+      "研究生学费": 29578
+    },
+    "international_share_2025": {
+      "undergraduate": 7.7,
+      "graduate": 27.3
+    },
+    "historical_test_score_range": {},
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 772
+      },
+      {
+        "name": "心理学（普通）",
+        "graduates": 692
+      },
+      {
+        "name": "政治学和政府（普通）",
+        "graduates": 674
+      }
+    ]
+  },
+  {
+    "unitid": "110680",
+    "name_zh": "加州大学圣地亚哥分校",
+    "name_en": "University of California-San Diego",
+    "city": "La Jolla",
+    "state": "CA",
+    "control": "public",
+    "website": "https://www.ucsd.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 26.7,
+    "undergraduates_2025": 34955,
+    "four_year_graduation_rate_2025": 71.8,
+    "annual_cost_2025": 66646,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 47676,
+      "本科学费（州内）": 15788,
+      "住宿生活费": 18970,
+      "研究生学费": 30199
+    },
+    "international_share_2025": {
+      "undergraduate": 11.1,
+      "graduate": 44.5
+    },
+    "historical_test_score_range": {},
+    "top_bachelor_majors_2025": [
+      {
+        "name": "认知科学",
+        "graduates": 833
+      },
+      {
+        "name": "管理科学和量化方法（其他）",
+        "graduates": 601
+      },
+      {
+        "name": "解剖学",
+        "graduates": 585
+      }
+    ]
+  },
+  {
+    "unitid": "110705",
+    "name_zh": "加州大学圣塔芭芭拉分校",
+    "name_en": "University of California-Santa Barbara",
+    "city": "Santa Barbara",
+    "state": "CA",
+    "control": "public",
+    "website": "https://www.ucsb.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 33.0,
+    "undergraduates_2025": 23181,
+    "four_year_graduation_rate_2025": 72.8,
+    "annual_cost_2025": 67611,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 47332,
+      "本科学费（州内）": 15444,
+      "住宿生活费": 20279,
+      "研究生学费": 30226
+    },
+    "international_share_2025": {
+      "undergraduate": 9.0,
+      "graduate": 34.6
+    },
+    "historical_test_score_range": {},
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 699
+      },
+      {
+        "name": "社会学",
+        "graduates": 661
+      },
+      {
+        "name": "新闻传播（普通）",
+        "graduates": 618
+      }
+    ]
+  },
+  {
+    "unitid": "144050",
+    "name_zh": "芝加哥大学",
+    "name_en": "University of Chicago",
+    "city": "Chicago",
+    "state": "IL",
+    "control": "private",
+    "website": "https://www.uchicago.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 4.5,
+    "undergraduates_2025": 7598,
+    "four_year_graduation_rate_2025": 89.5,
+    "annual_cost_2025": 89433,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 69324,
+      "住宿生活费": 20109,
+      "研究生学费": 68652
+    },
+    "international_share_2025": {
+      "undergraduate": 17.7,
+      "graduate": 42.0
+    },
+    "historical_test_score_range": {
+      "sat": "1510–1580",
+      "act": "34–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 653
+      },
+      {
+        "name": "计算机科学",
+        "graduates": 174
+      },
+      {
+        "name": "数学（普通）",
+        "graduates": 168
+      }
+    ]
+  },
+  {
+    "unitid": "134130",
+    "name_zh": "佛罗里达大学",
+    "name_en": "University of Florida",
+    "city": "Gainesville",
+    "state": "FL",
+    "control": "public",
+    "website": "https://www.ufl.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 24.2,
+    "undergraduates_2025": 36573,
+    "four_year_graduation_rate_2025": 72.2,
+    "annual_cost_2025": 40779,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 28659,
+      "本科学费（州内）": 6381,
+      "住宿生活费": 12120,
+      "研究生学费": 30130
+    },
+    "international_share_2025": {
+      "undergraduate": 3.0,
+      "graduate": 20.5
+    },
+    "historical_test_score_range": {
+      "sat": "1320–1480",
+      "act": "29–33"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "工商管理（普通）",
+        "graduates": 650
+      },
+      {
+        "name": "心理学（普通）",
+        "graduates": 637
+      },
+      {
+        "name": "计算机和信息科学（普通）",
+        "graduates": 619
+      }
+    ]
+  },
+  {
+    "unitid": "139959",
+    "name_zh": "佐治亚大学",
+    "name_en": "University of Georgia",
+    "city": "Athens",
+    "state": "GA",
+    "control": "public",
+    "website": "https://www.uga.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 37.7,
+    "undergraduates_2025": 32399,
+    "four_year_graduation_rate_2025": 70.7,
+    "annual_cost_2025": 43360,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 31688,
+      "本科学费（州内）": 11450,
+      "住宿生活费": 11672,
+      "研究生学费": 29774
+    },
+    "international_share_2025": {
+      "undergraduate": 1.3,
+      "graduate": 18.9
+    },
+    "historical_test_score_range": {
+      "sat": "1270–1480",
+      "act": "29–34"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "心理学（普通）",
+        "graduates": 652
+      },
+      {
+        "name": "金融（普通）",
+        "graduates": 536
+      },
+      {
+        "name": "生物学/生物科学（普通）",
+        "graduates": 439
+      }
+    ]
+  },
+  {
+    "unitid": "145637",
+    "name_zh": "伊利诺伊大学香槟分校",
+    "name_en": "University of Illinois at Urbana-Champaign",
+    "city": "Champaign",
+    "state": "IL",
+    "control": "public",
+    "website": "https://www.illinois.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 42.4,
+    "undergraduates_2025": 37140,
+    "four_year_graduation_rate_2025": 72.1,
+    "annual_cost_2025": 54618,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 40096,
+      "本科学费（州内）": 18267,
+      "住宿生活费": 14522,
+      "研究生学费": 34406
+    },
+    "international_share_2025": {
+      "undergraduate": 14.9,
+      "graduate": 35.4
+    },
+    "historical_test_score_range": {
+      "sat": "1310–1520",
+      "act": "30–34"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "研究和实验心理学（其他）",
+        "graduates": 547
+      },
+      {
+        "name": "计算机科学",
+        "graduates": 458
+      },
+      {
+        "name": "计算机工程（普通）",
+        "graduates": 458
+      }
+    ]
+  },
+  {
+    "unitid": "163286",
+    "name_zh": "马里兰大学帕克分校",
+    "name_en": "University of Maryland-College Park",
+    "city": "College Park",
+    "state": "MD",
+    "control": "public",
+    "website": "https://www.umd.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 44.8,
+    "undergraduates_2025": 31133,
+    "four_year_graduation_rate_2025": 74.5,
+    "annual_cost_2025": 57144,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 41186,
+      "本科学费（州内）": 11809,
+      "住宿生活费": 15958,
+      "研究生学费": 38207
+    },
+    "international_share_2025": {
+      "undergraduate": 3.7,
+      "graduate": 35.4
+    },
+    "historical_test_score_range": {
+      "sat": "1400–1530",
+      "act": "32–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 1178
+      },
+      {
+        "name": "信息科学/研究",
+        "graduates": 924
+      },
+      {
+        "name": "生物学/生物科学（普通）",
+        "graduates": 448
+      }
+    ]
+  },
+  {
+    "unitid": "170976",
+    "name_zh": "密歇根大学安娜堡分校",
+    "name_en": "University of Michigan-Ann Arbor",
+    "city": "Ann Arbor",
+    "state": "MI",
+    "control": "public",
+    "website": "https://umich.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 15.6,
+    "undergraduates_2025": 34454,
+    "four_year_graduation_rate_2025": 81.3,
+    "annual_cost_2025": 78409,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 63081,
+      "本科学费（州内）": 18848,
+      "住宿生活费": 15328,
+      "研究生学费": 57776
+    },
+    "international_share_2025": {
+      "undergraduate": 8.0,
+      "graduate": 32.1
+    },
+    "historical_test_score_range": {
+      "sat": "1360–1530",
+      "act": "31–34"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机和信息科学（普通）",
+        "graduates": 1216
+      },
+      {
+        "name": "工商管理（普通）",
+        "graduates": 635
+      },
+      {
+        "name": "经济学（普通）",
+        "graduates": 608
+      }
+    ]
+  },
+  {
+    "unitid": "199120",
+    "name_zh": "北卡罗来纳大学教堂山分校",
+    "name_en": "University of North Carolina at Chapel Hill",
+    "city": "Chapel Hill",
+    "state": "NC",
+    "control": "public",
+    "website": "https://www.unc.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 15.3,
+    "undergraduates_2025": 20885,
+    "four_year_graduation_rate_2025": 85.1,
+    "annual_cost_2025": 55007,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 41203,
+      "本科学费（州内）": 8994,
+      "住宿生活费": 13804,
+      "研究生学费": 31408
+    },
+    "international_share_2025": {
+      "undergraduate": 5.6,
+      "graduate": 12.3
+    },
+    "historical_test_score_range": {
+      "sat": "1390–1530",
+      "act": "28–34"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "生物学/生物科学（普通）",
+        "graduates": 606
+      },
+      {
+        "name": "工商管理（普通）",
+        "graduates": 407
+      },
+      {
+        "name": "行为科学",
+        "graduates": 402
+      }
+    ]
+  },
+  {
+    "unitid": "152080",
+    "name_zh": "圣母大学",
+    "name_en": "University of Notre Dame",
+    "city": "Notre Dame",
+    "state": "IN",
+    "control": "private",
+    "website": "https://www.nd.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 11.3,
+    "undergraduates_2025": 8880,
+    "four_year_graduation_rate_2025": 91.3,
+    "annual_cost_2025": 82925,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 65025,
+      "住宿生活费": 17900,
+      "研究生学费": 64826
+    },
+    "international_share_2025": {
+      "undergraduate": 7.5,
+      "graduate": 27.5
+    },
+    "historical_test_score_range": {
+      "sat": "1455–1560",
+      "act": "33–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "金融（普通）",
+        "graduates": 307
+      },
+      {
+        "name": "神经科学",
+        "graduates": 143
+      },
+      {
+        "name": "计算机和信息科学（普通）",
+        "graduates": 139
+      }
+    ]
+  },
+  {
+    "unitid": "215062",
+    "name_zh": "宾夕法尼亚大学",
+    "name_en": "University of Pennsylvania",
+    "city": "Philadelphia",
+    "state": "PA",
+    "control": "private",
+    "website": "https://www.upenn.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 5.4,
+    "undergraduates_2025": 11478,
+    "four_year_graduation_rate_2025": 87.7,
+    "annual_cost_2025": 87860,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 68686,
+      "住宿生活费": 19174,
+      "研究生学费": 47844
+    },
+    "international_share_2025": {
+      "undergraduate": 13.9,
+      "graduate": 30.1
+    },
+    "historical_test_score_range": {
+      "sat": "1510–1570",
+      "act": "34–36"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "财务分析",
+        "graduates": 354
+      },
+      {
+        "name": "注册护理/注册护士",
+        "graduates": 191
+      },
+      {
+        "name": "哲学（其他）",
+        "graduates": 183
+      }
+    ]
+  },
+  {
+    "unitid": "195030",
+    "name_zh": "罗切斯特大学",
+    "name_en": "University of Rochester",
+    "city": "Rochester",
+    "state": "NY",
+    "control": "private",
+    "website": "https://www.rochester.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 40.1,
+    "undergraduates_2025": 6580,
+    "four_year_graduation_rate_2025": 81.3,
+    "annual_cost_2025": 86872,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 67080,
+      "住宿生活费": 19792,
+      "研究生学费": 39310
+    },
+    "international_share_2025": {
+      "undergraduate": 22.1,
+      "graduate": 39.9
+    },
+    "historical_test_score_range": {
+      "sat": "1410–1540",
+      "act": "31–34"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "生物学/生物科学（普通）",
+        "graduates": 253
+      },
+      {
+        "name": "管理科学和量化方法（其他）",
+        "graduates": 225
+      },
+      {
+        "name": "注册护理/注册护士",
+        "graduates": 217
+      }
+    ]
+  },
+  {
+    "unitid": "123961",
+    "name_zh": "南加州大学",
+    "name_en": "University of Southern California",
+    "city": "Los Angeles",
+    "state": "CA",
+    "control": "private",
+    "website": "https://www.usc.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 9.8,
+    "undergraduates_2025": 20630,
+    "four_year_graduation_rate_2025": 78.9,
+    "annual_cost_2025": 91578,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 71647,
+      "住宿生活费": 19931,
+      "研究生学费": 71515
+    },
+    "international_share_2025": {
+      "undergraduate": 13.7,
+      "graduate": 36.8
+    },
+    "historical_test_score_range": {
+      "sat": "1450–1550",
+      "act": "32–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "管理科学",
+        "graduates": 1244
+      },
+      {
+        "name": "计算机科学",
+        "graduates": 378
+      },
+      {
+        "name": "人类生物学",
+        "graduates": 292
+      }
+    ]
+  },
+  {
+    "unitid": "234076",
+    "name_zh": "弗吉尼亚大学",
+    "name_en": "University of Virginia-Main Campus",
+    "city": "Charlottesville",
+    "state": "VA",
+    "control": "public",
+    "website": "https://www.virginia.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 16.8,
+    "undergraduates_2025": 17885,
+    "four_year_graduation_rate_2025": 90.8,
+    "annual_cost_2025": 76391,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 61591,
+      "本科学费（州内）": 23118,
+      "住宿生活费": 14800,
+      "研究生学费": 37628
+    },
+    "international_share_2025": {
+      "undergraduate": 5.0,
+      "graduate": 19.4
+    },
+    "historical_test_score_range": {
+      "sat": "1410–1540",
+      "act": "32–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机和信息科学（普通）",
+        "graduates": 591
+      },
+      {
+        "name": "文理学/通识教育",
+        "graduates": 530
+      },
+      {
+        "name": "管理科学和量化方法（其他）",
+        "graduates": 398
+      }
+    ]
+  },
+  {
+    "unitid": "236948",
+    "name_zh": "华盛顿大学",
+    "name_en": "University of Washington-Seattle Campus",
+    "city": "Seattle",
+    "state": "WA",
+    "control": "public",
+    "website": "https://www.washington.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 39.1,
+    "undergraduates_2025": 40684,
+    "four_year_graduation_rate_2025": 71.4,
+    "annual_cost_2025": 61614,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 43209,
+      "本科学费（州内）": 12973,
+      "住宿生活费": 18405,
+      "研究生学费": 32811
+    },
+    "international_share_2025": {
+      "undergraduate": 9.6,
+      "graduate": 24.8
+    },
+    "historical_test_score_range": {},
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 561
+      },
+      {
+        "name": "研究和实验心理学（其他）",
+        "graduates": 446
+      },
+      {
+        "name": "信息学",
+        "graduates": 373
+      }
+    ]
+  },
+  {
+    "unitid": "240444",
+    "name_zh": "威斯康星大学麦迪逊分校",
+    "name_en": "University of Wisconsin-Madison",
+    "city": "Madison",
+    "state": "WI",
+    "control": "public",
+    "website": "https://www.wisc.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 45.2,
+    "undergraduates_2025": 38040,
+    "four_year_graduation_rate_2025": 71.3,
+    "annual_cost_2025": 56227,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 42103,
+      "本科学费（州内）": 11603,
+      "住宿生活费": 14124,
+      "研究生学费": 25651
+    },
+    "international_share_2025": {
+      "undergraduate": 10.8,
+      "graduate": 29.6
+    },
+    "historical_test_score_range": {
+      "sat": "1380–1520",
+      "act": "29–33"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机和信息科学（普通）",
+        "graduates": 766
+      },
+      {
+        "name": "经济学（普通）",
+        "graduates": 539
+      },
+      {
+        "name": "心理学（普通）",
+        "graduates": 471
+      }
+    ]
+  },
+  {
+    "unitid": "221999",
+    "name_zh": "范德堡大学",
+    "name_en": "Vanderbilt University",
+    "city": "Nashville",
+    "state": "TN",
+    "control": "private",
+    "website": "https://www.vanderbilt.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 5.9,
+    "undergraduates_2025": 7221,
+    "four_year_graduation_rate_2025": 88.6,
+    "annual_cost_2025": 89552,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 67498,
+      "住宿生活费": 22054,
+      "研究生学费": 57868
+    },
+    "international_share_2025": {
+      "undergraduate": 11.2,
+      "graduate": 16.2
+    },
+    "historical_test_score_range": {
+      "sat": "1500–1570",
+      "act": "34–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "社会科学（普通）",
+        "graduates": 283
+      },
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 203
+      },
+      {
+        "name": "多/跨学科研究（其他）",
+        "graduates": 194
+      }
+    ]
+  },
+  {
+    "unitid": "216597",
+    "name_zh": "维拉诺瓦大学",
+    "name_en": "Villanova University",
+    "city": "Villanova",
+    "state": "PA",
+    "control": "private",
+    "website": "https://www.villanova.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 27.0,
+    "undergraduates_2025": 7004,
+    "four_year_graduation_rate_2025": 87.8,
+    "annual_cost_2025": 85470,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 67776,
+      "住宿生活费": 17694,
+      "研究生学费": 22335
+    },
+    "international_share_2025": {
+      "undergraduate": 1.9,
+      "graduate": 8.0
+    },
+    "historical_test_score_range": {
+      "sat": "1395–1510",
+      "act": "32–34"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "金融（普通）",
+        "graduates": 208
+      },
+      {
+        "name": "注册护理/注册护士",
+        "graduates": 207
+      },
+      {
+        "name": "言语交际与修辞",
+        "graduates": 146
+      }
+    ]
+  },
+  {
+    "unitid": "233921",
+    "name_zh": "弗吉尼亚理工",
+    "name_en": "Virginia Polytechnic Institute and State University",
+    "city": "Blacksburg",
+    "state": "VA",
+    "control": "public",
+    "website": "https://www.vt.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 54.8,
+    "undergraduates_2025": 31035,
+    "four_year_graduation_rate_2025": 69.7,
+    "annual_cost_2025": 54314,
+    "annual_cost_label": "外州学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费（外州）": 37764,
+      "本科学费（州内）": 15948,
+      "住宿生活费": 16550,
+      "研究生学费": 35092
+    },
+    "international_share_2025": {
+      "undergraduate": 4.7,
+      "graduate": 34.5
+    },
+    "historical_test_score_range": {
+      "sat": "1280–1450",
+      "act": "28–32"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "管理科学",
+        "graduates": 610
+      },
+      {
+        "name": "计算机和信息科学（普通）",
+        "graduates": 527
+      },
+      {
+        "name": "金融（普通）",
+        "graduates": 356
+      }
+    ]
+  },
+  {
+    "unitid": "199847",
+    "name_zh": "维克森林大学",
+    "name_en": "Wake Forest University",
+    "city": "Winston-Salem",
+    "state": "NC",
+    "control": "private",
+    "website": "https://www.wfu.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 21.7,
+    "undergraduates_2025": 5490,
+    "four_year_graduation_rate_2025": 85.5,
+    "annual_cost_2025": 86136,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 67642,
+      "住宿生活费": 18494,
+      "研究生学费": 39141
+    },
+    "international_share_2025": {
+      "undergraduate": 5.8,
+      "graduate": 6.6
+    },
+    "historical_test_score_range": {
+      "sat": "1410–1520",
+      "act": "32–34"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "金融（普通）",
+        "graduates": 143
+      },
+      {
+        "name": "新闻传播（普通）",
+        "graduates": 127
+      },
+      {
+        "name": "心理学（普通）",
+        "graduates": 122
+      }
+    ]
+  },
+  {
+    "unitid": "179867",
+    "name_zh": "圣路易斯华盛顿大学",
+    "name_en": "Washington University in St Louis",
+    "city": "St. Louis",
+    "state": "MO",
+    "control": "private",
+    "website": "https://washu.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 12.1,
+    "undergraduates_2025": 8220,
+    "four_year_graduation_rate_2025": 88.6,
+    "annual_cost_2025": 87644,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 65790,
+      "住宿生活费": 21854,
+      "研究生学费": 65146
+    },
+    "international_share_2025": {
+      "undergraduate": 9.4,
+      "graduate": 45.9
+    },
+    "historical_test_score_range": {
+      "sat": "1500–1570",
+      "act": "33–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计算机科学",
+        "graduates": 160
+      },
+      {
+        "name": "实验心理学",
+        "graduates": 127
+      },
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 107
+      }
+    ]
+  },
+  {
+    "unitid": "130794",
+    "name_zh": "耶鲁大学",
+    "name_en": "Yale University",
+    "city": "New Haven",
+    "state": "CT",
+    "control": "private",
+    "website": "https://www.yale.edu/",
+    "snapshot_date": "Fri, 13 Nov 2026",
+    "admission_rate_2025": 3.9,
+    "undergraduates_2025": 6814,
+    "four_year_graduation_rate_2025": 88.1,
+    "annual_cost_2025": 87150,
+    "annual_cost_label": "学费＋住宿生活费",
+    "tuition_2025": {
+      "本科学费": 67250,
+      "住宿生活费": 19900,
+      "研究生学费": 49500
+    },
+    "international_share_2025": {
+      "undergraduate": 11.1,
+      "graduate": 34.5
+    },
+    "historical_test_score_range": {
+      "sat": "1470–1570",
+      "act": "33–35"
+    },
+    "top_bachelor_majors_2025": [
+      {
+        "name": "计量经济学和量化经济学",
+        "graduates": 199
+      },
+      {
+        "name": "计算机和信息科学（普通）",
+        "graduates": 145
+      },
+      {
+        "name": "历史（普通）",
+        "graduates": 121
+      }
+    ]
+  }
+]

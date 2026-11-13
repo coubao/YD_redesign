@@ -22,7 +22,10 @@
         {% for school in schools %}
         <article class="site-college-row">
           <div><h3>{{ school.name }}</h3><p>{{ school.city }}{% if school.state %}, {{ school.state }}{% endif %} <span aria-hidden="true">·</span> {{ '公立' if school.control == 'public' else '私立非营利' }}</p></div>
-          {% if school.website %}<a class="site-text-link" href="{{ school.website }}" target="_blank" rel="noopener noreferrer">学校官网 <span aria-hidden="true">↗</span></a>{% endif %}
+          <div class="site-college-actions">
+            {% if school.unitid in profile_ids %}<a class="site-text-link" href="{{ url_for('school_profile_detail', unitid=school.unitid) }}">查看院校档案 →</a>{% endif %}
+            {% if school.website %}<a class="site-text-link" href="{{ school.website }}" target="_blank" rel="noopener noreferrer">学校官网 <span aria-hidden="true">↗</span></a>{% endif %}
+          </div>
         </article>
         {% endfor %}
       </div>

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+<main id="main-content" class="site-page site-profile-detail">
+  <header class="site-page-header site-container">
+    <a class="site-back-link" href="{{ url_for('school_profiles') }}">← 返回院校档案</a>
+    <p class="site-overline">院校档案 · {{ school.city }}, {{ school.state }}</p>
+    <h1>{{ school.name_zh }}</h1>
+    <p lang="en" class="site-profile-en">{{ school.name_en }}</p>
+    <div class="site-profile-links">
+      {% if school.website %}<a class="site-button site-button-dark" href="{{ school.website }}" target="_blank" rel="noopener noreferrer">访问学校官网 ↗</a>{% endif %}
+      <a class="site-text-link" href="https://nces.ed.gov/collegenavigator/?id={{ school.unitid }}" target="_blank" rel="noopener noreferrer">查看美国教育部资料 ↗</a>
+    </div>
+  </header>
+
+  <section class="site-band site-band-tint">
+    <div class="site-container">
+      <p class="site-overline">数据概览</p>
+      <div class="site-profile-metrics">
+        <div><span>2025 录取率</span><strong>{{ school.admission_rate_2025 }}%</strong><small>整体录取率，不等于国际生录取概率</small></div>
+        <div><span>2025 本科生</span><strong>{{ '{:,}'.format(school.undergraduates_2025) }}</strong><small>在校人数</small></div>
+        <div><span>2025 四年毕业率</span><strong>{% if school.four_year_graduation_rate_2025 is not none %}{{ school.four_year_graduation_rate_2025 }}%{% else %}暂无数据{% endif %}</strong><small>历史统计，不预测个人结果</small></div>
+        <div><span>存档标注 2025 · {{ school.annual_cost_label }}</span><strong>${{ '{:,}'.format(school.annual_cost_2025) }}</strong><small>历史估算，不含所有个人开支</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-band site-band-white">
+    <div class="site-container site-profile-content">
+      <div class="site-profile-main">
+        <section class="site-profile-section">
+          <p class="site-overline">01 · 费用</p>
+          <h2>看清学费和生活费</h2>
+          <p>以下为存档标注“2025”的历史费用，不能按当前学年直接预算。公立学校请核对外州及国际生标准；保险、交通、书本与个人开支可能另计。</p>
+          <dl class="site-profile-fact-list">
+            {% for label, value in school.tuition_2025.items() %}{% if label != '研究生学费' %}<div><dt>{{ label }}</dt><dd>${{ '{:,}'.format(value) }}</dd></div>{% endif %}{% endfor %}
+            <div class="site-profile-fact-total"><dt>{{ school.annual_cost_label }}</dt><dd>${{ '{:,}'.format(school.annual_cost_2025) }}</dd></div>
+          </dl>
+        </section>
+        <section class="site-profile-section">
+          <p class="site-overline">02 · 申请数据</p>
+          <h2>历史标化成绩区间</h2>
+          <p>存档收录的 SAT/ACT 为录取新生的历史 25%–75% 区间，不能当作最低分数线或当前申请要求。是否需要提交考试成绩，请以学校当季招生页面为准。</p>
+          {% if school.historical_test_score_range %}
+          <dl class="site-profile-fact-list">
+            {% if school.historical_test_score_range.sat %}<div><dt>SAT 总分</dt><dd>{{ school.historical_test_score_range.sat }}</dd></div>{% endif %}
+            {% if school.historical_test_score_range.act %}<div><dt>ACT 综合</dt><dd>{{ school.historical_test_score_range.act }}</dd></div>{% endif %}
+          </dl>
+          {% else %}<p class="site-profile-no-data">这份存档没有可展示的 SAT/ACT 区间。</p>{% endif %}
+        </section>
+        <section class="site-profile-section">
+          <p class="site-overline">03 · 学习方向</p>
+          <h2>本科毕业人数较多的专业</h2>
+          <p>这是存档中 2025 年第一专业的毕业人数，不是专业实力排名。具体课程、招生方式和申请门槛仍需看院系官网。</p>
+          <ol class="site-profile-major-list">
+            {% for major in school.top_bachelor_majors_2025 %}<li><span>{{ major.name }}</span><strong>{{ '{:,}'.format(major.graduates) }} 人</strong></li>{% endfor %}
+          </ol>
+        </section>
+        <section class="site-profile-section">
+          <p class="site-overline">04 · 校园构成</p>
+          <h2>国际学生占比</h2>
+          <p>存档标注的 2025 年在校生比例。本科与研究生的申请和就读环境不同，不能相互替代。</p>
+          <dl class="site-profile-fact-list">
+            <div><dt>本科国际学生</dt><dd>{{ school.international_share_2025.undergraduate }}%</dd></div>
+            <div><dt>研究生国际学生</dt><dd>{{ school.international_share_2025.graduate }}%</dd></div>
+          </dl>
+        </section>
+      </div>
+      <aside class="site-profile-aside">
+        <h2>阅读这些数字时</h2>
+        <ul>
+          <li>录取率反映整体申请池，不代表某个申请人的机会。</li>
+          <li>毕业人数反映项目规模，不等于课程质量或就业结果。</li>
+          <li>费用是历史学费与住宿生活费估算，最终预算应以学校最新账单和资助说明为准。</li>
+        </ul>
+        <p>基础身份与地点来自 <a href="https://nces.ed.gov/ipeds/use-the-data" target="_blank" rel="noopener noreferrer">IPEDS 2024 目录</a>；其余数字来自历史网页资料存档，尚未逐项向学校核验。</p>
+      </aside>
+    </div>
+  </section>
+</main>
+{% endblock %}

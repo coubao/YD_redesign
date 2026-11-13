@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from app import app, db
+from app import app, db, load_school_profiles
 
 
 class WebsiteTestCase(unittest.TestCase):
@@ -79,6 +79,51 @@ class WebsiteTestCase(unittest.TestCase):
         empty = self.client.get('/ranking?q=not-a-real-university-xyz').data
         self.assertIn('没有找到符合条件的学校'.encode(), empty)
         self.assertEqual(self.client.get('/ranking?page=2').status_code, 200)
+
+    def test_school_profiles_are_searchable_and_brand_free(self):
+        profiles = load_school_profiles()
+        self.assertEqual(len(profiles), 56)
+        self.assertEqual(len({school['unitid'] for school in profiles}), 56)
+        for school in profiles:
+            self.assertGreaterEqual(school['admission_rate_2025'], 0)
+            self.assertLessEqual(school['admission_rate_2025'], 100)
+            self.assertEqual(len(school['top_bachelor_majors_2025']), 3)
+            self.assertIn('historical_test_score_range', school)
+
+        listing = self.client.get('/resources/schools')
+        self.assertEqual(listing.status_code, 200)
+        self.assertNotIn('找到 56 所院校'.encode(), listing.data)
+        self.assertNotIn('资料快照：2026 年 11 月 13 日'.encode(), listing.data)
+        self.assertIn('不代表排名'.encode(), listing.data)
+        self.assertNotIn('续航教育'.encode(), listing.data)
+        self.assertNotIn('超哥留学'.encode(), listing.data)
+
+        filtered = self.client.get('/resources/schools?q=哈佛&state=MA&control=private')
+        self.assertIn('哈佛大学'.encode(), filtered.data)
+        self.assertNotIn('找到 1 所院校'.encode(), filtered.data)
+        self.assertIn('没有找到符合条件的学校'.encode(),
+                      self.client.get('/resources/schools?q=哈佛&control=public').data)
+        self.assertEqual(self.client.get('/resources/schools?page=2').status_code, 200)
+
+        detail = self.client.get('/resources/schools/166027')
+        self.assertEqual(detail.status_code, 200)
+        self.assertIn('Harvard University'.encode(), detail.data)
+        self.assertIn('计量经济学和量化经济学'.encode(), detail.data)
+        self.assertIn('2025 录取率'.encode(), detail.data)
+        self.assertIn('1510–1580'.encode(), detail.data)
+        self.assertNotIn('续航教育'.encode(), detail.data)
+        self.assertNotIn('超哥留学'.encode(), detail.data)
+        self.assertNotIn('U.S. News'.encode(), detail.data)
+        self.assertEqual(self.client.get('/resources/schools/999999').status_code, 404)
+        self.assertIn('没有可展示的 SAT/ACT 区间'.encode(),
+                      self.client.get('/resources/schools/110635').data)
+        for school in profiles:
+            with self.subTest(school=school['unitid']):
+                self.assertEqual(self.client.get(
+                    f"/resources/schools/{school['unitid']}").status_code, 200)
+
+        directory = self.client.get('/ranking?q=Harvard').data
+        self.assertIn('/resources/schools/166027'.encode(), directory)
 
     def test_old_offer_link_redirects_to_case_library(self):
         response = self.client.get('/offers')

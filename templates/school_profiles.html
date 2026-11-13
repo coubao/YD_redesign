@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<main id="main-content" class="site-page site-profile-catalog">
+  <header class="site-page-header site-container">
+    <a class="site-back-link" href="{{ url_for('resources') }}">← 返回留学资源</a>
+    <p class="site-overline">院校档案</p>
+    <h1>选校，先看可比较的信息。</h1>
+    <p>汇集 56 所美国院校的基础资料、录取与费用快照。可按学校、地区或专业关键词查找；名单按英文名排列，不代表排名。</p>
+  </header>
+  <section class="site-band site-band-tint">
+    <div class="site-container">
+      <form class="site-college-filters" method="get" action="{{ url_for('school_profiles') }}" role="search">
+        <label>学校、城市或专业<input type="search" name="q" value="{{ query }}" placeholder="中文名、英文名或专业"></label>
+        <label>州/地区<select name="state"><option value="">全部地区</option>{% for item in states %}<option value="{{ item }}" {% if state == item %}selected{% endif %}>{{ item }}</option>{% endfor %}</select></label>
+        <label>学校性质<select name="control"><option value="">全部类型</option><option value="public" {% if control == 'public' %}selected{% endif %}>公立</option><option value="private" {% if control == 'private' %}selected{% endif %}>私立非营利</option></select></label>
+        <button class="site-button site-button-dark" type="submit">筛选</button>
+        {% if query or state or control %}<a class="site-clear-link" href="{{ url_for('school_profiles') }}">清除</a>{% endif %}
+      </form>
+      {% if schools %}
+      <div class="site-profile-list">
+        {% for school in schools %}
+        <article class="site-profile-row">
+          <div class="site-profile-identity">
+            <p class="site-profile-location">{{ school.city }}, {{ school.state }} · {{ '公立' if school.control == 'public' else '私立非营利' }}</p>
+            <h3><a href="{{ url_for('school_profile_detail', unitid=school.unitid) }}">{{ school.name_zh }}</a></h3>
+            <p lang="en">{{ school.name_en }}</p>
+            <a class="site-text-link" href="{{ url_for('school_profile_detail', unitid=school.unitid) }}">阅读院校档案 →</a>
+          </div>
+          <dl class="site-profile-quickfacts">
+            <div><dt>2025 录取率</dt><dd>{{ school.admission_rate_2025 }}%</dd></div>
+            <div><dt>2025 本科生</dt><dd>{{ '{:,}'.format(school.undergraduates_2025) }}</dd></div>
+            <div><dt>存档标注 2025 · {{ school.annual_cost_label }}</dt><dd>${{ '{:,}'.format(school.annual_cost_2025) }}</dd></div>
+          </dl>
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}<div class="site-empty-state"><h2>没有找到符合条件的学校</h2><p>试试更短的学校名，或取消部分筛选条件。</p></div>{% endif %}
+      {% if page_count > 1 %}
+      <nav class="site-pagination" aria-label="结果分页">
+        {% if page > 1 %}<a href="{{ url_for('school_profiles', q=query, state=state, control=control, page=page-1) }}">上一页</a>{% endif %}
+        <span>第 {{ page }} / {{ page_count }} 页</span>
+        {% if page < page_count %}<a href="{{ url_for('school_profiles', q=query, state=state, control=control, page=page+1) }}">下一页</a>{% endif %}
+      </nav>
+      {% endif %}
+      <p class="site-college-source">学校名称、地点和办学性质取自<a href="https://nces.ed.gov/ipeds/use-the-data" target="_blank" rel="noopener noreferrer">美国教育部 IPEDS 2024 机构目录</a>。其余数据来自历史网页资料存档，尚未逐项向学校核验。费用仅是存档中的学费与住宿生活费之和，不等于当前完整预算；请以学校官网及官方数据为准。这里不展示排名。</p>
+    </div>
+  </section>
+</main>
+{% endblock %}

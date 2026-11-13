@@ -647,6 +647,7 @@ def debug_render_home():
 @app.get('/ranking')
 def index():
     schools = load_ipeds_directory()
+    profile_ids = {school['unitid'] for school in load_school_profiles()}
     query = request.args.get('q', '').strip()[:80]
     state = request.args.get('state', '').strip().upper()
     control = request.args.get('control', '').strip()
@@ -665,6 +666,7 @@ def index():
     page = min(max(to_int(request.args.get('page'), 1), 1), page_count)
     results = filtered[(page - 1) * page_size:page * page_size]
     return render_template('index.html', schools=results, total=len(filtered),
+                           profile_ids=profile_ids,
                            query=query, state=state, control=control,
                            states=states, page=page, page_count=page_count,
                            title='院校检索 | 瀛动教育')
@@ -675,6 +677,49 @@ def load_ipeds_directory():
     directory = Path(__file__).resolve().parent / 'data' / 'ipeds_2024_directory.csv'
     with directory.open(newline='', encoding='utf-8') as source:
         return tuple(csv.DictReader(source))
+
+
+@lru_cache(maxsize=1)
+def load_school_profiles():
+    path = Path(__file__).resolve().parent / 'data' / 'school_profiles.json'
+    with path.open(encoding='utf-8') as source:
+        return tuple(json.load(source))
+
+
+@app.get('/resources/schools')
+def school_profiles():
+    schools = load_school_profiles()
+    query = request.args.get('q', '').strip()[:80]
+    state = request.args.get('state', '').strip().upper()
+    control = request.args.get('control', '').strip()
+    states = sorted({school['state'] for school in schools if school['state']})
+    if state not in states:
+        state = ''
+    if control not in ('public', 'private'):
+        control = ''
+    filtered = [school for school in schools
+                if (not query or query.casefold() in
+                    (' '.join((school['name_zh'], school['name_en'], school['city'],
+                               *(major['name'] for major in school['top_bachelor_majors_2025'])))).casefold())
+                and (not state or school['state'] == state)
+                and (not control or school['control'] == control)]
+    page_size = 12
+    page_count = max(1, (len(filtered) + page_size - 1) // page_size)
+    page = min(max(to_int(request.args.get('page'), 1), 1), page_count)
+    results = filtered[(page - 1) * page_size:page * page_size]
+    return render_template('school_profiles.html', schools=results, total=len(filtered),
+                           query=query, state=state, control=control, states=states,
+                           page=page, page_count=page_count,
+                           title='院校档案 | 瀛动教育')
+
+
+@app.get('/resources/schools/<unitid>')
+def school_profile_detail(unitid):
+    school = next((item for item in load_school_profiles() if item['unitid'] == unitid), None)
+    if school is None:
+        abort(404)
+    return render_template('school_profile_detail.html', school=school,
+                           title=f"{school['name_zh']} | 院校档案 | 瀛动教育")
 
 
 @app.get('/guide')
